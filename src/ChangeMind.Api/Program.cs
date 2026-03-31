@@ -4,7 +4,6 @@ using ChangeMind.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Application & Infrastructure
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -26,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

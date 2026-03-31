@@ -25,6 +25,7 @@ public class User
     public FitnessGoal? FitnessGoal { get; private set; }
     public DifficultyLevel? FitnessLevel { get; private set; }
     public bool IsActive { get; private set; } = true;
+    public UserRole Role { get; private set; } = UserRole.User;
 
     // DateTime Properties
     public DateTime CreatedAt { get; private set; }

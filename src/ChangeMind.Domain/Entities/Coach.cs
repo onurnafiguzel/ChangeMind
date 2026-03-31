@@ -14,6 +14,7 @@ public class Coach
     public string LastName { get; private set; } = string.Empty;
     public CoachSpecialization? Specialization { get; private set; }
     public bool IsActive { get; private set; } = true;
+    public UserRole Role { get; private set; } = UserRole.Coach;
 
     // DateTime Properties
     public DateTime CreatedAt { get; private set; }

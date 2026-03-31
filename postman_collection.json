@@ -38,7 +38,7 @@
               "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePassword123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/auth/signup",
+              "raw": "{{baseUrl}}/api/auth/signup",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -82,7 +82,7 @@
               "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePassword123!\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/auth/login",
+              "raw": "{{baseUrl}}/api/auth/login",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -111,7 +111,7 @@
               "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/auth/refresh",
+              "raw": "{{baseUrl}}/api/auth/refresh",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -151,7 +151,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5123/api/users?isActiveOnly=true&page=1&pageSize=10",
+              "raw": "{{baseUrl}}/api/users?isActiveOnly=true&page=1&pageSize=10",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -199,7 +199,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5123/api/users/{{userId}}",
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -228,7 +228,7 @@
               "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"SecurePassword123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"age\": 28,\n  \"height\": 180.5,\n  \"weight\": 75.0,\n  \"gender\": \"male\",\n  \"fitnessGoal\": \"muscleGain\",\n  \"fitnessLevel\": \"intermediate\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/users",
+              "raw": "{{baseUrl}}/api/users",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -266,7 +266,7 @@
               "raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe\",\n  \"age\": 29,\n  \"height\": 181.0,\n  \"weight\": 76.0,\n  \"gender\": \"male\",\n  \"fitnessGoal\": \"strength\",\n  \"fitnessLevel\": \"advanced\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/users/{{userId}}",
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -296,7 +296,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:5123/api/users/{{userId}}",
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -335,7 +335,7 @@
               "raw": "{\n  \"currentPassword\": \"SecurePassword123!\",\n  \"newPassword\": \"NewSecurePassword456!\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/users/{{userId}}/change-password",
+              "raw": "{{baseUrl}}/api/users/{{userId}}/change-password",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -385,7 +385,7 @@
               "raw": "{\n  \"email\": \"coach@example.com\",\n  \"password\": \"CoachPass123!\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/coaches/login",
+              "raw": "{{baseUrl}}/api/coaches/login",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -420,7 +420,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5123/api/coaches?isActiveOnly=true&page=1&pageSize=10",
+              "raw": "{{baseUrl}}/api/coaches?isActiveOnly=true&page=1&pageSize=10",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -468,7 +468,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5123/api/coaches/{{coachId}}",
+              "raw": "{{baseUrl}}/api/coaches/{{coachId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -507,7 +507,7 @@
               "raw": "{\n  \"email\": \"coach.john@example.com\",\n  \"password\": \"CoachPass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Coach\",\n  \"specialization\": \"strength\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/coaches",
+              "raw": "{{baseUrl}}/api/coaches",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -545,7 +545,7 @@
               "raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Coach\",\n  \"specialization\": \"cardio\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/coaches/{{coachId}}",
+              "raw": "{{baseUrl}}/api/coaches/{{coachId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -575,7 +575,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:5123/api/coaches/{{coachId}}",
+              "raw": "{{baseUrl}}/api/coaches/{{coachId}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -614,7 +614,7 @@
               "raw": "{\n  \"currentPassword\": \"CoachPass123!\",\n  \"newPassword\": \"NewCoachPass456!\"\n}"
             },
             "url": {
-              "raw": "http://localhost:5123/api/coaches/{{coachId}}/change-password",
+              "raw": "{{baseUrl}}/api/coaches/{{coachId}}/change-password",
               "protocol": "http",
               "host": [
                 "localhost"

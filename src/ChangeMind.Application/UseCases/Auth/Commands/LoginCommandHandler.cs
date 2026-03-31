@@ -21,10 +21,7 @@ public class LoginCommandHandler(
 
         if (!passwordService.VerifyPassword(request.Password, user.PasswordHash))
             throw new InvalidOperationException("Invalid email or password.");
-
-        if (user.Role != UserRole.User)
-            throw new InvalidOperationException("This login endpoint is for users only.");
-
+        
         var (accessToken, refreshToken) = tokenService.GenerateTokens(user.Id, user.Email, user.Role);
 
         return new AuthTokenResponse

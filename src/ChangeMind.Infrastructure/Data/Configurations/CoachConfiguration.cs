@@ -38,6 +38,10 @@ public class CoachConfiguration : IEntityTypeConfiguration<Coach>
             .IsRequired(false)
             .HasConversion<string>();
 
+        builder.Property(c => c.Role)
+            .IsRequired()
+            .HasConversion<string>();
+
         builder.Property(c => c.IsActive)
             .IsRequired()
             .HasDefaultValue(true);

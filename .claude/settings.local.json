@@ -1,7 +1,18 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(find c:UsersUSERsourcereposChangeMindChangeMindsrcChangeMind.Infrastructure -type f -name *.cs)"
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd '/c/Users/USER/source/repos/ChangeMind' && dotnet build 2>&1 | tail -20",
+            "statusMessage": "Building project...",
+            "timeout": 120,
+            "if": "Edit|Write"
+          }
+        ]
+      }
     ]
   }
 }

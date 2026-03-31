@@ -4,4 +4,9 @@
     <ProjectReference Include="..\ChangeMind.Domain\ChangeMind.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
+
 </Project>

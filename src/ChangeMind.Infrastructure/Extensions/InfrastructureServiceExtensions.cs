@@ -1,6 +1,8 @@
 namespace ChangeMind.Infrastructure.Extensions;
 
+using ChangeMind.Application.Repositories;
 using ChangeMind.Infrastructure.Data;
+using ChangeMind.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,9 @@ public static class InfrastructureServiceExtensions
             options.UseNpgsql(
                 connectionString,
                 npgsqlOptions => npgsqlOptions.MigrationsAssembly("ChangeMind.Infrastructure")));
+
+        // Register repositories
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChangeMind.Domain\ChangeMind.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

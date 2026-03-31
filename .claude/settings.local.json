@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find c:UsersUSERsourcereposChangeMindChangeMindsrcChangeMind.Infrastructure -type f -name *.cs)"
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "ChangeMind User API",
-    "description": "User CRUD API endpoints for ChangeMind",
+    "name": "ChangeMind API",
+    "description": "CRUD API endpoints for ChangeMind (Users and Coaches)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -179,12 +179,192 @@
           }
         }
       ]
+    },
+    {
+      "name": "Coaches",
+      "item": [
+        {
+          "name": "Get All Coaches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5123/api/coaches?isActiveOnly=true&page=1&pageSize=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "coaches"
+              ],
+              "query": [
+                {
+                  "key": "isActiveOnly",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Coach By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5123/api/coaches/{{coachId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "coaches",
+                "{{coachId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Coach",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"coach.john@example.com\",\n  \"password\": \"CoachPass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Coach\",\n  \"specialization\": \"strength\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5123/api/coaches",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "coaches"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Coach",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Coach\",\n  \"specialization\": \"cardio\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5123/api/coaches/{{coachId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "coaches",
+                "{{coachId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Coach (Soft Delete)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5123/api/coaches/{{coachId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "coaches",
+                "{{coachId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Change Coach Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"CoachPass123!\",\n  \"newPassword\": \"NewCoachPass456!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5123/api/coaches/{{coachId}}/change-password",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "coaches",
+                "{{coachId}}",
+                "change-password"
+              ]
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [
     {
       "key": "userId",
       "value": "your-user-id-here",
+      "type": "string"
+    },
+    {
+      "key": "coachId",
+      "value": "your-coach-id-here",
       "type": "string"
     }
   ]

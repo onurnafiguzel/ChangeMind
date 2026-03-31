@@ -19,7 +19,7 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
 
     public IQueryable<User> GetAll(bool? isActive = null)
     {
-        var query = context.Users.AsQueryable();
+        var query = context.Users.AsNoTracking().AsQueryable();
 
         if (isActive.HasValue)
         {

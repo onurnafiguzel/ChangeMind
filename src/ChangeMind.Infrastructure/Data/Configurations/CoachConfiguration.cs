@@ -46,6 +46,9 @@ public class CoachConfiguration : IEntityTypeConfiguration<Coach>
             .IsRequired()
             .HasDefaultValueSql("NOW()");
 
+        builder.Property(c => c.UpdatedAt)
+            .IsRequired(false);
+
         // Indexes
         builder.HasIndex(c => c.Email)
             .IsUnique()

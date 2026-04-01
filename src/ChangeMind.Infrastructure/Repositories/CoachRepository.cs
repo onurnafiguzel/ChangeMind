@@ -14,7 +14,7 @@ public class CoachRepository(ChangeMindDbContext context) : ICoachRepository
 
     public async Task<Coach?> GetByEmailAsync(string email)
     {
-        return await context.Coaches.AsNoTracking().FirstOrDefaultAsync(c => c.Email == email);
+        return await context.Coaches.AsNoTracking().FirstOrDefaultAsync(c => c.Email == email && c.IsActive == true);
     }
 
     public IQueryable<Coach> GetAll(bool? isActive = null)

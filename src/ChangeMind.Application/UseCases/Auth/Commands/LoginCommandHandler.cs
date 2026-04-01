@@ -5,7 +5,6 @@ using ChangeMind.Application.Configuration;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
-using ChangeMind.Domain.Enums;
 
 public class LoginCommandHandler(
     IUserRepository userRepository,

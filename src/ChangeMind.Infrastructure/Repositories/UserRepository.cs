@@ -14,7 +14,7 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
 
     public async Task<User?> GetByEmailAsync(string email)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        return await context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsActive == true);
     }
 
     public IQueryable<User> GetAll(bool? isActive = null)

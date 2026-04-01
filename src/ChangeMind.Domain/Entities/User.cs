@@ -45,11 +45,37 @@ public class User
     private protected User() { }
 
     /// <summary>
-    /// Factory method to create a new User
+    /// Factory method to create a new User (registration with email and password only)
     /// </summary>
     public static User Create(
         string email,
         string passwordHash,
+        string firstName = "",
+        string lastName = "")
+    {
+        return new User
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            PasswordHash = passwordHash,
+            FirstName = firstName,
+            LastName = lastName,
+            Age = null,
+            Height = null,
+            Weight = null,
+            Gender = null,
+            FitnessGoal = null,
+            FitnessLevel = null,
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = null
+        };
+    }
+
+    /// <summary>
+    /// Complete user profile with personal and fitness information (called after registration)
+    /// </summary>
+    public void CompleteProfile(
         string firstName,
         string lastName,
         int? age = null,
@@ -59,23 +85,15 @@ public class User
         FitnessGoal? fitnessGoal = null,
         DifficultyLevel? fitnessLevel = null)
     {
-        return new User
-        {
-            Id = Guid.NewGuid(),
-            Email = email,
-            PasswordHash = passwordHash,
-            FirstName = firstName,
-            LastName = lastName,
-            Age = age,
-            Height = height,
-            Weight = weight,
-            Gender = gender,
-            FitnessGoal = fitnessGoal,
-            FitnessLevel = fitnessLevel,
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = null
-        };
+        FirstName = firstName;
+        LastName = lastName;
+        Age = age;
+        Height = height;
+        Weight = weight;
+        Gender = gender;
+        FitnessGoal = fitnessGoal;
+        FitnessLevel = fitnessLevel;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     /// <summary>

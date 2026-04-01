@@ -24,22 +24,16 @@ public class CreateUserCommandHandler(
         // Hash password with SHA256
         var passwordHash = HashPassword(request.Password);
 
-        // Create user via factory method
+        // Create user with email and password only (registration)
+        // Profile information will be completed via CompleteProfileCommand
         var user = User.Create(
             email: request.Email,
-            passwordHash: passwordHash,
-            firstName: request.FirstName,
-            lastName: request.LastName,
-            age: request.Age,
-            height: request.Height,
-            weight: request.Weight,
-            gender: request.Gender,
-            fitnessGoal: request.FitnessGoal,
-            fitnessLevel: request.FitnessLevel);
+            passwordHash: passwordHash);
 
         // Add to repository
         await userRepository.AddAsync(user);
 
+        // Save all changes in a single transaction
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return user.Id;

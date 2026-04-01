@@ -50,7 +50,8 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Create a new user
+    /// Register a new user with email and password
+    /// Complete profile information separately using PUT /api/users/{id}/complete-profile
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateUser(
@@ -59,6 +60,24 @@ public class UsersController(IMediator mediator) : ControllerBase
     {
         var userId = await mediator.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetUserById), new { id = userId }, userId);
+    }
+
+    /// <summary>
+    /// Complete user profile with personal and fitness information (called after registration)
+    /// </summary>
+    [Authorize]
+    [HttpPost("{id:guid}/complete-profile")]
+    public async Task<IActionResult> CompleteProfile(
+        Guid id,
+        [FromBody] CompleteProfileCommand baseRequest,
+        CancellationToken cancellationToken = default)
+    {
+        if (!IsAuthorizedForUser(id))
+            return Forbid();
+
+        var command = baseRequest with { UserId = id };
+        await mediator.Send(command, cancellationToken);
+        return NoContent();
     }
 
     /// <summary>

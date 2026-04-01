@@ -6,9 +6,11 @@ using Microsoft.IdentityModel.Tokens;
 using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
+using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Infrastructure.Data;
 using ChangeMind.Infrastructure.Repositories;
 using ChangeMind.Infrastructure.Services;
+using ChangeMind.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,9 @@ public static class InfrastructureServiceExtensions
             options.UseNpgsql(
                 connectionString,
                 npgsqlOptions => npgsqlOptions.MigrationsAssembly("ChangeMind.Infrastructure")));
+
+        // Register Unit of Work
+        services.AddScoped<IUnitOfWork, ChangeMind.Infrastructure.UnitOfWork.UnitOfWork>();
 
         // Register repositories
         services.AddScoped<IUserRepository, UserRepository>();

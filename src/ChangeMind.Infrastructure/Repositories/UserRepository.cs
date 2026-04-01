@@ -32,13 +32,12 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
     public async Task AddAsync(User user)
     {
         await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(User user)
+    public Task UpdateAsync(User user)
     {
         context.Users.Update(user);
-        await context.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 
     public async Task<bool> ExistsAsync(string email)

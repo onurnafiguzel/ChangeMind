@@ -2,8 +2,11 @@ namespace ChangeMind.Application.UseCases.Coaches.Commands;
 
 using MediatR;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.UnitOfWork;
 
-public class UpdateCoachCommandHandler(ICoachRepository coachRepository) : IRequestHandler<UpdateCoachCommand>
+public class UpdateCoachCommandHandler(
+    ICoachRepository coachRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<UpdateCoachCommand>
 {
     public async Task Handle(UpdateCoachCommand request, CancellationToken cancellationToken)
     {
@@ -13,5 +16,7 @@ public class UpdateCoachCommandHandler(ICoachRepository coachRepository) : IRequ
 
         coach.Update(request.FirstName, request.LastName, request.Specialization);
         await coachRepository.UpdateAsync(coach);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

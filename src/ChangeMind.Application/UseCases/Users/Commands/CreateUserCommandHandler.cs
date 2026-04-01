@@ -5,9 +5,12 @@ using System.Text;
 using MediatR;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
 
-public class CreateUserCommandHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, Guid>
+public class CreateUserCommandHandler(
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateUserCommand, Guid>
 {
     public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -35,6 +38,8 @@ public class CreateUserCommandHandler(IUserRepository userRepository) : IRequest
 
         // Add to repository
         await userRepository.AddAsync(user);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return user.Id;
     }

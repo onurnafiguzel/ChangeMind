@@ -4,8 +4,11 @@ using System.Security.Cryptography;
 using System.Text;
 using MediatR;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.UnitOfWork;
 
-public class ChangePasswordCommandHandler(IUserRepository userRepository) : IRequestHandler<ChangePasswordCommand>
+public class ChangePasswordCommandHandler(
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<ChangePasswordCommand>
 {
     public async Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
@@ -26,6 +29,8 @@ public class ChangePasswordCommandHandler(IUserRepository userRepository) : IReq
         user.ChangePassword(newPasswordHash);
 
         await userRepository.UpdateAsync(user);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     private static string HashPassword(string password)

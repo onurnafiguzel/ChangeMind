@@ -29,15 +29,14 @@ public class CoachRepository(ChangeMindDbContext context) : ICoachRepository
 
     public async Task AddAsync(Coach coach)
     {
-        context.Coaches.Add(coach);
-        await context.SaveChangesAsync();
+        await context.Coaches.AddAsync(coach);
     }
 
-    public async Task UpdateAsync(Coach coach)
+    public Task UpdateAsync(Coach coach)
     {
         context.Coaches.Update(coach);
-        await context.SaveChangesAsync();
-    }
+        return Task.CompletedTask;
+    }  
 
     public async Task<bool> ExistsAsync(string email)
     {

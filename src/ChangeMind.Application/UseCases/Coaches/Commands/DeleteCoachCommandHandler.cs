@@ -2,8 +2,11 @@ namespace ChangeMind.Application.UseCases.Coaches.Commands;
 
 using MediatR;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.UnitOfWork;
 
-public class DeleteCoachCommandHandler(ICoachRepository coachRepository) : IRequestHandler<DeleteCoachCommand>
+public class DeleteCoachCommandHandler(
+    ICoachRepository coachRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<DeleteCoachCommand>
 {
     public async Task Handle(DeleteCoachCommand request, CancellationToken cancellationToken)
     {
@@ -13,5 +16,7 @@ public class DeleteCoachCommandHandler(ICoachRepository coachRepository) : IRequ
 
         coach.Deactivate();
         await coachRepository.UpdateAsync(coach);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -2,13 +2,15 @@ namespace ChangeMind.Application.UseCases.Coaches.Commands;
 
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
+using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
 using MediatR;
 
 public class CreateCoachCommandHandler(
     ICoachRepository coachRepository,
     IUserRepository userRepository,
-    IPasswordService passwordService) : IRequestHandler<CreateCoachCommand, Guid>
+    IPasswordService passwordService,
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateCoachCommand, Guid>
 {
     public async Task<Guid> Handle(CreateCoachCommand request, CancellationToken cancellationToken)
     {
@@ -27,10 +29,14 @@ public class CreateCoachCommandHandler(
             user.LastName,
             request.Specialization);
         
-        // Kullanýcýyý deaktif hale getiriyoruz çünkü artýk bir koç olarak atanacak ve kullanýcý olarak aktif olmayacak
+        // KullanÄ±cÄ±yÄ± deaktif hale getiriyoruz Ã§Ã¼nkÃ¼ artÄ±k bir koÃ§ olarak atanacak ve kullanÄ±cÄ± olarak aktif olmayacak
         user.Deactivate();
 
         await coachRepository.AddAsync(coach);
+        await userRepository.UpdateAsync(user);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         return coach.Id;
     }
 }

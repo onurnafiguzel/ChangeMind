@@ -18,6 +18,7 @@ public class ChangeMindDbContext : DbContext
     public DbSet<TrainingProgram> TrainingPrograms { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<UserPhoto> UserPhotos { get; set; }
+    public DbSet<Package> Packages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,5 +31,6 @@ public class ChangeMindDbContext : DbContext
         modelBuilder.ApplyConfiguration(new TrainingProgramConfiguration());
         modelBuilder.ApplyConfiguration(new ExerciseConfiguration());
         modelBuilder.ApplyConfiguration(new UserPhotoConfiguration());
+        modelBuilder.ApplyConfiguration(new PackageConfiguration());
     }
 }

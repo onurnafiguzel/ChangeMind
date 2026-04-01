@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "ChangeMind API",
-    "description": "CRUD API endpoints for ChangeMind (Users and Coaches)",
+    "description": "CRUD API endpoints for ChangeMind (Users, Coaches, and Packages)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -683,6 +683,199 @@
           }
         }
       ]
+    },
+    {
+      "name": "Packages",
+      "item": [
+        {
+          "name": "Get All Packages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/packages?isActiveOnly=true&page=1&pageSize=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "packages"
+              ],
+              "query": [
+                {
+                  "key": "isActiveOnly",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Package By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/packages/{{packageId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "packages",
+                "{{packageId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Package (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const packageId = pm.response.json();",
+                  "  pm.environment.set(\"packageId\", packageId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Basic Package\",\n  \"description\": \"A basic fitness package\",\n  \"price\": 29.99,\n  \"durationDays\": 30,\n  \"type\": \"Basic\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/packages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "packages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Package (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Package\",\n  \"description\": \"Updated package description\",\n  \"price\": 39.99,\n  \"durationDays\": 60,\n  \"type\": \"Standard\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/packages/{{packageId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "packages",
+                "{{packageId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Package (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/packages/{{packageId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "packages",
+                "{{packageId}}"
+              ]
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [
@@ -704,6 +897,11 @@
     {
       "key": "coachId",
       "value": "your-coach-id-here",
+      "type": "string"
+    },
+    {
+      "key": "packageId",
+      "value": "your-package-id-here",
       "type": "string"
     }
   ]

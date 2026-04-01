@@ -5,6 +5,7 @@ using ChangeMind.Application.Configuration;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
+using ChangeMind.Domain.Exceptions;
 
 public class LoginCoachCommandHandler(
     ICoachRepository coachRepository,
@@ -16,10 +17,10 @@ public class LoginCoachCommandHandler(
     {
         var coach = await coachRepository.GetByEmailAsync(request.Email);
         if (coach == null)
-            throw new InvalidOperationException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
 
         if (!passwordService.VerifyPassword(request.Password, coach.PasswordHash))
-            throw new InvalidOperationException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
 
         var (accessToken, refreshToken) = tokenService.GenerateTokens(coach.Id, coach.Email, coach.Role);
 

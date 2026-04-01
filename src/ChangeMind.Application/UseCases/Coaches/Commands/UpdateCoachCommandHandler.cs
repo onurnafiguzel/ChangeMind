@@ -3,6 +3,7 @@ namespace ChangeMind.Application.UseCases.Coaches.Commands;
 using MediatR;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
+using ChangeMind.Domain.Exceptions;
 
 public class UpdateCoachCommandHandler(
     ICoachRepository coachRepository,
@@ -12,7 +13,7 @@ public class UpdateCoachCommandHandler(
     {
         var coach = await coachRepository.GetByIdAsync(request.CoachId);
         if (coach == null)
-            throw new KeyNotFoundException($"Coach with ID '{request.CoachId}' not found.");
+            throw new NotFoundException($"Coach with ID '{request.CoachId}' not found.");
 
         coach.Update(request.FirstName, request.LastName, request.Specialization);
         await coachRepository.UpdateAsync(coach);

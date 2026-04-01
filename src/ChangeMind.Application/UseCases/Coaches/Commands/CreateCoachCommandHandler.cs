@@ -4,6 +4,7 @@ using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
+using ChangeMind.Domain.Exceptions;
 using MediatR;
 
 public class CreateCoachCommandHandler(
@@ -15,12 +16,12 @@ public class CreateCoachCommandHandler(
     public async Task<Guid> Handle(CreateCoachCommand request, CancellationToken cancellationToken)
     {
         if (await coachRepository.ExistsAsync(request.Email))
-            throw new InvalidOperationException($"A coach with email '{request.Email}' already exists.");
+            throw new ConflictException($"A coach with email '{request.Email}' already exists.");
 
         var user = await userRepository.GetByEmailAsync(request.Email);
 
         if (user == null)
-            throw new InvalidOperationException($"A user with email '{request.Email}' not found.");
+            throw new NotFoundException($"A user with email '{request.Email}' not found.");
 
         var coach = Coach.Create(
             request.Email,

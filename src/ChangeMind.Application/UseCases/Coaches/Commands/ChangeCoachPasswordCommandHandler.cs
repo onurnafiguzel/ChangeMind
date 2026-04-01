@@ -5,6 +5,7 @@ using System.Text;
 using MediatR;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
+using ChangeMind.Domain.Exceptions;
 
 public class ChangeCoachPasswordCommandHandler(
     ICoachRepository coachRepository,
@@ -14,11 +15,11 @@ public class ChangeCoachPasswordCommandHandler(
     {
         var coach = await coachRepository.GetByIdAsync(request.CoachId);
         if (coach == null)
-            throw new KeyNotFoundException($"Coach with ID '{request.CoachId}' not found.");
+            throw new NotFoundException($"Coach with ID '{request.CoachId}' not found.");
 
         var currentPasswordHash = HashPassword(request.CurrentPassword);
         if (coach.PasswordHash != currentPasswordHash)
-            throw new InvalidOperationException("Current password is incorrect.");
+            throw new UnauthorizedException("Current password is incorrect.");
 
         var newPasswordHash = HashPassword(request.NewPassword);
         coach.ChangePassword(newPasswordHash);

@@ -7,6 +7,7 @@ using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
+using ChangeMind.Domain.Exceptions;
 
 public class CreateUserCommandHandler(
     IUserRepository userRepository,
@@ -17,7 +18,7 @@ public class CreateUserCommandHandler(
         // Check if email already exists
         if (await userRepository.ExistsAsync(request.Email))
         {
-            throw new InvalidOperationException($"User with email '{request.Email}' already exists.");
+            throw new ConflictException($"User with email '{request.Email}' already exists.");
         }
 
         // Hash password with SHA256

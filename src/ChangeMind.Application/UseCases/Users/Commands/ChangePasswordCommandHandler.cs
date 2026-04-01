@@ -5,6 +5,7 @@ using System.Text;
 using MediatR;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
+using ChangeMind.Domain.Exceptions;
 
 public class ChangePasswordCommandHandler(
     IUserRepository userRepository,
@@ -13,7 +14,7 @@ public class ChangePasswordCommandHandler(
     public async Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdAsync(request.UserId)
-            ?? throw new KeyNotFoundException($"User with ID '{request.UserId}' not found.");
+            ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 
         // Hash both passwords for comparison
         var currentPasswordHash = HashPassword(request.CurrentPassword);
@@ -22,7 +23,7 @@ public class ChangePasswordCommandHandler(
         // Verify current password
         if (user.PasswordHash != currentPasswordHash)
         {
-            throw new UnauthorizedAccessException("Current password is incorrect.");
+            throw new UnauthorizedException("Current password is incorrect.");
         }
 
         // Change password

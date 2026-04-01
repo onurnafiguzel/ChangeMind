@@ -5,6 +5,7 @@ using ChangeMind.Application.Configuration;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
+using ChangeMind.Domain.Exceptions;
 
 public class LoginCommandHandler(
     IUserRepository userRepository,
@@ -16,10 +17,10 @@ public class LoginCommandHandler(
     {
         var user = await userRepository.GetByEmailAsync(request.Email);
         if (user == null)
-            throw new InvalidOperationException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
 
         if (!passwordService.VerifyPassword(request.Password, user.PasswordHash))
-            throw new InvalidOperationException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         
         var (accessToken, refreshToken) = tokenService.GenerateTokens(user.Id, user.Email, user.Role);
 

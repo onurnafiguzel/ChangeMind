@@ -36,6 +36,9 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICoachRepository, CoachRepository>();
         services.AddScoped<IPackageRepository, PackageRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
+        services.AddScoped<IWaitingUserRepository, WaitingUserRepository>();
 
         // Register JWT and Security Services
         var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()

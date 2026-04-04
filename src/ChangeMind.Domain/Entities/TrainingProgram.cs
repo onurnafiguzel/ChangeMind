@@ -31,8 +31,19 @@ public class TrainingProgram
     public Guid CoachId { get; set; }
     public Guid UserId { get; set; }
 
+    // Primitive Properties - Daily Program Schedule (JSON)
+    public string? DailyProgramJson { get; private set; }
+
     // Navigation Properties
     public Coach CreatedBy { get; set; }
     public User AssignedTo { get; set; }
-    public ICollection<Exercise> Exercises { get; set; } = new List<Exercise>();
+
+    /// <summary>
+    /// Update the daily program JSON (weekly schedule with exercises)
+    /// </summary>
+    public void UpdateDailyProgram(string dailyProgramJson)
+    {
+        DailyProgramJson = dailyProgramJson;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

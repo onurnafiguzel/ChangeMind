@@ -5,32 +5,25 @@ using ChangeMind.Domain.Enums;
 public class Exercise
 {
     // Identifier
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
     // Primitive Properties
-    public string Name { get; set; }
-    public MuscleGroup MuscleGroup { get; set; }
-    /// <summary>
-    ///    Set sayısı. Örneğin: 3 set, 4 set gibi.
-    /// </summary>
-    public int Sets { get; set; }
-    /// <summary>
-    /// Reps: "6-8" or "8-12" format
-    /// </summary>
-    public string? Reps { get; set; }
-    /// <summary>
-    /// Saniye cinsinden
-    /// </summary>
-    public int? RestTimeSeconds { get; set; } = 60;
-    public string? Notes { get; set; }
-    /// <summary>
-    /// JSON: Superset, Dropset bilgileri
-    /// </summary>
-    public string? TechniquesJson { get; set; }
+    public MuscleGroup MuscleGroup { get; init; }
+    public string MovementName { get; init; } = string.Empty;
 
-    // Foreign Keys
-    public Guid ProgramId { get; set; }
+    // EF Constructor
+    public Exercise() { }
 
-    // Navigation Properties
-    public TrainingProgram Program { get; set; }
+    /// <summary>
+    /// Factory method to create a new exercise in the library
+    /// </summary>
+    public static Exercise Create(MuscleGroup muscleGroup, string movementName)
+    {
+        return new Exercise
+        {
+            Id = Guid.NewGuid(),
+            MuscleGroup = muscleGroup,
+            MovementName = movementName
+        };
+    }
 }

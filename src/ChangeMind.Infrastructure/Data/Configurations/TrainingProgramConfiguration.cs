@@ -60,6 +60,10 @@ public class TrainingProgramConfiguration : IEntityTypeConfiguration<TrainingPro
         builder.Property(tp => tp.UpdatedAt)
             .IsRequired(false);
 
+        builder.Property(tp => tp.DailyProgramJson)
+            .IsRequired(false)
+            .HasColumnType("json");
+
         // Indexes
         builder.HasIndex(tp => tp.CoachId)
             .HasDatabaseName("IX_TrainingPrograms_CoachId");
@@ -80,10 +84,5 @@ public class TrainingProgramConfiguration : IEntityTypeConfiguration<TrainingPro
             .WithMany(u => u.AssignedPrograms)
             .HasForeignKey(tp => tp.UserId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasMany(tp => tp.Exercises)
-            .WithOne(e => e.Program)
-            .HasForeignKey(e => e.ProgramId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

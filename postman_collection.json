@@ -876,6 +876,49 @@
           }
         }
       ]
+    },
+    {
+      "name": "Training Programs",
+      "item": [
+        {
+          "name": "Create Training Program (Coach)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"coachId\": \"{{coachId}}\",\n  \"userId\": \"{{userId}}\",\n  \"name\": \"12 Week Strength Program\",\n  \"description\": \"A comprehensive 12-week strength training program\",\n  \"durationWeeks\": 12,\n  \"difficulty\": \"intermediate\",\n  \"startDate\": \"2026-04-02T00:00:00Z\",\n  \"endDate\": \"2026-06-24T00:00:00Z\",\n  \"exercisesByDay\": {\n    \"Monday\": [\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n        \"sets\": 3,\n        \"reps\": \"8-10\",\n        \"explanation\": \"Barbell Bench Press - Main compound movement for chest\"\n      },\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"sets\": 4,\n        \"reps\": \"10-12\",\n        \"explanation\": \"Incline Dumbbell Press - Secondary exercise for upper chest hypertrophy\"\n      }\n    ],\n    \"Wednesday\": [\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440002\",\n        \"sets\": 3,\n        \"reps\": \"6-8\",\n        \"explanation\": \"Bent-over Barbell Row - Heavy back movement\"\n      },\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440006\",\n        \"sets\": 3,\n        \"reps\": \"8-10\",\n        \"explanation\": \"Lat Pulldown - Secondary back exercise\"\n      }\n    ],\n    \"Friday\": [\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440003\",\n        \"sets\": 3,\n        \"reps\": \"8-10\",\n        \"explanation\": \"Barbell Back Squat - Main leg compound movement\"\n      },\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440004\",\n        \"sets\": 4,\n        \"reps\": \"10-12\",\n        \"explanation\": \"Leg Press - Secondary compound for leg volume\"\n      },\n      {\n        \"exerciseId\": \"550e8400-e29b-41d4-a716-446655440005\",\n        \"sets\": 3,\n        \"reps\": \"12-15\",\n        \"explanation\": \"Leg Extension - Isolation exercise for quad development\"\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/training-programs",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "training-programs"
+              ]
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [

@@ -3,6 +3,7 @@ using System;
 using ChangeMind.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChangeMind.Infrastructure.Migrations
 {
     [DbContext(typeof(ChangeMindDbContext))]
-    partial class ChangeMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260404114615_RemoveProgramExerciseTableUseJsonInstead")]
+    partial class RemoveProgramExerciseTableUseJsonInstead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,325 +147,325 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000010001"),
+                            Id = new Guid("18a106b5-44a0-48dd-94a5-0c548a6f96f0"),
                             MovementName = "Barbell Bench Press",
                             MuscleGroup = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000010002"),
+                            Id = new Guid("355ac64f-15ff-48a0-8b24-ed3e389f341c"),
                             MovementName = "Incline Dumbbell Press",
                             MuscleGroup = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000010003"),
+                            Id = new Guid("098c21d8-a07f-4e94-a5c4-cbcab805e57a"),
                             MovementName = "Decline Bench Press",
                             MuscleGroup = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000010004"),
+                            Id = new Guid("33252753-2ddd-4f1b-bb56-555346a70bdc"),
                             MovementName = "Cable Flyes",
                             MuscleGroup = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000010005"),
+                            Id = new Guid("b15cb1ac-2b15-440b-806b-7dae01400c7e"),
                             MovementName = "Machine Chest Press",
                             MuscleGroup = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000010006"),
+                            Id = new Guid("6f6a9fae-c8fa-4fe7-8fa7-23066bf1eb26"),
                             MovementName = "Smith Machine Press",
                             MuscleGroup = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000020001"),
+                            Id = new Guid("8a33a91b-9b07-4f97-9de8-15e7006d94ef"),
                             MovementName = "Pull-ups",
                             MuscleGroup = "Back"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000020002"),
+                            Id = new Guid("d116cf5f-8cef-47f8-aaac-174575d89491"),
                             MovementName = "Lat Pulldown",
                             MuscleGroup = "Back"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000020003"),
+                            Id = new Guid("203fa475-9985-47fc-8a5f-deb44a617624"),
                             MovementName = "Bent-over Barbell Row",
                             MuscleGroup = "Back"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000020004"),
+                            Id = new Guid("1640c229-0e3c-4637-8770-4e1fd2500e65"),
                             MovementName = "T-Bar Row",
                             MuscleGroup = "Back"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000020005"),
+                            Id = new Guid("9f43f9e0-eea2-4e75-a6ce-84794701d612"),
                             MovementName = "Seal Row",
                             MuscleGroup = "Back"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000020006"),
+                            Id = new Guid("384f06df-df2e-4fa7-a19e-9fd40d6cc988"),
                             MovementName = "Chest-Supported Row",
                             MuscleGroup = "Back"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000030001"),
+                            Id = new Guid("42c707f8-277b-4638-bf9c-df54adf2c05d"),
                             MovementName = "Overhead Press",
                             MuscleGroup = "Shoulders"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000030002"),
+                            Id = new Guid("6fef3bfc-6b21-4385-9156-361752a8249c"),
                             MovementName = "Lateral Raise",
                             MuscleGroup = "Shoulders"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000030003"),
+                            Id = new Guid("3835c651-336b-4196-a1e8-5412ce6a2306"),
                             MovementName = "Machine Shoulder Press",
                             MuscleGroup = "Shoulders"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000030004"),
+                            Id = new Guid("a75cb8f0-d69c-45b7-8a02-3a97b33708de"),
                             MovementName = "Reverse Pec Deck",
                             MuscleGroup = "Shoulders"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000030005"),
+                            Id = new Guid("c9b016c6-9b94-4a7b-b79f-a8c8cd1d409c"),
                             MovementName = "Arnold Press",
                             MuscleGroup = "Shoulders"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000040001"),
+                            Id = new Guid("6c6985a3-53e3-43a7-b2b7-741cade921d1"),
                             MovementName = "Barbell Curl",
                             MuscleGroup = "Biceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000040002"),
+                            Id = new Guid("4efb25c3-3aa4-4430-87bd-184f1fbe2985"),
                             MovementName = "Dumbbell Curl",
                             MuscleGroup = "Biceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000040003"),
+                            Id = new Guid("4b4c5311-8a7d-4197-baec-b37ba3e910a2"),
                             MovementName = "Cable Curl",
                             MuscleGroup = "Biceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000040004"),
+                            Id = new Guid("9343b759-05f6-48a5-8990-4732d0b0e146"),
                             MovementName = "Preacher Curl",
                             MuscleGroup = "Biceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000050001"),
+                            Id = new Guid("99e68b24-b09a-44d3-8de7-06eec94978de"),
                             MovementName = "Tricep Dips",
                             MuscleGroup = "Triceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000050002"),
+                            Id = new Guid("9dce66ea-f645-4e73-85d8-708ae7764469"),
                             MovementName = "Rope Pushdown",
                             MuscleGroup = "Triceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000050003"),
+                            Id = new Guid("0d9fc89e-d76c-47a4-88b3-9c411c08027c"),
                             MovementName = "Skull Crusher",
                             MuscleGroup = "Triceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000050004"),
+                            Id = new Guid("9165606a-bd04-416f-a899-6f509733124b"),
                             MovementName = "Overhead Extension",
                             MuscleGroup = "Triceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000060001"),
+                            Id = new Guid("e73c1ae0-a727-4e9a-a924-674bbea6f355"),
                             MovementName = "Barbell Curl (Reverse)",
                             MuscleGroup = "Forearms"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000060002"),
+                            Id = new Guid("448ea96b-6576-45ae-acf0-45758add7b91"),
                             MovementName = "Wrist Curls",
                             MuscleGroup = "Forearms"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070001"),
+                            Id = new Guid("40f7d582-fcc5-4e11-a169-f506e3d71d8e"),
                             MovementName = "Barbell Back Squat",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070002"),
+                            Id = new Guid("f39d9923-8e0a-435b-8338-3883e9435f8b"),
                             MovementName = "Leg Press",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070003"),
+                            Id = new Guid("5edd3cf3-4a78-483f-935e-44123029c2ba"),
                             MovementName = "Leg Extension",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070004"),
+                            Id = new Guid("f85f449d-713e-41ba-9402-1a517144664a"),
                             MovementName = "Hamstring Curl",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070005"),
+                            Id = new Guid("4f3a65cd-6f34-4c63-bcb1-8c3cd67dc62f"),
                             MovementName = "Smith Machine Squat",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070006"),
+                            Id = new Guid("72de0da4-a19c-427d-906d-caaeab63f49d"),
                             MovementName = "Hack Squat",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000070007"),
+                            Id = new Guid("35c6f8bb-5e71-45a5-9ad2-1689edbc20b2"),
                             MovementName = "Leg Sled",
                             MuscleGroup = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000080001"),
+                            Id = new Guid("4b3d4296-f921-44ef-a770-205443c424cf"),
                             MovementName = "Front Squat",
                             MuscleGroup = "Quadriceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000080002"),
+                            Id = new Guid("f32be9f2-30d6-4d2a-a870-d222afe081d2"),
                             MovementName = "Sissy Squat",
                             MuscleGroup = "Quadriceps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000090001"),
+                            Id = new Guid("d0c09849-de38-464d-b482-bff5d3f2df3e"),
                             MovementName = "Romanian Deadlift",
                             MuscleGroup = "Hamstrings"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000090002"),
+                            Id = new Guid("9dbb1273-74fd-443b-8120-122010d40bfb"),
                             MovementName = "Good Morning",
                             MuscleGroup = "Hamstrings"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000100001"),
+                            Id = new Guid("c075fdf2-f454-4a0c-b847-28124997af36"),
                             MovementName = "Hip Thrust",
                             MuscleGroup = "Glutes"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000100002"),
+                            Id = new Guid("40207d57-bbf1-44d8-a540-7a4f2154c41b"),
                             MovementName = "Bulgarian Split Squat",
                             MuscleGroup = "Glutes"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000100003"),
+                            Id = new Guid("3a754d12-8c9d-438e-a79a-3a624e31bbd6"),
                             MovementName = "Glute-Focused Leg Press",
                             MuscleGroup = "Glutes"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000110001"),
+                            Id = new Guid("977edc78-e616-4b53-a82b-0deacf28f264"),
                             MovementName = "Calf Raise",
                             MuscleGroup = "Calves"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000110002"),
+                            Id = new Guid("9a1582de-8467-4e28-ac6d-d980f1f444c4"),
                             MovementName = "Machine Calf Raise",
                             MuscleGroup = "Calves"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000120001"),
+                            Id = new Guid("208ef74f-77a6-4abe-9e95-c117025861a9"),
                             MovementName = "Cable Crunch",
                             MuscleGroup = "Abs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000120002"),
+                            Id = new Guid("52a67749-32e7-40bb-9d8e-e889cd107073"),
                             MovementName = "Machine Crunch",
                             MuscleGroup = "Abs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000120003"),
+                            Id = new Guid("c4b29c8d-5619-4b15-90cc-7d16c46b47d9"),
                             MovementName = "Ab Wheel Rollout",
                             MuscleGroup = "Abs"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000130001"),
+                            Id = new Guid("d44e141b-8f9a-4c05-8671-39db7a0cbf5b"),
                             MovementName = "Cable Woodchop",
                             MuscleGroup = "Obliques"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000130002"),
+                            Id = new Guid("33e0ca24-3b60-40c0-a8c8-793730797ff8"),
                             MovementName = "Landmine Rotation",
                             MuscleGroup = "Obliques"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000140001"),
+                            Id = new Guid("3e83a9fe-1cf0-4be0-a110-d4e6ddf22bab"),
                             MovementName = "Deadlift",
                             MuscleGroup = "LowerBack"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000140002"),
+                            Id = new Guid("6366bd35-fe86-45d0-8563-cf127f4cbbc2"),
                             MovementName = "Hyperextension",
                             MuscleGroup = "LowerBack"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000150001"),
+                            Id = new Guid("54256f9f-ee01-420d-9174-1703d5f25202"),
                             MovementName = "Barbell Shrugs",
                             MuscleGroup = "Traps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000150002"),
+                            Id = new Guid("6e8cd7a9-c344-4a49-b3f3-5ff78dae42e7"),
                             MovementName = "Dumbbell Shrugs",
                             MuscleGroup = "Traps"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000160001"),
+                            Id = new Guid("9b2d3052-a6a4-41cf-9e26-8c98244ba3b0"),
                             MovementName = "Wide Grip Lat Pulldown",
                             MuscleGroup = "LatissimusDorsi"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000160002"),
+                            Id = new Guid("9e91ccc8-9c9b-45df-82df-11222462ea92"),
                             MovementName = "Underhand Lat Pulldown",
                             MuscleGroup = "LatissimusDorsi"
                         });

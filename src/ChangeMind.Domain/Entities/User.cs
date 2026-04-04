@@ -41,6 +41,11 @@ public class User
     private readonly List<CoachUser> _coachRelationships = new();
     public IReadOnlyCollection<CoachUser> CoachRelationships => _coachRelationships.AsReadOnly();
 
+    private readonly List<Payment> _payments = new();
+    public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
+
+    public WaitingUser? WaitingUserRecord { get; private set; }
+
     // EF Constructor
     private protected User() { }
 

@@ -19,6 +19,10 @@ public class Package
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
+    // Navigation Properties
+    private readonly List<Payment> _payments = new();
+    public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
+
     // EF Constructor
     private protected Package() { }
 

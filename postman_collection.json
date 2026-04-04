@@ -557,7 +557,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"coach.john@example.com\",\n  \"password\": \"CoachPass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Coach\",\n  \"specialization\": \"strength\"\n}"
+              "raw": "{\n  \"email\": \"coach.john@example.com\",\n  \"specialization\": \"Strength\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/coaches",
@@ -914,6 +914,85 @@
               "path": [
                 "api",
                 "training-programs"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Process Payment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"packageId\": \"{{packageId}}\",\n  \"amount\": 29.99,\n  \"description\": \"Basic fitness package purchase\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/process",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "payments",
+                "process"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Waiting Users (Coach View)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{coachAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/waiting-users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5123",
+              "path": [
+                "api",
+                "payments",
+                "waiting-users"
               ]
             }
           }

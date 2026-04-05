@@ -26,7 +26,7 @@ public class Payment
     public Package Package { get; private set; }
 
     // EF Constructor
-    private protected Payment() { }
+    public Payment() { }
 
     /// <summary>
     /// Factory method to create a new payment

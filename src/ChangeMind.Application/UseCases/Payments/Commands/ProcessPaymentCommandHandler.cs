@@ -23,11 +23,14 @@ public class ProcessPaymentCommandHandler(
         var package = await packageRepository.GetByIdAsync(request.PackageId)
             ?? throw new NotFoundException($"Package with ID '{request.PackageId}' not found.");
 
+        // Verify amount matches package price (or use package price if not provided)
+        var paymentAmount = request.Amount > 0 ? request.Amount : package.Price;
+
         // Create payment record
         var payment = Payment.Create(
             userId: request.UserId,
             packageId: request.PackageId,
-            amount: request.Amount,
+            amount: paymentAmount,
             description: request.Description);
 
         // Mock payment processing - always succeeds

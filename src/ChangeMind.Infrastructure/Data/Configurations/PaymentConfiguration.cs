@@ -61,13 +61,13 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .HasDatabaseName("IX_Payments_CreatedAt");
 
         // Relationships
-        builder.HasOne<User>()
+        builder.HasOne(p => p.User)
             .WithMany()
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<Package>()
-            .WithMany()
+        builder.HasOne(p => p.Package)
+            .WithMany(pkg => pkg.Payments)
             .HasForeignKey(p => p.PackageId)
             .OnDelete(DeleteBehavior.Restrict);
     }

@@ -24,6 +24,18 @@ public class CreateTrainingProgramCommandHandler(
         var user = await userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 
+        // Mark user as no longer waiting for assignment
+        var waitingUser = await waitingUserRepository.GetByUserIdAsync(request.UserId);
+        if (waitingUser != null && waitingUser.IsWaitingForAssignment)
+        {
+            waitingUser.MarkAsAssigned();
+            await waitingUserRepository.UpdateAsync(waitingUser);
+        }
+        else
+        {
+            throw new NotFoundException($"User with ID '{request.UserId}' is not waiting for assignment.");
+        }
+
         // Create training program
         var trainingProgram = new TrainingProgram
         {
@@ -65,13 +77,7 @@ public class CreateTrainingProgramCommandHandler(
         // Save training program
         await trainingProgramRepository.AddAsync(trainingProgram);
 
-        // Mark user as no longer waiting for assignment
-        var waitingUser = await waitingUserRepository.GetByUserIdAsync(request.UserId);
-        if (waitingUser != null && waitingUser.IsWaitingForAssignment)
-        {
-            waitingUser.MarkAsAssigned();
-            await waitingUserRepository.UpdateAsync(waitingUser);
-        }
+ 
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

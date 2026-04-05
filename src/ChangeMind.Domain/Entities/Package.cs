@@ -24,7 +24,7 @@ public class Package
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
 
     // EF Constructor
-    private protected Package() { }
+    public Package() { }
 
     /// <summary>
     /// Factory method to create a new Package

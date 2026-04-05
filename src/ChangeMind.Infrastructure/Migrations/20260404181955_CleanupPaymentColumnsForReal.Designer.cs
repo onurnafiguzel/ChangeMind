@@ -3,6 +3,7 @@ using System;
 using ChangeMind.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChangeMind.Infrastructure.Migrations
 {
     [DbContext(typeof(ChangeMindDbContext))]
-    partial class ChangeMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260404181955_CleanupPaymentColumnsForReal")]
+    partial class CleanupPaymentColumnsForReal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -542,7 +545,7 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.Property<Guid>("PackageId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PackageId1")
+                    b.Property<Guid?>("PackageId1")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Status")
@@ -556,7 +559,7 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId1")
+                    b.Property<Guid?>("UserId1")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -815,29 +818,25 @@ namespace ChangeMind.Infrastructure.Migrations
 
             modelBuilder.Entity("ChangeMind.Domain.Entities.Payment", b =>
                 {
-                    b.HasOne("ChangeMind.Domain.Entities.Package", null)
+                    b.HasOne("ChangeMind.Domain.Entities.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ChangeMind.Domain.Entities.Package", "Package")
+                    b.HasOne("ChangeMind.Domain.Entities.Package", null)
                         .WithMany("Payments")
-                        .HasForeignKey("PackageId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PackageId1");
 
-                    b.HasOne("ChangeMind.Domain.Entities.User", null)
+                    b.HasOne("ChangeMind.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ChangeMind.Domain.Entities.User", "User")
+                    b.HasOne("ChangeMind.Domain.Entities.User", null)
                         .WithMany("Payments")
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Package");
 

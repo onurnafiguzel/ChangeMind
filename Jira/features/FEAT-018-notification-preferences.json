@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-018",
+  "title": "Notification Tercihleri Yönetimi",
+  "description": "User, ne tür notification'lar almak istediğini kontrol edebilir. Email, push, SMS tercihlerini ayarlayabilir.",
+  "priority": "P2",
+  "storyPoints": 5,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Improves user experience and retention",
+  "acceptance_criteria": [
+    "User 'Notification Preferences' sayfasını açabilir",
+    "Toggle'lar: Program Updates, Reminders, Payments, Messages, Promotions",
+    "Channel seçimi: Email, Push Notification (mobile app), SMS",
+    "Notification frequency seçimi: Instant, Daily Digest, Weekly Digest",
+    "Unsubscribe All option var",
+    "Preferences anında kaydedilir",
+    "Preferences email'e confirm'ation gönderilir",
+    "Unsubscribe link email'lerde var"
+  ],
+  "dependencies": ["TECH-008"],
+  "business_rules": [
+    "Critical notifications (payment required) hiç zaman ignore edilemez",
+    "Preferences default: All notifications enabled"
+  ],
+  "api_endpoints": [
+    "GET /api/users/{userId}/notification-preferences",
+    "PUT /api/users/{userId}/notification-preferences",
+    "PUT /api/users/{userId}/unsubscribe-all"
+  ],
+  "frontend_pages": [
+    "/settings/notifications (Preferences page)"
+  ],
+  "estimate": "1 day"
+}

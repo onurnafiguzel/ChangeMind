@@ -1,0 +1,20 @@
+{
+  "id": "PROJ-013",
+  "title": "Logging ve Monitoring Altyapısı",
+  "description": "Serilog veya similar logging framework'ü entegre et. Structured logging implement et ve kritik operasyonları log et (CreateUser, CreateCoach, Payment transactions vb).",
+  "priority": "P2",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "Serilog setup ve configuration",
+    "Structured logging ile command/query handler'lar log ediliyor",
+    "Database operation'ları log ediliyor",
+    "Exception stack traces log ediliyor",
+    "Sensitive data (password, token vb) maskelenmiş",
+    "Environment-specific configuration (Dev/Prod)",
+    "Log levels doğru şekilde set edilmiş"
+  ],
+  "dependencies": [],
+  "status": "pending",
+  "estimate": "1 day",
+  "businessValue": "Observability, debugging"
+}

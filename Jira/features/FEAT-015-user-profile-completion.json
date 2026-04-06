@@ -1,0 +1,35 @@
+{
+  "id": "FEAT-015",
+  "title": "User Profil Bilgisi Tamamlayabilsin",
+  "description": "Yeni user registration'dan sonra profil bilgilerini tamamlamalı. Fitness goals, current level, photos upload edebilir.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Core onboarding - Necessary for program matching",
+  "acceptance_criteria": [
+    "Registration sonrası 'Complete Your Profile' modal'ı gösterilir",
+    "User zorunlu alanları doldurmali: First Name, Last Name, Age, Height, Weight",
+    "Optional alanlar: Gender, Fitness Goal, Current Fitness Level, Bio, Profile Photo",
+    "Fitness Goals: Weight Loss, Muscle Gain, Endurance, Strength, Flexibility",
+    "Current Level: Beginner, Intermediate, Advanced, Expert",
+    "Profile photo upload edebilir (crop, resize)",
+    "Validations: Reasonable age (18-100), height, weight ranges",
+    "Tamamlandıktan sonra dashboard'a yönlendirilir",
+    "User daha sonra profili edit edebilir"
+  ],
+  "dependencies": [],
+  "business_rules": [
+    "Profile bilgisi program recommendation'ı etkiler",
+    "Incomplete profile user coach search yapabilir ama assignment başında profile complete istenir"
+  ],
+  "api_endpoints": [
+    "PUT /api/users/{userId}/complete-profile",
+    "GET /api/users/{userId}",
+    "POST /api/users/{userId}/profile-photo"
+  ],
+  "frontend_pages": [
+    "/onboarding/profile-completion (Modal/Form)"
+  ],
+  "estimate": "1.5 days"
+}

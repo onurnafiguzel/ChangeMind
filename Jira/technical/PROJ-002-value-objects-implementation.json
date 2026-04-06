@@ -1,0 +1,19 @@
+{
+  "id": "PROJ-002",
+  "title": "Value Objects Oluştur (UserId, Email, Phone gibi)",
+  "description": "DDD pattern'ine göre value objects oluştur. Email, UserId, PhoneNumber gibi tekrar eden primitive types'leri value object'lere dönüştür. Bu sayede domain logic'i centralize et ve data integrity'yi artır.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "Email value object oluşturulmuş ve validation içeriyor",
+    "UserId value object oluşturulmuş (immutable record)",
+    "PhoneNumber value object oluşturulmuş",
+    "Value objects'ler Entity'lerde kullanılıyor",
+    "Database mapping'i yapılandırılmış",
+    "Equality control'ü value'lerle yapılıyor"
+  ],
+  "dependencies": ["PROJ-001"],
+  "status": "pending",
+  "estimate": "2-3 days",
+  "businessValue": "Type safety, data integrity"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "PROJ-007",
+  "title": "Payment System Geliştirilmesi",
+  "description": "Payment entity'sinin üzerinden tam bir payment workflow oluştur. CreatePaymentCommand, UpdatePaymentStatusCommand, GetPaymentQuery gibi use case'leri implement et. Payment status management'ı (Pending, Completed, Failed, Refunded) çalışır hale getir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "Payment entity'sine Primary Constructor uygulanmış",
+    "CreatePaymentCommand ve handler'ı yazılmış",
+    "UpdatePaymentStatusCommand yazılmış",
+    "PaymentStatusChangedEvent event'i oluşturulmuş",
+    "PaymentRepository implemented",
+    "Payment validation'ı yapılmış (amount > 0, status transitions valid)",
+    "API controller'ı yapılandırılmış",
+    "Tests yazılmış"
+  ],
+  "dependencies": ["PROJ-001", "PROJ-003"],
+  "status": "pending",
+  "estimate": "2 days",
+  "businessValue": "Business critical"
+}

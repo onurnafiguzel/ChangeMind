@@ -1,0 +1,28 @@
+{
+  "id": "FEAT-012",
+  "title": "Coach Profil Arama ve Filtreleme",
+  "description": "User, antrenörü uzmanlaşma alanına, lokasyona, deneyime göre arayabilir. Advanced filtreleme ile uygun coach'u hızlı bulabilir.",
+  "priority": "P2",
+  "storyPoints": 5,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Improves user experience in finding coaches",
+  "acceptance_criteria": [
+    "Arama çubuğunda coach adı ile arama yapılabilir",
+    "Uzmanlaşma alanına göre filtre (Cardio, Strength, CrossFit, etc.)",
+    "Rating ile filtre (4.0+, 4.5+)",
+    "Deneyim süresi ile filtre (1+ year, 5+ years)",
+    "Yeni eklenen coachlar hızlı index'lenir",
+    "Sonuçlar relevance'a göre sort edilir",
+    "No results durum'unda helpful message gösterilir"
+  ],
+  "dependencies": ["FEAT-007"],
+  "business_rules": [
+    "Sadece aktif (IsActive=true) coach'lar search result'ında görünür",
+    "Search case-insensitive'dir"
+  ],
+  "api_endpoints": [
+    "GET /api/coaches/search?q={query}&specialization={spec}&minRating={rating}"
+  ],
+  "estimate": "1 day"
+}

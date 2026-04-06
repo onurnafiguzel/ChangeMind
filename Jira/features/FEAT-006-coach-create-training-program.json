@@ -1,0 +1,44 @@
+{
+  "id": "FEAT-006",
+  "title": "Coach Egzersiz Programı Oluşturabilsin",
+  "description": "Coach, atanmış bir user'a özel antrenman programı oluşturabilir. Haftalık egzersiz listesi belirliyebilir, set/rep sayılarını, rest günlerini ayarlayabilir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "Coach Features",
+  "business_value": "Critical - Core feature for coaches to deliver training programs",
+  "acceptance_criteria": [
+    "Coach 'New Program' formunu açabilir",
+    "Program adı, açıklaması, süresi (hafta) girebilir",
+    "Zorluk seviyesi seçebilir (Beginner, Intermediate, Advanced)",
+    "Haftalık egzersiz planı oluşturabilir",
+    "Her gün (Pazartesi-Pazar) için egzersiz seçebilir",
+    "Her egzersiz için: Set, Rep, Weight/Duration, Rest Time girebilir",
+    "Rest days belirliyebilir",
+    "Program draft'ında kaydedebilir",
+    "Program preview görebilir",
+    "Program'ı user'a atayabilir (atanış sırasında)",
+    "Oluşturduğu programları listeleyebilir ve düzenleyebilir",
+    "Program yayınlandıktan sonra version tracking yapılır"
+  ],
+  "dependencies": ["FEAT-002", "TECH-006"],
+  "business_rules": [
+    "Program en az 1 hafta, max 52 hafta olabilir",
+    "Kullanıcı başkasının programını düzenleyemez",
+    "Program başladıktan sonra structure değişikliği yeni version oluşturur"
+  ],
+  "api_endpoints": [
+    "POST /api/training-programs",
+    "PUT /api/training-programs/{programId}",
+    "GET /api/training-programs/{programId}",
+    "DELETE /api/training-programs/{programId}",
+    "POST /api/training-programs/{programId}/assign-to-user",
+    "GET /api/coaches/{coachId}/created-programs"
+  ],
+  "frontend_pages": [
+    "/coach/programs/new (Create form)",
+    "/coach/programs/{programId}/edit (Edit form)",
+    "/coach/programs (My programs list)"
+  ],
+  "estimate": "2-3 days"
+}

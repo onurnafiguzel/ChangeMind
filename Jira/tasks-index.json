@@ -1,0 +1,98 @@
+{
+  "project": "ChangeMind",
+  "description": "ASP.NET Core 10.0 Clean Architecture API - Fitness/Coaching Platform",
+  "total_tasks": 20,
+  "summary": {
+    "p0_critical": 0,
+    "p1_high": 12,
+    "p2_medium": 8,
+    "total_story_points": 185
+  },
+  "task_dependencies_graph": {
+    "PROJ-001": [],
+    "PROJ-002": ["PROJ-001"],
+    "PROJ-003": ["PROJ-001"],
+    "PROJ-004": [],
+    "PROJ-005": [],
+    "PROJ-006": ["PROJ-001", "PROJ-002"],
+    "PROJ-007": ["PROJ-001", "PROJ-003"],
+    "PROJ-008": ["PROJ-003"],
+    "PROJ-009": ["PROJ-004"],
+    "PROJ-010": [],
+    "PROJ-011": ["PROJ-010"],
+    "PROJ-012": ["PROJ-001"],
+    "PROJ-013": [],
+    "PROJ-014": ["PROJ-001"],
+    "PROJ-015": ["PROJ-001", "PROJ-003"],
+    "PROJ-016": [],
+    "PROJ-017": ["PROJ-001"],
+    "PROJ-018": [],
+    "PROJ-019": ["PROJ-012"],
+    "PROJ-020": []
+  },
+  "recommended_implementation_order": [
+    "PROJ-001: Primary Constructor refactoring (foundational)",
+    "PROJ-004: Validation Layer",
+    "PROJ-002: Value Objects",
+    "PROJ-003: Domain Events",
+    "PROJ-009: Error Handling",
+    "PROJ-005: Exercise CRUD",
+    "PROJ-006: TrainingProgram Advanced",
+    "PROJ-007: Payment System",
+    "PROJ-012: Authorization & Roles",
+    "PROJ-008: Notification System",
+    "PROJ-014: UserPhoto Management",
+    "PROJ-015: Waiting Queue System",
+    "PROJ-018: DTO Mapping",
+    "PROJ-020: Pagination & Filtering",
+    "PROJ-010: Unit Testing",
+    "PROJ-013: Logging & Monitoring",
+    "PROJ-011: Integration Testing",
+    "PROJ-017: Specification Pattern",
+    "PROJ-019: API Documentation",
+    "PROJ-016: Database Seeding"
+  ],
+  "business_rules_to_implement": [
+    "Email uniqueness validation at creation",
+    "Password strength requirements (min 8 chars, uppercase, special char)",
+    "Only coaches can create training programs",
+    "Only admins can manage coaches and packages",
+    "Payment must be completed before accessing assigned program",
+    "Users in waiting queue expire after 30 days",
+    "Training program versions increment on updates",
+    "Soft delete everywhere (IsActive flag)"
+  ],
+  "architectural_patterns_to_follow": [
+    "Domain-Driven Design (DDD)",
+    "CQRS (Command/Query Responsibility Segregation) - via MediatR",
+    "Repository Pattern (abstraction over data access)",
+    "Specification Pattern (complex query logic)",
+    "Value Objects (type safety)",
+    "Domain Events (loose coupling)",
+    "Rich Models (behavior encapsulation)",
+    "SOLID Principles throughout"
+  ],
+  "required_dependencies": {
+    "new": [
+      "AutoMapper / AutoMapper.Extensions.Microsoft.DependencyInjection",
+      "Serilog",
+      "FluentValidation",
+      "xUnit, Moq, FluentAssertions (for testing)",
+      "Microsoft.EntityFrameworkCore.InMemory (for testing)"
+    ],
+    "existing": [
+      "MediatR",
+      "Entity Framework Core",
+      "AspNetCore.Authentication.JwtBearer"
+    ]
+  },
+  "notes": {
+    "architecture": "Clean Architecture with 4 layers (Api, Application, Domain, Infrastructure)",
+    "database": "SQL Server via EF Core, using DbContext",
+    "authentication": "JWT tokens",
+    "authorization": "Role-based (Admin, Coach, User)",
+    "patterns": "Factory methods for entity creation, private setters for encapsulation",
+    "code_style": "C# 12+ (implicit usings, nullable reference types, primary constructors)",
+    "skill_requirements": "DDD knowledge required for implementation"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "PROJ-008",
+  "title": "Notification System Altyapısı (Email/SMS)",
+  "description": "Email ve SMS notification'lar için altyapıyı kurup domain events'lere bağla. IEmailService, ISmsService interfaces'lerini implement et ve Infrastructure katmanında concrete implementations oluştur.",
+  "priority": "P2",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "IEmailService interface oluşturulmuş",
+    "ISmsService interface oluşturulmuş",
+    "Email implementation (SMTP veya external service)",
+    "SMS implementation (Twilio veya similar)",
+    "UserCreatedEvent → SendWelcomeEmail handler",
+    "PaymentCompletedEvent → SendPaymentConfirmationEmail handler",
+    "Configuration'lar appsettings'e eklenmişi",
+    "Tests yazılmış"
+  ],
+  "dependencies": ["PROJ-003"],
+  "status": "pending",
+  "estimate": "2-3 days",
+  "businessValue": "User experience, business workflow"
+}

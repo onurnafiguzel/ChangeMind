@@ -1,0 +1,35 @@
+{
+  "id": "FEAT-001",
+  "title": "User Aktif Programlarını Görebilsin",
+  "description": "Kullanıcı, kendisine atanan aktif training programlarının listesini görebilmeli. Program detaylarını (ad, başlama tarihi, bittirme tarihi, zorluk seviyesi, antrenör adı) görebilmeli.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Core functionality - Users must see their assigned programs",
+  "acceptance_criteria": [
+    "User Login yaptığında 'My Active Programs' sayfasını açabilir",
+    "Aktif programların listesi gösterilir (Start tarihi <= Today <= End tarihi)",
+    "Her program kartta görüntülenir: Program Adı, Coach Adı, Başlama Tarihi, Bittirme Tarihi, Zorluk Seviyesi",
+    "Program kartına tıklayarak detayları görebilir",
+    "Program detayında günlük egzersizler görüntülenebilir",
+    "Başlamış ama bitmeyen programlar 'In Progress' olarak gösterilir",
+    "Bitmiş programlar 'Completed' olarak gösterilir ve grisleştirilir",
+    "Sayfa boş program varsa 'No active programs' mesajı gösterilir"
+  ],
+  "dependencies": ["TECH-001"],
+  "business_rules": [
+    "Program sadece aktif (IsActive = true) ve şimdiki tarih aralığında olmalı",
+    "User sadece kendisine atanan programları görebilir",
+    "Coach tarafından deaktive edilen programlar görüntülenmesin"
+  ],
+  "api_endpoints": [
+    "GET /api/users/{userId}/active-programs (paginated)",
+    "GET /api/users/{userId}/active-programs/{programId}"
+  ],
+  "frontend_pages": [
+    "/my-programs (List view with cards)",
+    "/my-programs/{programId} (Detail view with daily exercises)"
+  ],
+  "estimate": "1.5 days"
+}

@@ -1,0 +1,31 @@
+{
+  "id": "FEAT-019",
+  "title": "Program Recommendation Engine",
+  "description": "Sistem, user'ın fitness goals ve level'ine göre uygun coach'ları ve program template'lerini recommend eder.",
+  "priority": "P2",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "ML/AI Features",
+  "business_value": "Improves user-coach matching and conversion",
+  "acceptance_criteria": [
+    "User fitness profile'ına göre recommended coaches gösterilir",
+    "Recommendation algorithm: Specialization match, Fitness Level match, Rating",
+    "Recommendation score gösterilir (0-100)",
+    "Recommended coaches 'Find Coach' sayfasında prominent gösterilir",
+    "Coach'ın success rate gösterilir (program completion stats based on similar goals)",
+    "Program template'leri gösterilir (user level'ine uygun)",
+    "Recommendation personalize'dır",
+    "A/B test imkanı vardır (admin panel'de)"
+  ],
+  "dependencies": ["FEAT-015", "FEAT-007"],
+  "business_rules": [
+    "Recommendation sadece fitness profile complete old'uktan sonra gösterilir",
+    "Algorithm confidential ve modüler (easy to update)",
+    "Recommendation cache'lenebilir (performance)"
+  ],
+  "api_endpoints": [
+    "GET /api/users/{userId}/recommended-coaches",
+    "GET /api/users/{userId}/recommended-programs"
+  ],
+  "estimate": "2-3 days"
+}

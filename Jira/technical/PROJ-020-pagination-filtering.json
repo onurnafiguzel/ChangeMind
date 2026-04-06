@@ -1,0 +1,21 @@
+{
+  "id": "PROJ-020",
+  "title": "Pagination ve Filtering Sistemi",
+  "description": "GetUsers, GetCoaches, GetPackages gibi list query'lerine pagination ve filtering add et. PagedResult<T> pattern'ini standardize et ve sort, filter option'larını implement et.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "PaginationRequest, PaginationParams class'ları oluşturulmuş",
+    "PagedResult<T> generic class oluşturulmuş",
+    "GetUsersQuery filtering (isActive, role filter'ı)",
+    "GetCoachesQuery filtering (specialization filter'ı)",
+    "GetPackagesQuery filtering (packageType, isActive)",
+    "Sorting support (sortBy, sortDirection)",
+    "Default page size ve max page size limits",
+    "Tests yazılmış"
+  ],
+  "dependencies": [],
+  "status": "pending",
+  "estimate": "1.5 days",
+  "businessValue": "UX improvement, scalability"
+}

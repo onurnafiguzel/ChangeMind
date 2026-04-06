@@ -1,0 +1,20 @@
+{
+  "id": "PROJ-010",
+  "title": "Unit Testing Infrastructure Setup",
+  "description": "xUnit, Moq veya similar frameworks'ü kullanarak test altyapısını kur. Application layer için unit test'lerini yaz (CommandHandlers, QueryHandlers). Test base classes ve fixtures oluştur.",
+  "priority": "P2",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "ChangeMind.Tests projesi oluşturulmuş",
+    "xUnit, Moq, FluentAssertions kütüphaneleri added",
+    "CreateUserCommandHandler için test cases yazılmış",
+    "CreateCoachCommandHandler için test cases yazılmış",
+    "GetUsersQueryHandler için test cases yazılmış",
+    "Test fixtures ve helpers oluşturulmuş (TestUserFactory vb)",
+    "Minimum %70 code coverage target belirtilmiş"
+  ],
+  "dependencies": [],
+  "status": "pending",
+  "estimate": "2 days",
+  "businessValue": "Code quality, regression prevention"
+}

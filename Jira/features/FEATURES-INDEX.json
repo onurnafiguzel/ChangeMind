@@ -1,0 +1,241 @@
+{
+  "project": "ChangeMind",
+  "section": "Features",
+  "description": "User-facing features and business logic",
+  "total_features": 20,
+  "total_story_points": 180,
+  "features": [
+    {
+      "id": "FEAT-001",
+      "title": "User Aktif Programlarını Görebilsin",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-002",
+      "title": "Coach Tüm Egzersizleri Listeleyebilsin ve Filtreleyebilsin",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Coach Features"
+    },
+    {
+      "id": "FEAT-003",
+      "title": "Coach Dashboard - Atanan Kullanıcıları Görebilsin",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Coach Features"
+    },
+    {
+      "id": "FEAT-004",
+      "title": "User Dashboard - Profil, Programlar, Ödeme Özeti",
+      "priority": "P1",
+      "storyPoints": 10,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-005",
+      "title": "User Program İlerleme Takibi",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-006",
+      "title": "Coach Egzersiz Programı Oluşturabilsin",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Coach Features"
+    },
+    {
+      "id": "FEAT-007",
+      "title": "User Coach Bulabilsin ve Atanabilsin",
+      "priority": "P1",
+      "storyPoints": 10,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-008",
+      "title": "Coach Atanma İsteklerini Yönetebilsin",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Coach Features"
+    },
+    {
+      "id": "FEAT-009",
+      "title": "User Paket Satın Alabilsin ve Subscription Yönetebilsin",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-010",
+      "title": "Ödeme İşlemi Entegrasyonu (Stripe/PayPal)",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Business Critical"
+    },
+    {
+      "id": "FEAT-011",
+      "title": "User Coach'ı Değerlendirebilsin",
+      "priority": "P2",
+      "storyPoints": 8,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-012",
+      "title": "Coach Profil Arama ve Filtreleme",
+      "priority": "P2",
+      "storyPoints": 5,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-013",
+      "title": "Admin User/Coach Yönetim Paneli",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Admin Features"
+    },
+    {
+      "id": "FEAT-014",
+      "title": "Admin Package Yönetimi",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Admin Features"
+    },
+    {
+      "id": "FEAT-015",
+      "title": "User Profil Bilgisi Tamamlayabilsin",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-016",
+      "title": "Coach Uzmanlaşma ve Sertifikalar",
+      "priority": "P2",
+      "storyPoints": 8,
+      "category": "Coach Features"
+    },
+    {
+      "id": "FEAT-017",
+      "title": "User Workout İstatistikleri ve Analytics",
+      "priority": "P2",
+      "storyPoints": 10,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-018",
+      "title": "Notification Tercihleri Yönetimi",
+      "priority": "P2",
+      "storyPoints": 5,
+      "category": "User Features"
+    },
+    {
+      "id": "FEAT-019",
+      "title": "Program Recommendation Engine",
+      "priority": "P2",
+      "storyPoints": 13,
+      "category": "ML/AI Features"
+    },
+    {
+      "id": "FEAT-020",
+      "title": "User-Coach Mesajlaşma Sistemi",
+      "priority": "P2",
+      "storyPoints": 13,
+      "category": "Communication Features"
+    }
+  ],
+  "by_category": {
+    "User Features": [
+      "FEAT-001",
+      "FEAT-004",
+      "FEAT-005",
+      "FEAT-007",
+      "FEAT-009",
+      "FEAT-011",
+      "FEAT-012",
+      "FEAT-015",
+      "FEAT-017",
+      "FEAT-018"
+    ],
+    "Coach Features": [
+      "FEAT-002",
+      "FEAT-003",
+      "FEAT-006",
+      "FEAT-008",
+      "FEAT-016"
+    ],
+    "Admin Features": [
+      "FEAT-013",
+      "FEAT-014"
+    ],
+    "Business Critical": [
+      "FEAT-010"
+    ],
+    "ML/AI Features": [
+      "FEAT-019"
+    ],
+    "Communication Features": [
+      "FEAT-020"
+    ]
+  },
+  "by_priority": {
+    "P1": 14,
+    "P2": 6
+  },
+  "implementation_phases": {
+    "Phase 1: MVP (Core User Experience)": [
+      "FEAT-015: User Profile Completion",
+      "FEAT-001: User Active Programs",
+      "FEAT-004: User Dashboard",
+      "FEAT-002: Exercise Library",
+      "FEAT-007: Find Coach",
+      "FEAT-009: Package Purchase"
+    ],
+    "Phase 2: Coach Features": [
+      "FEAT-006: Create Training Program",
+      "FEAT-003: Coach Dashboard",
+      "FEAT-008: Manage Assignment Requests",
+      "FEAT-002: Exercise Library (already in Phase 1)"
+    ],
+    "Phase 3: Payment & Advanced": [
+      "FEAT-010: Payment Integration",
+      "FEAT-005: Progress Tracking",
+      "FEAT-012: Search & Filter"
+    ],
+    "Phase 4: Engagement & Admin": [
+      "FEAT-011: Ratings & Reviews",
+      "FEAT-013: Admin User Management",
+      "FEAT-014: Admin Package Management",
+      "FEAT-017: Statistics & Analytics"
+    ],
+    "Phase 5: Communication & Polish": [
+      "FEAT-020: Messaging System",
+      "FEAT-018: Notification Preferences",
+      "FEAT-016: Coach Credentials",
+      "FEAT-019: Recommendations"
+    ]
+  },
+  "feature_dependencies": {
+    "FEAT-002": [],
+    "FEAT-003": ["FEAT-003 requires FEAT-001 (user data)"],
+    "FEAT-004": ["FEAT-001"],
+    "FEAT-005": ["FEAT-001", "FEAT-006"],
+    "FEAT-006": ["FEAT-002"],
+    "FEAT-007": [],
+    "FEAT-008": ["FEAT-007"],
+    "FEAT-009": [],
+    "FEAT-010": ["FEAT-009"],
+    "FEAT-011": ["FEAT-001"],
+    "FEAT-012": ["FEAT-007"],
+    "FEAT-013": [],
+    "FEAT-014": ["FEAT-009"],
+    "FEAT-015": [],
+    "FEAT-016": ["FEAT-007"],
+    "FEAT-017": ["FEAT-005"],
+    "FEAT-018": [],
+    "FEAT-019": ["FEAT-015", "FEAT-007"],
+    "FEAT-020": []
+  }
+}

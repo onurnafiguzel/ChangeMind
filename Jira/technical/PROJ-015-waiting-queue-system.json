@@ -1,0 +1,22 @@
+{
+  "id": "PROJ-015",
+  "title": "WaitingUser Queue System Implementation",
+  "description": "WaitingUser entity'sini kullanarak coach assignment bekleyen user'ların queue'sini implement et. Request-based assignment system'i kurarak Fair distribution sağla.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "WaitingUser entity'sine behavior method'ları eklenmiş",
+    "JoinWaitingQueueCommand ve handler yazılmış",
+    "LeaveWaitingQueueCommand yazılmış",
+    "AssignCoachToWaitingUserCommand yazılmış",
+    "GetWaitingUsersQuery yazılmış (admin için)",
+    "Queue position tracking",
+    "Automatic timeout logic (30 days gibi)",
+    "CoachAssignedToUserEvent fire ediliyor",
+    "Tests yazılmış"
+  ],
+  "dependencies": ["PROJ-001", "PROJ-003"],
+  "status": "pending",
+  "estimate": "2-3 days",
+  "businessValue": "Business critical, UX improvement"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "PROJ-011",
+  "title": "Integration Testing Framework",
+  "description": "API endpoint'leri ve database interaction'ları test etmek için integration test framework'ü kur. WebApplicationFactory ve test database setup'ını yapılandır.",
+  "priority": "P2",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "WebApplicationFactory base class oluşturulmuş",
+    "Test database configuration (in-memory veya test container)",
+    "AuthController endpoints için integration tests",
+    "UsersController endpoints için integration tests",
+    "CoachesController endpoints için integration tests",
+    "Database transaction rollback'ı her test'ten sonra",
+    "Test data seeding utilities"
+  ],
+  "dependencies": ["PROJ-010"],
+  "status": "pending",
+  "estimate": "2-3 days",
+  "businessValue": "Stability, confidence"
+}

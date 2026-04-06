@@ -1,0 +1,39 @@
+{
+  "id": "FEAT-007",
+  "title": "User Coach Bulabilsin ve Atanabilsin",
+  "description": "User, kendisine uygun antrenörü bulabilir. Uzmanlaşma alanına, rating'e, ücrete göre filtreyebilir ve atanma isteği gönderebilir.",
+  "priority": "P1",
+  "storyPoints": 10,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Core functionality - Enables user-coach matching",
+  "acceptance_criteria": [
+    "User 'Find Coach' sayfasına erişebilir",
+    "Coach listesi gösterilir: Adı, Uzmanlaşma, Rating, Atadığı User Sayısı",
+    "Filtreler: Uzmanlaşma Alanı, Rating (4+, 4.5+), İsim Arama",
+    "Coach kartına tıklayarak detaylı profili görebilir",
+    "Coach profili: Bio, Uzmanlaşma, Sertifikaları, Önceki Başarıları",
+    "Coach profilde 'Request Assignment' butonu var",
+    "Atanma isteği gönderildikten sonra Waiting Queue'ye eklenir",
+    "User atanma isteğini iptal edebilir",
+    "User atandığında notification alır"
+  ],
+  "dependencies": ["TECH-015"],
+  "business_rules": [
+    "Aktif atanmış coach'u olan user yeni atanma isteği gönderemez",
+    "Waiting queue'de aynı coach için birden fazla request olamaz",
+    "Coach atanma isteklerini accept/reject edebilir (FEAT-008)"
+  ],
+  "api_endpoints": [
+    "GET /api/coaches (filtered, paginated)",
+    "GET /api/coaches/{coachId}",
+    "POST /api/users/{userId}/request-coach-assignment",
+    "DELETE /api/users/{userId}/cancel-assignment-request",
+    "GET /api/users/{userId}/assignment-status"
+  ],
+  "frontend_pages": [
+    "/find-coach (Coach search and browse)",
+    "/find-coach/{coachId} (Coach profile)"
+  ],
+  "estimate": "1.5 days"
+}

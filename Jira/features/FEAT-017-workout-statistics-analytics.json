@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-017",
+  "title": "User Workout İstatistikleri ve Analytics",
+  "description": "User, kendisinin workout'larının detaylı istatistiklerini görebilir. Total workouts, favorite exercises, progress graphs vb.",
+  "priority": "P2",
+  "storyPoints": 10,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Increases engagement and motivation",
+  "acceptance_criteria": [
+    "User 'Statistics' sayfasını açabilir",
+    "Total Completed Workouts sayısı gösterilir",
+    "Total Volume (weight × reps) hesaplanır ve gösterilir",
+    "Most Used Exercises top 5 gösterilir",
+    "Weekly completion rate gösterilir (% olarak)",
+    "Monthly progress graph gösterilir (completed workouts)",
+    "Favorite Muscle Group gösterilir",
+    "Personal Records (max weight) gösterilir",
+    "Date range filter: Son 7 gün, 30 gün, 3 ay, 1 yıl",
+    "Statistics export edebilir (PDF report)"
+  ],
+  "dependencies": ["FEAT-005"],
+  "business_rules": [
+    "Statistics sadece completed workouts'tan hesaplanır",
+    "Volume hesaplaması: weight (kg) × sets × reps"
+  ],
+  "api_endpoints": [
+    "GET /api/users/{userId}/statistics",
+    "GET /api/users/{userId}/statistics/summary",
+    "GET /api/users/{userId}/statistics/progress?range=month",
+    "GET /api/users/{userId}/workout-history"
+  ],
+  "frontend_pages": [
+    "/user/statistics (Analytics dashboard)"
+  ],
+  "estimate": "2 days"
+}

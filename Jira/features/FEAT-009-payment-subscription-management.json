@@ -1,0 +1,46 @@
+{
+  "id": "FEAT-009",
+  "title": "User Paket Satın Alabilsin ve Subscription Yönetebilsin",
+  "description": "User, uygun antrenmanız paketini seçebilir, satın alabilir ve aktif subscription'larını yönetebilir. Ödeme geçmişini görebilir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Critical - Revenue stream for the business",
+  "acceptance_criteria": [
+    "User 'Packages' sayfasında mevcut paketleri görebilir",
+    "Her paket: Adı, Açıklaması, Fiyatı, Süresi (gün), Özellikleri",
+    "Paket türü gösterilir: Basic, Premium, Elite",
+    "User paket seçip 'Purchase' edebilir",
+    "Satın alma öncesi özet gösterilir (Fiyat, Tarih, Süresi)",
+    "Ödeme işlemi (Stripe/PayPal entegrasyon - FEAT-010 ile beraber)",
+    "Ödeme başarılı olunca subscription activate edilir",
+    "User 'My Subscriptions' sayfasında aktif subscription'larını görebilir",
+    "Subscription detayında: Package info, start date, end date, auto-renewal status",
+    "User subscription'ı iptal edebilir (auto-renewal'ı stop et)",
+    "Ödeme geçmişi görüntülenebilir (tüm transactions)"
+  ],
+  "dependencies": ["TECH-007"],
+  "business_rules": [
+    "Package sadece aktif (IsActive=true) olanlar gösterilir",
+    "User eş zamanlı farklı paketlere sahip olamaz (aynı anda 1 subscription)",
+    "Subscription bitiminde auto-renewal yapılabilir (setting'e göre)",
+    "Subscription süresi bittikten sonra user program'a erişemez"
+  ],
+  "api_endpoints": [
+    "GET /api/packages (active only)",
+    "GET /api/packages/{packageId}",
+    "POST /api/users/{userId}/subscribe (purchase)",
+    "GET /api/users/{userId}/subscriptions (active)",
+    "GET /api/users/{userId}/subscription-history",
+    "PUT /api/users/{userId}/subscriptions/{subscriptionId}/cancel",
+    "GET /api/users/{userId}/payments"
+  ],
+  "frontend_pages": [
+    "/packages (Browse packages)",
+    "/packages/{packageId} (Package detail)",
+    "/my-subscriptions (User's active subscriptions)",
+    "/billing/history (Payment history)"
+  ],
+  "estimate": "2-3 days"
+}

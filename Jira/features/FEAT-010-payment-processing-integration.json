@@ -1,0 +1,48 @@
+{
+  "id": "FEAT-010",
+  "title": "Ödeme İşlemi Entegrasyonu (Stripe/PayPal)",
+  "description": "Stripe veya PayPal ile ödeme entegrasyonu. User güvenli bir şekilde ödeme yapabilir, subscription'ını aktive edebilir. Invoice'lar otomatik email ile gönderilir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "Business Critical",
+  "business_value": "Critical - Enables monetization",
+  "acceptance_criteria": [
+    "Stripe/PayPal SDK entegre edilmiş",
+    "Checkout sayfası güvenli ve user-friendly",
+    "Kredi kartı, debit kartı, PayPal opsiyon'ları var",
+    "Ödeme işlemi başarılı olunca confirmation gösterilir",
+    "Başarılı ödemenin ardından Invoice otomatik generate edilir",
+    "Invoice email'e gönderilir",
+    "Ödeme geçmişi yönetici tarafından görüntülenebilir",
+    "Failed payment'lar alert gönderilir",
+    "Refund işlemi yönetici tarafından yapılabilir",
+    "Webhook'lar düzgün handle ediliyor"
+  ],
+  "dependencies": ["FEAT-009", "TECH-007"],
+  "business_rules": [
+    "Payment sadece registered ve active kullanıcılar tarafından yapılabilir",
+    "Currency ayarlanabilir (EUR, USD vb.)",
+    "Refund request'leri yönetici tarafından approve edilmeli",
+    "Double charging protection'ı implement edilmeli"
+  ],
+  "api_endpoints": [
+    "POST /api/payments/create-intent",
+    "POST /api/payments/confirm",
+    "POST /api/payments/webhook (Stripe/PayPal)",
+    "GET /api/admin/payments (all payments)",
+    "POST /api/admin/payments/{paymentId}/refund",
+    "GET /api/users/{userId}/invoices"
+  ],
+  "frontend_pages": [
+    "/checkout (Payment form)",
+    "/payment-success (Success page)",
+    "/payment-failed (Error page)"
+  ],
+  "external_integrations": [
+    "Stripe API",
+    "PayPal API",
+    "Email Service (for invoices)"
+  ],
+  "estimate": "2-3 days"
+}

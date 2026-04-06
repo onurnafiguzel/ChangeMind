@@ -1,0 +1,44 @@
+{
+  "id": "FEAT-013",
+  "title": "Admin User/Coach Yönetim Paneli",
+  "description": "Admin, tüm users ve coaches'ı görebilir, edit edebilir, deaktive edebilir. User statistics ve reports görebilir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "Admin Features",
+  "business_value": "Essential for platform administration",
+  "acceptance_criteria": [
+    "Admin 'User Management' paneline erişebilir",
+    "Tüm users listesi gösterilir (paginated)",
+    "Filter: Active/Inactive, Role (User/Coach/Admin), Registration date",
+    "Her user: Adı, Email, Role, Creation Date, Status gösterilir",
+    "User kartına tıklayarak detaylı profili görebilir",
+    "Admin user'ı deaktive/activate edebilir",
+    "Admin user role'ü değiştirebilir (User → Coach)",
+    "Admin user'ı silebilir (soft delete)",
+    "Coach Management similar panel ile yönetilir",
+    "Coach'ı blocked/unblocked edebilir",
+    "Bulk actions: Multiple users select edip deaktive edebilir",
+    "Export capability: CSV/Excel'e export edebilir"
+  ],
+  "dependencies": ["TECH-012"],
+  "business_rules": [
+    "Admin sadece admin tarafından oluşturulabilir (seed data veya direct DB)",
+    "User silme işlemi reversible değildir (soft delete)",
+    "Role değiştirme audit log'unda kaydedilir"
+  ],
+  "api_endpoints": [
+    "GET /api/admin/users (filtered, paginated)",
+    "GET /api/admin/users/{userId}",
+    "PUT /api/admin/users/{userId} (edit)",
+    "PUT /api/admin/users/{userId}/deactivate",
+    "DELETE /api/admin/users/{userId}",
+    "PUT /api/admin/users/{userId}/change-role"
+  ],
+  "frontend_pages": [
+    "/admin/users (Users list)",
+    "/admin/users/{userId} (User detail)",
+    "/admin/coaches (Coaches management)"
+  ],
+  "estimate": "2-3 days"
+}

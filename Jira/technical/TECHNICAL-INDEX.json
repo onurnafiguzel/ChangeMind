@@ -1,0 +1,213 @@
+{
+  "project": "ChangeMind",
+  "section": "Technical",
+  "description": "Technical infrastructure, patterns, and code quality tasks",
+  "total_tasks": 20,
+  "total_story_points": 185,
+  "tasks": [
+    {
+      "id": "TECH-001",
+      "title": "Primary Constructor'ı C# 12+ Feature'ını Tüm Domain Entities'de Uygula",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-002",
+      "title": "Value Objects Oluştur (UserId, Email, Phone gibi)",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-003",
+      "title": "Domain Events Pattern'ini Implement Et",
+      "priority": "P2",
+      "storyPoints": 13,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-004",
+      "title": "Entity Validation Layer Oluştur",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-005",
+      "title": "Exercise Library Management CRUD Sistemi",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Data Access"
+    },
+    {
+      "id": "TECH-006",
+      "title": "TrainingProgram Entity'sini Rich Model'e Dönüştür",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-007",
+      "title": "Payment System Geliştirilmesi",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-008",
+      "title": "Notification System Altyapısı (Email/SMS)",
+      "priority": "P2",
+      "storyPoints": 13,
+      "category": "Infrastructure"
+    },
+    {
+      "id": "TECH-009",
+      "title": "Domain Exception Handling İyileştirilmesi",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-010",
+      "title": "Unit Testing Infrastructure Setup",
+      "priority": "P2",
+      "storyPoints": 13,
+      "category": "Testing"
+    },
+    {
+      "id": "TECH-011",
+      "title": "Integration Testing Framework",
+      "priority": "P2",
+      "storyPoints": 13,
+      "category": "Testing"
+    },
+    {
+      "id": "TECH-012",
+      "title": "Authorization ve Role-Based Access Control",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Security"
+    },
+    {
+      "id": "TECH-013",
+      "title": "Logging ve Monitoring Altyapısı",
+      "priority": "P2",
+      "storyPoints": 8,
+      "category": "Observability"
+    },
+    {
+      "id": "TECH-014",
+      "title": "UserPhoto Management CRUD",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Data Access"
+    },
+    {
+      "id": "TECH-015",
+      "title": "WaitingUser Queue System Implementation",
+      "priority": "P1",
+      "storyPoints": 13,
+      "category": "Business Logic"
+    },
+    {
+      "id": "TECH-016",
+      "title": "Database Seeding Yapısı",
+      "priority": "P2",
+      "storyPoints": 5,
+      "category": "Infrastructure"
+    },
+    {
+      "id": "TECH-017",
+      "title": "Specification Pattern Implementation",
+      "priority": "P2",
+      "storyPoints": 8,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-018",
+      "title": "DTO Mapping Strategy (AutoMapper)",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Architecture"
+    },
+    {
+      "id": "TECH-019",
+      "title": "OpenAPI/Swagger Documentation",
+      "priority": "P2",
+      "storyPoints": 8,
+      "category": "Documentation"
+    },
+    {
+      "id": "TECH-020",
+      "title": "Pagination ve Filtering Sistemi",
+      "priority": "P1",
+      "storyPoints": 8,
+      "category": "Data Access"
+    }
+  ],
+  "by_category": {
+    "Architecture": [
+      "TECH-001",
+      "TECH-002",
+      "TECH-003",
+      "TECH-004",
+      "TECH-006",
+      "TECH-007",
+      "TECH-009",
+      "TECH-017",
+      "TECH-018"
+    ],
+    "Data Access": [
+      "TECH-005",
+      "TECH-014",
+      "TECH-020"
+    ],
+    "Infrastructure": [
+      "TECH-008",
+      "TECH-016"
+    ],
+    "Security": [
+      "TECH-012"
+    ],
+    "Testing": [
+      "TECH-010",
+      "TECH-011"
+    ],
+    "Observability": [
+      "TECH-013"
+    ],
+    "Business Logic": [
+      "TECH-015"
+    ],
+    "Documentation": [
+      "TECH-019"
+    ]
+  },
+  "by_priority": {
+    "P1": 12,
+    "P2": 8
+  },
+  "implementation_order": [
+    "TECH-001: Primary Constructor (foundation)",
+    "TECH-004: Validation Layer",
+    "TECH-002: Value Objects",
+    "TECH-003: Domain Events",
+    "TECH-009: Error Handling",
+    "TECH-005: Exercise CRUD",
+    "TECH-006: TrainingProgram Rich Model",
+    "TECH-007: Payment System",
+    "TECH-012: Authorization",
+    "TECH-008: Notification System",
+    "TECH-014: UserPhoto Management",
+    "TECH-015: Waiting Queue",
+    "TECH-018: DTO Mapping",
+    "TECH-020: Pagination & Filtering",
+    "TECH-010: Unit Testing",
+    "TECH-013: Logging",
+    "TECH-011: Integration Testing",
+    "TECH-017: Specification Pattern",
+    "TECH-019: API Documentation",
+    "TECH-016: Database Seeding"
+  ]
+}

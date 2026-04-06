@@ -1,0 +1,20 @@
+{
+  "id": "PROJ-009",
+  "title": "Domain Exception Handling İyileştirilmesi",
+  "description": "Mevcut exception hierarchy'sini genişletip daha spesifik exception'lar oluştur. ValidationException, DuplicateEmailException, InvalidCoachSpecializationException gibi typed exceptions kullan.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "ValidationException oluşturulmuş (IEnumerable<string> errors parameter'ı ile)",
+    "DuplicateEmailException yazılmış",
+    "InvalidStateTransitionException yazılmış",
+    "BadRequestException yazılmış",
+    "GlobalExceptionHandler improved (tüm exception types'leri handle ediyor)",
+    "Türkçe error messages'lar konsistent",
+    "API responses'ları standardized"
+  ],
+  "dependencies": ["PROJ-004"],
+  "status": "pending",
+  "estimate": "1.5 days",
+  "businessValue": "Developer experience, debugging"
+}

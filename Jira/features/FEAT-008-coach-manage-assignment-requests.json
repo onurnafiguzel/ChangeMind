@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-008",
+  "title": "Coach Atanma İsteklerini Yönetebilsin",
+  "description": "Coach, kendisine gelen user atanma isteklerini görebilir, kabul edebilir veya reddedebilir. Waiting queue'deki kullanıcıları yönetebilir.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "Coach Features",
+  "business_value": "Important - Enables coaches to manage their client acquisition",
+  "acceptance_criteria": [
+    "Coach 'Pending Requests' sayfasını görebilir",
+    "Pending atanma istekleri listelenir: User Adı, Request Tarihi, User Profili",
+    "User kartına tıklayarak kısa profili görebilir",
+    "'Accept' butonu ile atanmayı onaylayabilir",
+    "'Reject' butonu ile isteği reddedebilir",
+    "Kabul ettiğinde user notification alır ve immediately assigned olur",
+    "Red ettiğinde user notification alır ve başka coach arayabilir",
+    "Coach atanma isteğini sildikten sonra geri alamaz",
+    "Accepted requests 'My Clients' sayfasında görüntülenir"
+  ],
+  "dependencies": ["FEAT-007"],
+  "business_rules": [
+    "Coach sadece kendi pending requests'lerini görebilir",
+    "Atanma işlemi otomatik olarak CoachUser relation'ı oluşturur",
+    "Request 30 gün içinde accept edilmezse auto-reject olabilir (configuration'a göre)"
+  ],
+  "api_endpoints": [
+    "GET /api/coaches/{coachId}/pending-requests",
+    "POST /api/coaches/{coachId}/accept-request/{userId}",
+    "POST /api/coaches/{coachId}/reject-request/{userId}",
+    "GET /api/coaches/{coachId}/request-count"
+  ],
+  "frontend_pages": [
+    "/coach/pending-requests (Requests list)",
+    "/coach/pending-requests/{userId} (Request detail with user preview)"
+  ],
+  "estimate": "1.5 days"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "PROJ-019",
+  "title": "OpenAPI/Swagger Documentation",
+  "description": "API endpoints'leri için comprehensive OpenAPI documentation yaz. Endpoint descriptions, request/response schemas, error codes'larını dokümante et.",
+  "priority": "P2",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "Tüm API endpoints'lerine [ProducesResponseType] eklenmiş",
+    "Method summaries ve descriptions yazılmış",
+    "Request/Response DTOs için documentation",
+    "Error response schema'ları documented (400, 401, 403, 404, 500)",
+    "Swagger UI başarıyla açılıyor",
+    "Authentication header'ı documented",
+    "Example request/response'ları var"
+  ],
+  "dependencies": ["PROJ-012"],
+  "status": "pending",
+  "estimate": "1.5 days",
+  "businessValue": "Developer experience, API usability"
+}

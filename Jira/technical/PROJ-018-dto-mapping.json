@@ -1,0 +1,21 @@
+{
+  "id": "PROJ-018",
+  "title": "DTO Mapping Strategy (AutoMapper)",
+  "description": "Entity'lerden DTO'lara mapping'i AutoMapper ile standardize et. UserDto, CoachDto, TrainingProgramDto mapping profile'larını oluştur ve consistent hale getir.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "AutoMapper nuget package added",
+    "MappingProfile class oluşturulmuş",
+    "User → UserDto mapping'i defined",
+    "Coach → CoachDto mapping'i defined",
+    "TrainingProgram → TrainingProgramDto mapping'i defined",
+    "Package → PackageDto mapping'i defined",
+    "Circular reference'lar handled",
+    "Reverse mapping'ler configured (create/update scenarios)"
+  ],
+  "dependencies": [],
+  "status": "pending",
+  "estimate": "1 day",
+  "businessValue": "Maintainability, consistency"
+}

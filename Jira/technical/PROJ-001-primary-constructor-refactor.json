@@ -1,0 +1,18 @@
+{
+  "id": "PROJ-001",
+  "title": "Primary Constructor'ı C# 12+ Feature'ını Tüm Domain Entities'de Uygula",
+  "description": "Domain entities'lerde Primary Constructor pattern'ini implement et. Skills.md'de belirtilen C# 12+ feature'ını kullanarak boilerplate kodu azalt. User, Coach, TrainingProgram, Package, Exercise gibi entities'lerde uygulanmalı.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "Tüm Domain entities Primary Constructor ile tanımlanmış",
+    "Eski constructor syntax'ı kaldırılmış",
+    "Properties private set olarak ayarlanmış",
+    "Factory methods çalışmaya devam ediyor",
+    "Unit tests passing"
+  ],
+  "dependencies": [],
+  "status": "pending",
+  "estimate": "1 day",
+  "businessValue": "Code quality, maintainability"
+}

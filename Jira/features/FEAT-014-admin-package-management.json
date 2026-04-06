@@ -1,0 +1,41 @@
+{
+  "id": "FEAT-014",
+  "title": "Admin Package Yönetimi",
+  "description": "Admin, subscription paketlerini oluşturabilir, düzenleyebilir, deaktive edebilir. Pricing, duration, features'leri yönetebilir.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "Admin Features",
+  "business_value": "Essential for business configuration",
+  "acceptance_criteria": [
+    "Admin 'Package Management' paneline erişebilir",
+    "Aktif ve inactive paketler listelenebilir",
+    "Admin yeni package oluşturabilir",
+    "Package: Adı, Açıklaması, Fiyatı, Süresi, Tipi (Basic/Premium/Elite)",
+    "Paket düzenlenebilir (name, description, price, duration)",
+    "Paket deaktive edilebilir (satış durdurabilir ama existing subscriptions devam eder)",
+    "Paket silemez (sadece deaktive edebilir)",
+    "Price değişimi future subscriptions'ı etkiler",
+    "Paket'e assigned user/subscription sayısı gösterilir",
+    "Bulk pricing update: Tüm paketlere yüzde artış/azalış uygulayabilir"
+  ],
+  "dependencies": ["TECH-007"],
+  "business_rules": [
+    "Active olmayan paket users tarafından görülemez",
+    "Existing subscriptions mevcut fiyatı korur",
+    "Package type değişikliği önerilmez (internal tracking)"
+  ],
+  "api_endpoints": [
+    "GET /api/admin/packages",
+    "POST /api/admin/packages",
+    "PUT /api/admin/packages/{packageId}",
+    "PUT /api/admin/packages/{packageId}/deactivate",
+    "GET /api/admin/packages/{packageId}/statistics"
+  ],
+  "frontend_pages": [
+    "/admin/packages (Package list)",
+    "/admin/packages/new (Create form)",
+    "/admin/packages/{packageId}/edit (Edit form)"
+  ],
+  "estimate": "1.5 days"
+}

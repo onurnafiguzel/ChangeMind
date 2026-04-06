@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-002",
+  "title": "Coach Tüm Egzersizleri Listeleyebilsin ve Filtreleyebilsin",
+  "description": "Coach, sistemdeki tüm egzersizlerin kapsamlı bir kütüphanesini görebilir. Kas grubu, zorluk seviyesi gibi özelliklerine göre filtreleyebilir ve arama yapabilir.",
+  "priority": "P1",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "Coach Features",
+  "business_value": "Core functionality - Coaches need access to exercise library for program creation",
+  "acceptance_criteria": [
+    "Coach 'Exercise Library' sayfasına erişebilir",
+    "Tüm egzersizler tablo veya kart formatında listelenir",
+    "Her egzersiz: Adı, Kas Grubu, Zorluk Seviyesi, Video Link (varsa) gösterilir",
+    "Kas Grubu filtresi yapılabilir (Chest, Back, Legs, vb.)",
+    "Zorluk Seviyesi filtresi yapılabilir (Beginner, Intermediate, Advanced)",
+    "Arama functionality: egzersiz adında arama",
+    "Pagination: sayfa başına 20 egzersiz gösterilir",
+    "Sorting: Ada göre, Kas Grubuna göre, Zorluk Seviyesine göre",
+    "Admin sadece 'New Exercise' butonu görebilir ve egzersiz ekleyebilir"
+  ],
+  "dependencies": ["TECH-005"],
+  "business_rules": [
+    "Sadece aktif (IsActive = true) egzersizler görüntülenir",
+    "Yeni egzersiz sadece Admin tarafından eklenebilir",
+    "Egzersiz listesi en az 30 örnek egzersiz içermeli"
+  ],
+  "api_endpoints": [
+    "GET /api/exercises (filtered, paginated, sorted)",
+    "GET /api/exercises/{id}",
+    "POST /api/exercises (Admin only)",
+    "PUT /api/exercises/{id} (Admin only)",
+    "DELETE /api/exercises/{id} (Admin only)"
+  ],
+  "frontend_pages": [
+    "/exercises (Library view with filters)"
+  ],
+  "estimate": "1 day"
+}

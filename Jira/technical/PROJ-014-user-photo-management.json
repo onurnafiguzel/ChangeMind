@@ -1,0 +1,22 @@
+{
+  "id": "PROJ-014",
+  "title": "UserPhoto Management CRUD",
+  "description": "UserPhoto entity'si için tam CRUD sistemi ve file upload/storage altyapısını implement et. CloudStorage (Azure Blob, S3) veya lokal storage option'ı ver.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "UserPhoto entity'ye behavior methods eklenmiş (SetAsProfilePhoto, Delete, etc)",
+    "UploadUserPhotoCommand ve handler yazılmış",
+    "DeleteUserPhotoCommand yazılmış",
+    "GetUserPhotosQuery yazılmış",
+    "IFileStorageService interface oluşturulmuş",
+    "File upload validation (type, size)",
+    "Soft delete pattern uygulanmış",
+    "PhotoViewType enum'ı kullanılıyor (Profile, Gallery, etc)",
+    "Tests yazılmış"
+  ],
+  "dependencies": ["PROJ-001"],
+  "status": "pending",
+  "estimate": "2-3 days",
+  "businessValue": "Feature completeness"
+}

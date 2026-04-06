@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-004",
+  "title": "User Dashboard - Profil, Programlar, Ödeme Özeti",
+  "description": "User, ilk login sonrası kişisel dashboard'unu görebilir. Profil bilgisi, aktif programlar, ödeme durumu, hızlı istatistikler görüntülenebilir.",
+  "priority": "P1",
+  "storyPoints": 10,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Core functionality - User engagement and quick access to important info",
+  "acceptance_criteria": [
+    "User login sonrası dashboard default sayfadır",
+    "Hoşgeldin mesajı: 'Merhaba, [First Name]!'",
+    "Quick Stats: Aktif Program Sayısı, Toplam Atanış, Son Session Tarihi",
+    "Aktif Program Widget: Şu anda aktif 3 program max görüntülenir, 'View All' linki var",
+    "Next Session Card: Bir sonraki scheduled session (varsa) gösterilir",
+    "Coach Info Card: Atanan coach bilgisi ve iletişim seçeneği",
+    "Recent Payments Card: Son 3 ödeme gösterilir",
+    "Progress Summary: Bugün kaç workout tamamlandı",
+    "Profile Edit linki: Profili düzenleyebilir"
+  ],
+  "dependencies": ["TECH-001", "FEAT-001"],
+  "business_rules": [
+    "Dashboard dynamically update edilir (real-time olmasa da en az 5 min refresh)",
+    "Kullanıcı sadece kendi verilerini görebilir",
+    "Coach'ı atanmış değilse 'No coach assigned' gösterilir"
+  ],
+  "api_endpoints": [
+    "GET /api/users/{userId}/dashboard",
+    "GET /api/users/{userId}/active-programs?limit=3",
+    "GET /api/users/{userId}/next-session",
+    "GET /api/users/{userId}/recent-payments?limit=3"
+  ],
+  "frontend_pages": [
+    "/dashboard (User dashboard - default landing)"
+  ],
+  "estimate": "1.5 days"
+}

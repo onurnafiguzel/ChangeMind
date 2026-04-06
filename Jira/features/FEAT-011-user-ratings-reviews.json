@@ -1,0 +1,39 @@
+{
+  "id": "FEAT-011",
+  "title": "User Coach'ı Değerlendirebilsin",
+  "description": "User, antrenörlüğü bitirdikten sonra coach'u 1-5 yıldız ve yazılı yorum ile değerlendirebilir. Bu rating'ler coach profisinde görüntülenir.",
+  "priority": "P2",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Improves user engagement and coach accountability",
+  "acceptance_criteria": [
+    "Program bittiğinde user 'Rate Your Coach' invitesi görebilir",
+    "User 1-5 yıldız rating verebilir",
+    "Optional yazılı comment/review yazabilir",
+    "Rating anında submit edilebilir",
+    "Rating bir kere verilebilir, edit edilemez",
+    "Coach profisinde average rating gösterilir",
+    "Coach profisinde recent reviews görüntülenir (son 5)",
+    "Admin tüm review'ları görebilir",
+    "Uygunsuz review'lar admin tarafından flag'lenebilir"
+  ],
+  "dependencies": ["FEAT-001"],
+  "business_rules": [
+    "Rating sadece program bittiğinde verilir",
+    "Aynı coach'a program başına bir kere rating verilebilir",
+    "Rating ve comment anonymous gösterilmez (user'ın adı belirtilir)"
+  ],
+  "api_endpoints": [
+    "POST /api/coaches/{coachId}/reviews",
+    "GET /api/coaches/{coachId}/reviews",
+    "GET /api/coaches/{coachId}/rating-summary",
+    "DELETE /api/reviews/{reviewId} (Admin only)",
+    "PUT /api/reviews/{reviewId}/flag-inappropriate (Admin)"
+  ],
+  "frontend_pages": [
+    "/my-programs/{programId}/rate-coach (Rating form)",
+    "/coaches/{coachId}/reviews (Coach reviews page)"
+  ],
+  "estimate": "1.5 days"
+}

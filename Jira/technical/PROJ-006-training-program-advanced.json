@@ -1,0 +1,20 @@
+{
+  "id": "PROJ-006",
+  "title": "TrainingProgram Entity'sini Rich Model'e Dönüştür",
+  "description": "TrainingProgram entity'sini DDD rich model pattern'ine göre geliştirir. Behavior ekle: programı active/inactive yap, progress track et, version management'ı implement et.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "TrainingProgram Primary Constructor ile tanımlanmış",
+    "UpdateDailyProgram metodu improved (validation ekle)",
+    "Activate/Deactivate behavior'ı eklenmiş",
+    "Version control logic'i iyileştirilmiş",
+    "Program progress tracking için foundation oluşturulmuş",
+    "Completion validation'ı yapılmış",
+    "Tests yazılmış"
+  ],
+  "dependencies": ["PROJ-001", "PROJ-002"],
+  "status": "pending",
+  "estimate": "2 days",
+  "businessValue": "Feature completeness, data integrity"
+}

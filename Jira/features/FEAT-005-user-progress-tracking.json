@@ -1,0 +1,39 @@
+{
+  "id": "FEAT-005",
+  "title": "User Program İlerleme Takibi",
+  "description": "User, atanmış programındaki günlük egzersizleri tamamlayıp tamamlamadığını görebilir. Her egzersiz için set/rep sayısı, weight gibi detaylar kaydedebilir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "User Features",
+  "business_value": "Core functionality - Enables progress tracking and accountability",
+  "acceptance_criteria": [
+    "User program detayında günlük egzersiz listesi görebilir",
+    "Her gün için: Tarih, Egzersiz Sayısı, Tamamlanan % gösterilir",
+    "Bugünün egzersizleri detaylı görüntülenebilir",
+    "Kullanıcı egzersizi 'Complete' butonu ile tamamlayabilir",
+    "Tamamlanan egzersizler checkmark ile işaretlenir",
+    "Egzersiz detayında: Set, Rep, Weight veya Duration kaydedebilir",
+    "Geçmiş günler locked ve edit edilemez ama görüntülenebilir",
+    "Program tamamlanma yüzdesi hesaplanır ve gösterilir",
+    "Haftalık ilerleme grafiği görüntülenebilir"
+  ],
+  "dependencies": ["FEAT-001", "TECH-006"],
+  "business_rules": [
+    "Egzersiz kayıtları immutable olmalı (oluşturulduktan sonra edit edilemez)",
+    "Sadece bugün ve geçmiş günlerin egzersizleri kaydedilebilir",
+    "Coach tarafından program bittirildikten sonra kayıt yapılamaz"
+  ],
+  "api_endpoints": [
+    "GET /api/training-programs/{programId}/daily-progress",
+    "GET /api/training-programs/{programId}/day/{date}/exercises",
+    "POST /api/training-programs/{programId}/exercises/{exerciseId}/complete",
+    "PUT /api/training-programs/{programId}/exercises/{exerciseId}/log (sets, reps, weight)",
+    "GET /api/training-programs/{programId}/progress-stats"
+  ],
+  "frontend_pages": [
+    "/my-programs/{programId}/progress (Daily view with completion)",
+    "/my-programs/{programId}/stats (Weekly/Monthly stats)"
+  ],
+  "estimate": "2-3 days"
+}

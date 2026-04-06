@@ -1,0 +1,36 @@
+{
+  "id": "FEAT-016",
+  "title": "Coach Uzmanlaşma ve Sertifikalar",
+  "description": "Coach profisinde uzmanlaşma alanı ve sertifikaları gösterilir. Admin coaches'ın credentials'ını verify edebilir.",
+  "priority": "P2",
+  "storyPoints": 8,
+  "status": "pending",
+  "category": "Coach Features",
+  "business_value": "Builds trust and credibility",
+  "acceptance_criteria": [
+    "Coach profisinde uzmanlaşma alanları listelenebilir",
+    "Coach profisinde sertifikalar görüntülenebilir (isim, verildiği org, tarih)",
+    "Coach sertifika dosyaları upload edebilir",
+    "Admin sertifikaları verify edebilir",
+    "Verified sertifikalar 'Verified Badge' ile gösterilir",
+    "Coach edit profisinde sertifika ekleyebilir",
+    "Sertifika detayında link (org website) olabilir",
+    "Coach deneyim süresi otomatik hesaplanır (registration'dan itibaren)"
+  ],
+  "dependencies": ["FEAT-007"],
+  "business_rules": [
+    "Coach minimum 1 uzmanlaşma alanına sahip olmalı",
+    "Sertifikaları admin verify etmeden badge gösterilmez"
+  ],
+  "api_endpoints": [
+    "PUT /api/coaches/{coachId}/specializations",
+    "POST /api/coaches/{coachId}/certifications",
+    "PUT /api/admin/certifications/{certId}/verify",
+    "DELETE /api/coaches/{coachId}/certifications/{certId}"
+  ],
+  "frontend_pages": [
+    "/coaches/{coachId}/credentials (Coach specializations and certs)",
+    "/coach/settings/credentials (Coach edit)"
+  ],
+  "estimate": "1.5 days"
+}

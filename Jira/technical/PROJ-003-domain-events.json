@@ -1,0 +1,18 @@
+{
+  "id": "PROJ-003",
+  "title": "Domain Events Pattern'ini Implement Et",
+  "description": "Domain Events pattern'ini kullanarak entity'ler arasında loose coupling sağla. UserCreatedEvent, UserDeactivatedEvent, TrainingProgramAssignedEvent gibi events oluştur ve publish et.",
+  "priority": "P2",
+  "storyPoints": 13,
+  "acceptance_criteria": [
+    "IDomainEvent interface oluşturulmuş",
+    "Domain entity'lerde AddDomainEvent metodu var",
+    "Temel domain events tanımlanmış (User, Coach, TrainingProgram events)",
+    "Event publishing altyapısı ayarlanmış",
+    "Event handlers örneği yazılmış (UserCreatedEvent → SendWelcomeEmail)"
+  ],
+  "dependencies": ["PROJ-001"],
+  "status": "pending",
+  "estimate": "2-3 days",
+  "businessValue": "Scalability, flexibility"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "PROJ-017",
+  "title": "Specification Pattern Implementation",
+  "description": "DDD pattern'ine uygun olarak Specification pattern'ini implement et. GetActiveUsersQuery, GetCoachesWithSpecializationQuery gibi complex queries'leri cleaner hale getir.",
+  "priority": "P2",
+  "storyPoints": 8,
+  "acceptance_criteria": [
+    "ISpecification<T> interface oluşturulmuş",
+    "BaseSpecification abstract class yazılmış",
+    "UserSpecifications class (GetActiveUsers, GetUsersByRole vb)",
+    "CoachSpecifications class (GetCoachesBySpecialization vb)",
+    "Repository'lerde Specification'ları kullanabiliyor",
+    "Tests yazılmış"
+  ],
+  "dependencies": ["PROJ-001"],
+  "status": "pending",
+  "estimate": "1.5 days",
+  "businessValue": "Code quality, maintainability"
+}

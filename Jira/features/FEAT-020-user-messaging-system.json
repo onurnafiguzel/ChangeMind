@@ -1,0 +1,42 @@
+{
+  "id": "FEAT-020",
+  "title": "User-Coach Mesajlaşma Sistemi",
+  "description": "User ve Coach arasında mesajlaşma. Coach, user'a program about, motivasyon vb. mesaj gönderebilir. User sorularını sorabili.",
+  "priority": "P2",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "Communication Features",
+  "business_value": "Improves user-coach relationship and retention",
+  "acceptance_criteria": [
+    "User ve Coach arasında 1-on-1 messaging",
+    "Message'lar real-time veya near-real-time",
+    "User inbox gösterilir (tüm coach conversations)",
+    "Coach inbox gösterilir (tüm user conversations)",
+    "Conversation history full seçilebilir ve export edilebilir",
+    "Typing indicator görüntülenebilir",
+    "Message deletion user tarafından yapılabilir (30 min içinde)",
+    "Message read status gösterilir",
+    "Push notification message alındığında",
+    "Admin tüm conversations'ı görebilir (moderation için)"
+  ],
+  "dependencies": ["TECH-008"],
+  "business_rules": [
+    "Message sadece assigned coach-user arasında yapılabilir",
+    "Message length max 2000 char",
+    "Inappropriate message'lar auto-flag'lenebilir (moderation panel)"
+  ],
+  "api_endpoints": [
+    "GET /api/users/{userId}/conversations",
+    "GET /api/users/{userId}/conversations/{coachId}/messages",
+    "POST /api/users/{userId}/send-message/{coachId}",
+    "DELETE /api/messages/{messageId}"
+  ],
+  "frontend_pages": [
+    "/messages (Inbox)",
+    "/messages/{coachId} (Conversation)"
+  ],
+  "real_time_tech": [
+    "WebSocket veya SignalR for real-time messaging"
+  ],
+  "estimate": "2-3 days"
+}

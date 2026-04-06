@@ -1,0 +1,39 @@
+{
+  "id": "FEAT-003",
+  "title": "Coach Dashboard - Atanan Kullanıcıları Görebilsin",
+  "description": "Coach, kendisine atanan tüm kullanıcıların bir dashboard'unu görebilir. Aktif programlar, user durumu, iletişim bilgileri vb. hızlı özet görebilir.",
+  "priority": "P1",
+  "storyPoints": 13,
+  "status": "pending",
+  "category": "Coach Features",
+  "business_value": "Critical - Coaches need to manage their assigned users",
+  "acceptance_criteria": [
+    "Coach login sonrası 'My Clients' dashboard'unu görebilir",
+    "Client listesinde görüntülenir: Ad Soyad, Email, Atanış Tarihi, Program Sayısı, Last Session Tarihi",
+    "Toplam client sayısı gösterilir",
+    "Aktif program sayısı gösterilir",
+    "Bu ay tamamlanan program sayısı gösterilir",
+    "Her client kartına tıklayarak detaylı profile bakabilir",
+    "Client profilde: Personal Info, Fitness Goals, Assigned Programs, Payment History görüntülenebilir",
+    "Client'e mesaj gönderebilir (isteğe bağlı - FEAT-010'a bağlı)",
+    "Program atamasını kaldırabilir veya yeni program atayabilir"
+  ],
+  "dependencies": ["TECH-001"],
+  "business_rules": [
+    "Coach sadece kendisine atanan users'ları görebilir",
+    "Atanış tarihi ve süresi tracked olmalı",
+    "User deaktive edilirse/program biterse de listede görülebilir ancak 'inactive' işareti olmalı"
+  ],
+  "api_endpoints": [
+    "GET /api/coaches/{coachId}/assigned-users (paginated)",
+    "GET /api/coaches/{coachId}/assigned-users/{userId}",
+    "GET /api/coaches/{coachId}/dashboard (summary stats)",
+    "PUT /api/coaches/{coachId}/assigned-users/{userId}/unassign"
+  ],
+  "frontend_pages": [
+    "/coach/dashboard (Overview with stats)",
+    "/coach/clients (List view)",
+    "/coach/clients/{userId} (Client detail)"
+  ],
+  "estimate": "2 days"
+}

@@ -62,7 +62,7 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         // Relationships
         builder.HasOne(p => p.User)
-            .WithMany()
+            .WithMany(u => u.Payments)
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 

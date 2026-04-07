@@ -16,6 +16,7 @@ public class WaitingUserRepository(ChangeMindDbContext context) : IWaitingUserRe
     public IQueryable<WaitingUser> GetWaitingForAssignment()
     {
         return context.WaitingUsers
+            .Include(w => w.User)
             .AsNoTracking()
             .Where(w => w.IsWaitingForAssignment)
             .AsQueryable();

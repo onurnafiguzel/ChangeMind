@@ -463,6 +463,7 @@ public class CreateTaskCommandHandler(ITaskRepository taskRepository, IUserRepos
 }
 ```
 
+Yeni servisleri postman_collection.json dosyasına ekle.
 ---
 
 ## Kaynaklar & Referanslar

@@ -13,6 +13,13 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
         await context.TrainingPrograms.AddAsync(program);
     }
 
+    public async Task<TrainingProgram?> GetByIdAsync(Guid id)
+    {
+        return await context.TrainingPrograms
+            .Include(p => p.CreatedBy)
+            .FirstOrDefaultAsync(p => p.Id == id);
+    }
+
     public async Task<TrainingProgram?> GetActiveByUserIdAsync(Guid userId)
     {
         var today = DateTime.UtcNow.Date;

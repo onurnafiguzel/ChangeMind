@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 public class AuthController(IMediator mediator) : ControllerBase
 {
     /// <summary>
-    /// User login
+    /// Login — works for both Users and Coaches.
+    /// Returns an access token and refresh token.
     /// </summary>
     [HttpPost("login")]
     public async Task<ActionResult<AuthTokenResponse>> Login(
@@ -20,5 +21,4 @@ public class AuthController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }
-
 }

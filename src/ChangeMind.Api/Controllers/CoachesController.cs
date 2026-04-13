@@ -49,18 +49,6 @@ public class CoachesController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Coach login
-    /// </summary>
-    [HttpPost("login")]
-    public async Task<ActionResult<AuthTokenResponse>> Login(
-        [FromBody] LoginCoachCommand command,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await mediator.Send(command, cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
     /// Create a new coach (admin only)
     /// </summary>
     [Authorize(Roles = "Admin")]

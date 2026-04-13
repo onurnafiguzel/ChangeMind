@@ -13,6 +13,20 @@ public class UsersController(IMediator mediator) : ControllerBase
 {
 
     /// <summary>
+    /// Get users waiting for coach assignment (Coach/Admin only).
+    /// These are users with completed payments and no assigned coach yet.
+    /// </summary>
+    [Authorize(Roles = "Coach,Admin")]
+    [HttpGet("waiting")]
+    public async Task<ActionResult<List<UserAssignmentDto>>> GetWaitingUsers(
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetWaitingUsersQuery();
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Get all users with optional pagination and active filter
     /// </summary>
     [Authorize(Roles = "Admin,Coach")]

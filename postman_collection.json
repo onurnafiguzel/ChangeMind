@@ -43,7 +43,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "auth",
@@ -87,7 +87,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "auth",
@@ -116,7 +116,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "auth",
@@ -156,7 +156,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users"
@@ -204,7 +204,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users",
@@ -246,7 +246,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users"
@@ -284,7 +284,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users",
@@ -324,7 +324,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users",
@@ -354,7 +354,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users",
@@ -393,7 +393,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users",
@@ -443,7 +443,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches",
@@ -478,7 +478,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches"
@@ -526,7 +526,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches",
@@ -565,7 +565,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches"
@@ -603,7 +603,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches",
@@ -633,7 +633,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches",
@@ -672,7 +672,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "coaches",
@@ -703,7 +703,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "packages"
@@ -741,7 +741,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "packages",
@@ -793,7 +793,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "packages"
@@ -831,7 +831,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "packages",
@@ -866,7 +866,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "packages",
@@ -910,7 +910,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "training-programs"
@@ -944,7 +944,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "users",
@@ -989,7 +989,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "payments",
@@ -1024,7 +1024,7 @@
               "host": [
                 "localhost"
               ],
-              "port": "5123",
+              "port": "5000",
               "path": [
                 "api",
                 "payments",

@@ -5,6 +5,7 @@ using ChangeMind.Domain.Entities;
 public interface ICoachRepository
 {
     Task<Coach?> GetByIdAsync(Guid id);
+    IQueryable<Coach> GetById(Guid id);
     Task<Coach?> GetByEmailAsync(string email);
     IQueryable<Coach> GetAll(bool? isActive = null);
     Task AddAsync(Coach coach);

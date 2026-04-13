@@ -9,7 +9,7 @@ using ChangeMind.Application.UseCases.Users.Queries;
 
 [ApiController]
 [Route("api/users")]
-public class UsersController(IMediator mediator) : ControllerBase
+public class UsersController(IMediator mediator) : BaseController
 {
 
     /// <summary>
@@ -145,18 +145,4 @@ public class UsersController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    private bool IsAuthorizedForUser(Guid userId)
-    {
-        // Get userId from JWT token claims
-        var tokenUserIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        var userRoleClaim = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
-
-        // Allow if user ID matches OR user is Admin
-        if (Guid.TryParse(tokenUserIdClaim, out var tokenUserId))
-        {
-            return tokenUserId == userId || userRoleClaim == "Admin";
-        }
-
-        return false;
-    }
 }

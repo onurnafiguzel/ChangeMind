@@ -12,6 +12,11 @@ public class CoachRepository(ChangeMindDbContext context) : ICoachRepository
         return await context.Coaches.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public IQueryable<Coach> GetById(Guid id)
+    {
+        return context.Coaches.AsNoTracking().Where(c => c.Id == id);
+    }
+
     public async Task<Coach?> GetByEmailAsync(string email)
     {
         return await context.Coaches.AsNoTracking().FirstOrDefaultAsync(c => c.Email == email && c.IsActive == true);

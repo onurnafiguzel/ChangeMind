@@ -1,6 +1,7 @@
 namespace ChangeMind.Application.UseCases.Packages.Commands;
 
 using MediatR;
+using ChangeMind.Application.Extensions;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
@@ -16,8 +17,7 @@ public class CreatePackageCommandHandler(IPackageRepository packageRepository, I
         if (exists)
             throw new ConflictException($"Package with name '{request.Name}' already exists.");
 
-        if (!Enum.TryParse<PackageType>(request.Type, true, out var packageType))
-            throw new ArgumentException($"Invalid package type: {request.Type}");
+        var packageType = request.Type.ParseOrThrow<PackageType>();
 
         var package = Package.Create(
             name: request.Name,

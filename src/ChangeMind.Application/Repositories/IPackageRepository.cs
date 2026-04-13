@@ -5,6 +5,7 @@ using ChangeMind.Domain.Entities;
 public interface IPackageRepository
 {
     Task<Package?> GetByIdAsync(Guid id);
+    IQueryable<Package> GetById(Guid id);
     IQueryable<Package> GetAll(bool? isActive = null);
     Task AddAsync(Package package);
     Task UpdateAsync(Package package);

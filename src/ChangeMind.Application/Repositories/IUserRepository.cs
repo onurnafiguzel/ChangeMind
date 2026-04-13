@@ -5,6 +5,7 @@ using ChangeMind.Domain.Entities;
 public interface IUserRepository
 {
     Task<User?> GetByIdAsync(Guid id);
+    IQueryable<User> GetById(Guid id);
     Task<User?> GetByEmailAsync(string email);
     IQueryable<User> GetAll(bool? isActive = null);
     Task AddAsync(User user);

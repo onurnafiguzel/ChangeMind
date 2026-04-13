@@ -1,6 +1,7 @@
 namespace ChangeMind.Application.UseCases.Packages.Commands;
 
 using MediatR;
+using ChangeMind.Application.Extensions;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Enums;
@@ -22,8 +23,7 @@ public class UpdatePackageCommandHandler(IPackageRepository packageRepository, I
                 throw new ConflictException($"Package with name '{request.Name}' already exists.");
         }
 
-        if (!Enum.TryParse<PackageType>(request.Type, true, out var packageType))
-            throw new ArgumentException($"Invalid package type: {request.Type}");
+        var packageType = request.Type.ParseOrThrow<PackageType>();
 
         package.Update(
             name: request.Name,

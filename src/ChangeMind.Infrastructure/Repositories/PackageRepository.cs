@@ -12,6 +12,11 @@ public class PackageRepository(ChangeMindDbContext context) : IPackageRepository
         return await context.Packages.Where(p=>p.IsActive == true).FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    public IQueryable<Package> GetById(Guid id)
+    {
+        return context.Packages.AsNoTracking().Where(p => p.Id == id && p.IsActive == true);
+    }
+
     public IQueryable<Package> GetAll(bool? isActive = null)
     {
         var query = context.Packages.Where(p=>p.IsActive == true).AsNoTracking().AsQueryable();

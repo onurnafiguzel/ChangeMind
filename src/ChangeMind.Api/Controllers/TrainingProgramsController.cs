@@ -3,14 +3,13 @@ namespace ChangeMind.Api.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.TrainingPrograms.Commands;
 using ChangeMind.Application.UseCases.TrainingPrograms.Queries;
 
 [ApiController]
 [Route("api/training-programs")]
-public class TrainingProgramsController(IMediator mediator) : ControllerBase
+public class TrainingProgramsController(IMediator mediator) : BaseController
 {
     /// <summary>
     /// Get a training program by ID.
@@ -66,14 +65,4 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    private bool IsAuthorizedForUser(Guid userId)
-    {
-        var tokenUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var userRoleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
-
-        if (Guid.TryParse(tokenUserIdClaim, out var tokenUserId))
-            return tokenUserId == userId || userRoleClaim == "Admin";
-
-        return false;
-    }
 }

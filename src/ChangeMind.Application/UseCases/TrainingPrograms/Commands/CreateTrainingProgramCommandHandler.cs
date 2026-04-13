@@ -37,22 +37,15 @@ public class CreateTrainingProgramCommandHandler(
         }
 
         // Create training program
-        var trainingProgram = new TrainingProgram
-        {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Description = request.Description,
-            DurationWeeks = request.DurationWeeks,
-            Difficulty = request.Difficulty,
-            IsActive = true,
-            StartDate = request.StartDate ?? DateTime.UtcNow,
-            EndDate = request.EndDate ?? DateTime.UtcNow.AddDays(request.DurationWeeks * 7),
-            VersionNumber = 1,
-            CoachId = request.CoachId,
-            UserId = request.UserId,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = null
-        };
+        var trainingProgram = TrainingProgram.Create(
+            name: request.Name,
+            description: request.Description,
+            durationWeeks: request.DurationWeeks,
+            difficulty: request.Difficulty,
+            coachId: request.CoachId,
+            userId: request.UserId,
+            startDate: request.StartDate,
+            endDate: request.EndDate);
 
         // Generate DailyProgramJson from exercises if provided
         if (request.ExercisesByDay != null && request.ExercisesByDay.Count > 0)
@@ -75,9 +68,7 @@ public class CreateTrainingProgramCommandHandler(
         }
 
         // Save training program
-        await trainingProgramRepository.AddAsync(trainingProgram);
-
- 
+        await trainingProgramRepository.AddAsync(trainingProgram);        
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

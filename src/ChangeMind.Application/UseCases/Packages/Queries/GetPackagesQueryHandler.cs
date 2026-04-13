@@ -16,7 +16,18 @@ public class GetPackagesQueryHandler(IPackageRepository packageRepository) : IRe
             .OrderByDescending(p => p.CreatedAt)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(p => MapToDto(p))
+            .Select(p => new PackageDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                DurationDays = p.DurationDays,
+                Type = p.Type.ToString(),
+                IsActive = p.IsActive,
+                CreatedAt = p.CreatedAt,
+                UpdatedAt = p.UpdatedAt
+            })
             .ToListAsync(cancellationToken);
 
         var totalPages = (int)Math.Ceiling((double)total / request.PageSize);
@@ -28,22 +39,6 @@ public class GetPackagesQueryHandler(IPackageRepository packageRepository) : IRe
             Page = request.Page,
             PageSize = request.PageSize,
             TotalPages = totalPages
-        };
-    }
-
-    private static PackageDto MapToDto(Domain.Entities.Package package)
-    {
-        return new PackageDto
-        {
-            Id = package.Id,
-            Name = package.Name,
-            Description = package.Description,
-            Price = package.Price,
-            DurationDays = package.DurationDays,
-            Type = package.Type.ToString(),
-            IsActive = package.IsActive,
-            CreatedAt = package.CreatedAt,
-            UpdatedAt = package.UpdatedAt
         };
     }
 }

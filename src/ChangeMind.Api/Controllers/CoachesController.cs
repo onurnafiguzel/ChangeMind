@@ -9,7 +9,7 @@ using ChangeMind.Application.UseCases.Coaches.Queries;
 
 [ApiController]
 [Route("api/coaches")]
-public class CoachesController(IMediator mediator) : ControllerBase
+public class CoachesController(IMediator mediator) : BaseController
 {
     /// <summary>
     /// Get all coaches with optional pagination and active filter
@@ -112,18 +112,4 @@ public class CoachesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    private bool IsAuthorizedForCoach(Guid coachId)
-    {
-        // Get coachId from JWT token claims
-        var tokenCoachIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        var userRoleClaim = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
-
-        // Allow if coach ID matches OR user is Admin
-        if (Guid.TryParse(tokenCoachIdClaim, out var tokenCoachId))
-        {
-            return tokenCoachId == coachId || userRoleClaim == "Admin";
-        }
-
-        return false;
-    }
 }

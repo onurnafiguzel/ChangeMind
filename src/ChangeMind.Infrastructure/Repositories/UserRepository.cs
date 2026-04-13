@@ -12,6 +12,11 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    public IQueryable<User> GetById(Guid id)
+    {
+        return context.Users.AsNoTracking().Where(u => u.Id == id);
+    }
+
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsActive == true);

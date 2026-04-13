@@ -16,7 +16,17 @@ public class GetCoachesQueryHandler(ICoachRepository coachRepository) : IRequest
             .OrderByDescending(c => c.CreatedAt)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(c => MapToDto(c))
+            .Select(c => new CoachDto
+            {
+                Id = c.Id,
+                Email = c.Email,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Specialization = c.Specialization.ToString(),
+                IsActive = c.IsActive,
+                CreatedAt = c.CreatedAt,
+                UpdatedAt = c.UpdatedAt
+            })
             .ToListAsync(cancellationToken);
 
         var totalPages = (int)Math.Ceiling((double)total / request.PageSize);
@@ -28,21 +38,6 @@ public class GetCoachesQueryHandler(ICoachRepository coachRepository) : IRequest
             Page = request.Page,
             PageSize = request.PageSize,
             TotalPages = totalPages
-        };
-    }
-
-    private static CoachDto MapToDto(Domain.Entities.Coach coach)
-    {
-        return new CoachDto
-        {
-            Id = coach.Id,
-            Email = coach.Email,
-            FirstName = coach.FirstName,
-            LastName = coach.LastName,
-            Specialization = coach.Specialization?.ToString(),
-            IsActive = coach.IsActive,
-            CreatedAt = coach.CreatedAt,
-            UpdatedAt = coach.UpdatedAt
         };
     }
 }

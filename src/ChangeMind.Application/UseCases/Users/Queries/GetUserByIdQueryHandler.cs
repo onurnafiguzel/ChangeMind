@@ -1,34 +1,33 @@
 namespace ChangeMind.Application.UseCases.Users.Queries;
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Domain.Exceptions;
 
 public class GetUserByIdQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUserByIdQuery, UserDto>
 {
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(request.UserId)
-            ?? throw new KeyNotFoundException($"User with ID '{request.UserId}' not found.");
+        var dto = await userRepository.GetById(request.UserId)
+            .Select(u => new UserDto
+            {
+                Id = u.Id,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Age = u.Age,
+                Height = u.Height,
+                Weight = u.Weight,
+                Gender = u.Gender,
+                FitnessGoal = u.FitnessGoal,
+                FitnessLevel = u.FitnessLevel,
+                CreatedAt = u.CreatedAt,
+            })
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 
-        return MapToDto(user);
-    }
-
-    private static UserDto MapToDto(ChangeMind.Domain.Entities.User user)
-    {
-        return new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Age = user.Age,
-            Height = user.Height,
-            Weight = user.Weight,
-            Gender = user.Gender,
-            FitnessGoal = user.FitnessGoal,
-            FitnessLevel = user.FitnessLevel,
-            CreatedAt = user.CreatedAt,
-        };
+        return dto;
     }
 }

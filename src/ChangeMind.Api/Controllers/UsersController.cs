@@ -9,14 +9,13 @@ using ChangeMind.Application.UseCases.Users.Queries;
 
 [ApiController]
 [Route("api/users")]
-public class UsersController(IMediator mediator) : BaseController
+public class UsersController(IMediator mediator) : ControllerBase
 {
 
     /// <summary>
     /// Get users waiting for coach assignment (Coach/Admin only).
     /// These are users with completed payments and no assigned coach yet.
     /// </summary>
-    [Authorize(Roles = "Coach,Admin")]
     [HttpGet("waiting")]
     public async Task<ActionResult<List<UserAssignmentDto>>> GetWaitingUsers(
         CancellationToken cancellationToken = default)
@@ -29,7 +28,6 @@ public class UsersController(IMediator mediator) : BaseController
     /// <summary>
     /// Get all users with optional pagination and active filter
     /// </summary>
-    [Authorize(Roles = "Admin,Coach")]
     [HttpGet]
     public async Task<ActionResult<PagedResult<UserDto>>> GetUsers(
         [FromQuery] bool? isActiveOnly = true,
@@ -51,12 +49,9 @@ public class UsersController(IMediator mediator) : BaseController
     /// <summary>
     /// Get user by ID
     /// </summary>
-    [Authorize]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<UserDto>> GetUserById(Guid id, CancellationToken cancellationToken = default)
     {
-        if (!IsAuthorizedForUser(id))
-            return Forbid();
 
         var query = new GetUserByIdQuery { UserId = id };
         var result = await mediator.Send(query, cancellationToken);
@@ -79,15 +74,12 @@ public class UsersController(IMediator mediator) : BaseController
     /// <summary>
     /// Complete user profile with personal and fitness information (called after registration)
     /// </summary>
-    [Authorize]
     [HttpPost("{id:guid}/complete-profile")]
     public async Task<IActionResult> CompleteProfile(
         Guid id,
         [FromBody] CompleteProfileCommand baseRequest,
         CancellationToken cancellationToken = default)
     {
-        if (!IsAuthorizedForUser(id))
-            return Forbid();
 
         var command = baseRequest with { UserId = id };
         await mediator.Send(command, cancellationToken);
@@ -97,15 +89,12 @@ public class UsersController(IMediator mediator) : BaseController
     /// <summary>
     /// Update user profile
     /// </summary>
-    [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateUser(
         Guid id,
         [FromBody] UpdateUserCommand baseRequest,
         CancellationToken cancellationToken = default)
     {
-        if (!IsAuthorizedForUser(id))
-            return Forbid();
 
         var command = baseRequest with { UserId = id };
         await mediator.Send(command, cancellationToken);
@@ -115,12 +104,9 @@ public class UsersController(IMediator mediator) : BaseController
     /// <summary>
     /// Soft delete user (sets IsActive = false)
     /// </summary>
-    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteUser(Guid id, CancellationToken cancellationToken = default)
     {
-        if (!IsAuthorizedForUser(id))
-            return Forbid();
 
         var command = new DeleteUserCommand { UserId = id };
         await mediator.Send(command, cancellationToken);
@@ -130,15 +116,12 @@ public class UsersController(IMediator mediator) : BaseController
     /// <summary>
     /// Change user password
     /// </summary>
-    [Authorize]
     [HttpPost("{id:guid}/change-password")]
     public async Task<IActionResult> ChangePassword(
         Guid id,
         [FromBody] ChangePasswordCommand baseRequest,
         CancellationToken cancellationToken = default)
     {
-        if (!IsAuthorizedForUser(id))
-            return Forbid();
 
         var command = baseRequest with { UserId = id };
         await mediator.Send(command, cancellationToken);

@@ -9,12 +9,11 @@ using ChangeMind.Application.UseCases.TrainingPrograms.Queries;
 
 [ApiController]
 [Route("api/training-programs")]
-public class TrainingProgramsController(IMediator mediator) : BaseController
+public class TrainingProgramsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
     /// Get a training program by ID.
     /// </summary>
-    [Authorize(Roles = "Coach,Admin,User")]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ActiveProgramDetailDto>> GetTrainingProgramById(
         Guid id,
@@ -33,7 +32,6 @@ public class TrainingProgramsController(IMediator mediator) : BaseController
     /// Create a new training program and assign it to a user (Coach only).
     /// When a program is created, the user is marked as no longer waiting for assignment.
     /// </summary>
-    [Authorize(Roles = "Coach")]
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateTrainingProgram(
         [FromBody] CreateTrainingProgramCommand command,
@@ -47,14 +45,11 @@ public class TrainingProgramsController(IMediator mediator) : BaseController
     /// Get a user's active training program with daily exercises.
     /// A user can have at most one active program at a time.
     /// </summary>
-    [Authorize(Roles = "User,Admin")]
     [HttpGet("~/api/users/{userId:guid}/active-program")]
     public async Task<ActionResult<ActiveProgramDetailDto>> GetUserActiveProgram(
         Guid userId,
         CancellationToken cancellationToken = default)
     {
-        if (!IsAuthorizedForUser(userId))
-            return Forbid();
 
         var query = new GetUserActiveProgramQuery { UserId = userId };
         var result = await mediator.Send(query, cancellationToken);

@@ -46,7 +46,6 @@ public class PackagesController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Create a new package (admin only)
     /// </summary>
-    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<Guid>> CreatePackage(
         [FromBody] CreatePackageCommand command,
@@ -59,7 +58,6 @@ public class PackagesController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Update package (admin only)
     /// </summary>
-    [Authorize(Roles = "Admin")]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdatePackage(
         Guid id,
@@ -74,7 +72,6 @@ public class PackagesController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Delete package (soft delete, sets IsActive = false) - admin only
     /// </summary>
-    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeletePackage(Guid id, CancellationToken cancellationToken = default)
     {

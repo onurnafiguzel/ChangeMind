@@ -3,6 +3,7 @@ using ChangeMind.Gateway.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGatewaySecurity(builder.Configuration);
+builder.Services.AddGatewayRateLimiting(builder.Configuration);
 
 // Add authorization policies for route-based auth
 builder.Services.AddAuthorization(options =>
@@ -29,6 +30,7 @@ var app = builder.Build();
 
 app.MapHealthChecks("/health");
 
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 

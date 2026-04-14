@@ -1,0 +1,75 @@
+namespace ChangeMind.Gateway.Extensions;
+
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class RateLimitingServiceExtensions
+{
+    public static IServiceCollection AddGatewayRateLimiting(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var strict   = configuration.GetSection("RateLimiting:Strict");
+        var pub      = configuration.GetSection("RateLimiting:Public");
+        var standard = configuration.GetSection("RateLimiting:Standard");
+        var admin    = configuration.GetSection("RateLimiting:Admin");
+
+        services.AddRateLimiter(options =>
+        {
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+            options.OnRejected = async (context, token) =>
+            {
+                context.HttpContext.Response.Headers.RetryAfter =
+                    context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter)
+                        ? ((int)retryAfter.TotalSeconds).ToString()
+                        : "60";
+
+                await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
+            };
+
+            // Strict — Login, change-password: brute force koruması
+            options.AddFixedWindowLimiter("strict", opt =>
+            {
+                opt.PermitLimit        = strict.GetValue("PermitLimit", 5);
+                opt.Window             = TimeSpan.FromSeconds(strict.GetValue("WindowSeconds", 60));
+                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                opt.QueueLimit         = 0;
+            });
+
+            // Public — Register: spam koruması
+            options.AddFixedWindowLimiter("public", opt =>
+            {
+                opt.PermitLimit        = pub.GetValue("PermitLimit", 20);
+                opt.Window             = TimeSpan.FromSeconds(pub.GetValue("WindowSeconds", 60));
+                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                opt.QueueLimit         = 0;
+            });
+
+            // Standard — Authenticated genel endpoint'ler: sliding window
+            options.AddSlidingWindowLimiter("standard", opt =>
+            {
+                opt.PermitLimit          = standard.GetValue("PermitLimit", 60);
+                opt.Window               = TimeSpan.FromSeconds(standard.GetValue("WindowSeconds", 60));
+                opt.SegmentsPerWindow    = 6;
+                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                opt.QueueLimit           = 0;
+            });
+
+            // Admin — Admin işlemleri: token bucket (burst'a izin verir)
+            options.AddTokenBucketLimiter("admin", opt =>
+            {
+                opt.TokenLimit               = admin.GetValue("TokenLimit", 30);
+                opt.ReplenishmentPeriod      = TimeSpan.FromSeconds(admin.GetValue("ReplenishmentPeriodSeconds", 10));
+                opt.TokensPerPeriod          = admin.GetValue("TokensPerPeriod", 10);
+                opt.AutoReplenishment        = true;
+                opt.QueueProcessingOrder     = QueueProcessingOrder.OldestFirst;
+                opt.QueueLimit               = 0;
+            });
+        });
+
+        return services;
+    }
+}

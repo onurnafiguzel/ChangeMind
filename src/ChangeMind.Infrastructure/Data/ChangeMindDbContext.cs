@@ -137,13 +137,6 @@ public class ChangeMindDbContext : DbContext
         modelBuilder.Entity<Exercise>().HasData(exercises);
     }
 
-    private static Exercise CreateExerciseForSeed(Guid id, MuscleGroup muscleGroup, string movementName)
-    {
-        return new Exercise
-        {
-            Id = id,
-            MuscleGroup = muscleGroup,
-            MovementName = movementName
-        };
-    }
+    private static Exercise CreateExerciseForSeed(Guid id, MuscleGroup muscleGroup, string name)
+        => Exercise.Seed(id, name, muscleGroup);
 }

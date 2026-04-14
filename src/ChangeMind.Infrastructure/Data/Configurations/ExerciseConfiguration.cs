@@ -8,29 +8,48 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
 {
     public void Configure(EntityTypeBuilder<Exercise> builder)
     {
-        // Table (Exercise Library)
         builder.ToTable("Exercises");
 
-        // Primary Key
         builder.HasKey(e => e.Id);
 
-        // Properties
         builder.Property(e => e.Id)
             .ValueGeneratedNever();
 
-        builder.Property(e => e.MuscleGroup)
-            .IsRequired()
-            .HasConversion<string>();
-
-        builder.Property(e => e.MovementName)
+        builder.Property(e => e.Name)
             .IsRequired()
             .HasMaxLength(255);
 
-        // Indexes
+        builder.Property(e => e.MuscleGroup)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasMaxLength(50);
+
+        builder.Property(e => e.DifficultyLevel)
+            .HasConversion<string>()
+            .HasMaxLength(20);
+
+        builder.Property(e => e.Description)
+            .HasMaxLength(1000);
+
+        builder.Property(e => e.VideoUrl)
+            .HasMaxLength(500);
+
+        builder.Property(e => e.IsActive)
+            .IsRequired()
+            .HasDefaultValue(true);
+
+        builder.Property(e => e.CreatedAt)
+            .IsRequired();
+
+        builder.Property(e => e.UpdatedAt);
+
         builder.HasIndex(e => e.MuscleGroup)
             .HasDatabaseName("IX_Exercises_MuscleGroup");
 
-        builder.HasIndex(e => e.MovementName)
-            .HasDatabaseName("IX_Exercises_MovementName");
+        builder.HasIndex(e => e.Name)
+            .HasDatabaseName("IX_Exercises_Name");
+
+        builder.HasIndex(e => e.IsActive)
+            .HasDatabaseName("IX_Exercises_IsActive");
     }
 }

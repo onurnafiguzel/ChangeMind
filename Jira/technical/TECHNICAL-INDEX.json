@@ -2,8 +2,8 @@
   "project": "ChangeMind",
   "section": "Technical",
   "description": "Technical infrastructure, patterns, and code quality tasks",
-  "total_tasks": 17,
-  "total_story_points": 161,
+  "total_tasks": 16,
+  "total_story_points": 153,
   "tasks": [
     {
       "id": "TECH-002",
@@ -17,13 +17,6 @@
       "title": "Domain Events Pattern'ini Implement Et",
       "priority": "P2",
       "storyPoints": 13,
-      "category": "Architecture"
-    },
-    {
-      "id": "TECH-004",
-      "title": "Entity Validation Layer Oluştur",
-      "priority": "P1",
-      "storyPoints": 8,
       "category": "Architecture"
     },
     {
@@ -159,11 +152,10 @@
     ]
   },
   "by_priority": {
-    "P1": 9,
+    "P1": 8,
     "P2": 8
   },
   "implementation_order": [
-    "TECH-004: Validation Layer",
     "TECH-002: Value Objects",
     "TECH-003: Domain Events",
     "TECH-005: Exercise CRUD",

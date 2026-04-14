@@ -16,7 +16,7 @@ public class CreateCoachCommandHandler(
     public async Task<Guid> Handle(CreateCoachCommand request, CancellationToken cancellationToken)
     {
         if (await coachRepository.ExistsAsync(request.Email))
-            throw new ConflictException($"A coach with email '{request.Email}' already exists.");
+            throw new DuplicateEmailException(request.Email);
 
         var user = await userRepository.GetByEmailAsync(request.Email);
 

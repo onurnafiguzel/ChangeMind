@@ -19,6 +19,10 @@ builder.Services.AddAuthorization(options =>
     // Coach or Admin
     options.AddPolicy("coach-or-admin", policy =>
         policy.RequireRole("Coach", "Admin"));
+
+    // Coach only
+    options.AddPolicy("coach-only", policy =>
+        policy.RequireRole("Coach"));
 });
 
 builder.Services.AddReverseProxy()

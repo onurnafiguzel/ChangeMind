@@ -33,7 +33,8 @@ public class CreateTrainingProgramCommandHandler(
         }
         else
         {
-            throw new NotFoundException($"User with ID '{request.UserId}' is not waiting for assignment.");
+            throw new InvalidStateTransitionException(
+                "User", "not waiting", "assign training program");
         }
 
         // Create training program

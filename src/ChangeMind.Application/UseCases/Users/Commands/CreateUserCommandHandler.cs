@@ -16,7 +16,7 @@ public class CreateUserCommandHandler(
     {
         // Check if email already exists
         if (await userRepository.ExistsAsync(request.Email))
-            throw new ConflictException($"User with email '{request.Email}' already exists.");
+            throw new DuplicateEmailException(request.Email);
         // Hash password with SHA256
         var passwordHash = passwordService.HashPassword(request.Password);
 

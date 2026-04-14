@@ -2,8 +2,8 @@
   "project": "ChangeMind",
   "section": "Technical",
   "description": "Technical infrastructure, patterns, and code quality tasks",
-  "total_tasks": 20,
-  "total_story_points": 185,
+  "total_tasks": 18,
+  "total_story_points": 169,
   "tasks": [
     {
       "id": "TECH-001",
@@ -62,13 +62,6 @@
       "category": "Infrastructure"
     },
     {
-      "id": "TECH-009",
-      "title": "Domain Exception Handling İyileştirilmesi",
-      "priority": "P1",
-      "storyPoints": 8,
-      "category": "Architecture"
-    },
-    {
       "id": "TECH-010",
       "title": "Unit Testing Infrastructure Setup",
       "priority": "P2",
@@ -81,13 +74,6 @@
       "priority": "P2",
       "storyPoints": 13,
       "category": "Testing"
-    },
-    {
-      "id": "TECH-012",
-      "title": "Authorization ve Role-Based Access Control",
-      "priority": "P1",
-      "storyPoints": 8,
-      "category": "Security"
     },
     {
       "id": "TECH-013",
@@ -154,7 +140,6 @@
       "TECH-004",
       "TECH-006",
       "TECH-007",
-      "TECH-009",
       "TECH-017",
       "TECH-018"
     ],
@@ -166,9 +151,6 @@
     "Infrastructure": [
       "TECH-008",
       "TECH-016"
-    ],
-    "Security": [
-      "TECH-012"
     ],
     "Testing": [
       "TECH-010",
@@ -185,7 +167,7 @@
     ]
   },
   "by_priority": {
-    "P1": 12,
+    "P1": 10,
     "P2": 8
   },
   "implementation_order": [
@@ -193,11 +175,9 @@
     "TECH-004: Validation Layer",
     "TECH-002: Value Objects",
     "TECH-003: Domain Events",
-    "TECH-009: Error Handling",
     "TECH-005: Exercise CRUD",
     "TECH-006: TrainingProgram Rich Model",
     "TECH-007: Payment System",
-    "TECH-012: Authorization",
     "TECH-008: Notification System",
     "TECH-014: UserPhoto Management",
     "TECH-015: Waiting Queue",

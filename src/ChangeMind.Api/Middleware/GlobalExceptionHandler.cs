@@ -31,22 +31,25 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
     {
         return exception switch
         {
-            // 404 Not Found
-            NotFoundException notFoundException => new ProblemDetails
+            // 400 Validation errors — list of field errors
+            ValidationException validationException => new ValidationProblemDetails(
+                validationException.Errors
+                    .Select((e, i) => new { Key = i.ToString(), Value = e })
+                    .ToDictionary(x => x.Key, x => new[] { x.Value }))
             {
-                Status = StatusCodes.Status404NotFound,
-                Title = "Not Found",
-                Detail = notFoundException.Message,
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation Failed",
+                Detail = validationException.Message,
                 Instance = httpContext.Request.Path,
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
 
-            // 409 Conflict
-            ConflictException conflictException => new ProblemDetails
+            // 400 Bad Request
+            BadRequestException badRequestException => new ProblemDetails
             {
-                Status = StatusCodes.Status409Conflict,
-                Title = "Conflict",
-                Detail = conflictException.Message,
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Bad Request",
+                Detail = badRequestException.Message,
                 Instance = httpContext.Request.Path,
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
@@ -61,17 +64,17 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
 
-            // 400 Bad Request (InvalidOperationException, validation errors)
-            InvalidOperationException invalidOpException => new ProblemDetails
+            // 404 Not Found
+            NotFoundException notFoundException => new ProblemDetails
             {
-                Status = StatusCodes.Status400BadRequest,
-                Title = "Bad Request",
-                Detail = invalidOpException.Message,
+                Status = StatusCodes.Status404NotFound,
+                Title = "Not Found",
+                Detail = notFoundException.Message,
                 Instance = httpContext.Request.Path,
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
 
-            // 404 Not Found (for KeyNotFoundException)
+            // 404 Not Found (KeyNotFoundException — legacy handler uyumluluğu)
             KeyNotFoundException keyNotFoundException => new ProblemDetails
             {
                 Status = StatusCodes.Status404NotFound,
@@ -81,7 +84,27 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
 
-            // 500 Internal Server Error (fallback for all other exceptions)
+            // 409 Conflict — DuplicateEmailException ve InvalidStateTransitionException buraya düşer
+            ConflictException conflictException => new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Title = "Conflict",
+                Detail = conflictException.Message,
+                Instance = httpContext.Request.Path,
+                Type = "https://tools.ietf.org/html/rfc7807"
+            },
+
+            // 400 Bad Request (InvalidOperationException — framework hataları)
+            InvalidOperationException invalidOpException => new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Bad Request",
+                Detail = invalidOpException.Message,
+                Instance = httpContext.Request.Path,
+                Type = "https://tools.ietf.org/html/rfc7807"
+            },
+
+            // 500 Internal Server Error (fallback)
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,

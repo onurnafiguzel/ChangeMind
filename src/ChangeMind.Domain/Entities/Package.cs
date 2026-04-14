@@ -2,12 +2,13 @@ namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
 
-public class Package
+public sealed class Package
 {
-    // Identifier
+    // EF Core constructor — object creation only through factory method
+    private Package() { }
+
     public Guid Id { get; private set; }
 
-    // Primitive Properties
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public decimal Price { get; private set; }
@@ -15,7 +16,6 @@ public class Package
     public PackageType Type { get; private set; }
     public bool IsActive { get; private set; } = true;
 
-    // DateTime Properties
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
@@ -23,12 +23,6 @@ public class Package
     private readonly List<Payment> _payments = new();
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
 
-    // EF Constructor
-    public Package() { }
-
-    /// <summary>
-    /// Factory method to create a new Package
-    /// </summary>
     public static Package Create(
         string name,
         string description,
@@ -38,21 +32,18 @@ public class Package
     {
         return new Package
         {
-            Id = Guid.NewGuid(),
-            Name = name,
+            Id          = Guid.NewGuid(),
+            Name        = name,
             Description = description,
-            Price = price,
+            Price       = price,
             DurationDays = durationDays,
-            Type = type,
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = null
+            Type        = type,
+            IsActive    = true,
+            CreatedAt   = DateTime.UtcNow,
+            UpdatedAt   = null
         };
     }
 
-    /// <summary>
-    /// Update package information
-    /// </summary>
     public void Update(
         string name,
         string description,
@@ -60,29 +51,23 @@ public class Package
         int durationDays,
         PackageType type)
     {
-        Name = name;
+        Name        = name;
         Description = description;
-        Price = price;
+        Price       = price;
         DurationDays = durationDays;
-        Type = type;
-        UpdatedAt = DateTime.UtcNow;
+        Type        = type;
+        UpdatedAt   = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Deactivate package (soft delete)
-    /// </summary>
     public void Deactivate()
     {
-        IsActive = false;
+        IsActive  = false;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Activate package
-    /// </summary>
     public void Activate()
     {
-        IsActive = true;
+        IsActive  = true;
         UpdatedAt = DateTime.UtcNow;
     }
 }

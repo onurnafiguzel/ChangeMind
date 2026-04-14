@@ -2,24 +2,19 @@ namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
 
-public class User
+public sealed class User
 {
-    // Identifier
+    // EF Core constructor — object creation only through factory method
+    private User() { }
+
     public Guid Id { get; private set; }
 
-    // Primitive Properties
     public string Email { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
     public int? Age { get; private set; }
-    /// <summary>
-    /// Boy (cm)
-    /// </summary>
     public decimal? Height { get; private set; }
-    /// <summary>
-    /// Kilo (kg)
-    /// </summary>
     public decimal? Weight { get; private set; }
     public Gender? Gender { get; private set; }
     public FitnessGoal? FitnessGoal { get; private set; }
@@ -27,7 +22,6 @@ public class User
     public bool IsActive { get; private set; } = true;
     public UserRole Role { get; private set; } = UserRole.User;
 
-    // DateTime Properties
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
@@ -45,9 +39,6 @@ public class User
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
 
     public WaitingUser? WaitingUserRecord { get; private set; }
-
-    // EF Constructor
-    private protected User() { }
 
     /// <summary>
     /// Factory method to create a new User (registration with email and password only)
@@ -101,9 +92,6 @@ public class User
         UpdatedAt = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Update user profile information
-    /// </summary>
     public void Update(
         string firstName,
         string lastName,
@@ -125,27 +113,18 @@ public class User
         UpdatedAt = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Change user password
-    /// </summary>
     public void ChangePassword(string newPasswordHash)
     {
         PasswordHash = newPasswordHash;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Deactivate user (soft delete)
-    /// </summary>
     public void Deactivate()
     {
         IsActive = false;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Activate user
-    /// </summary>
     public void Activate()
     {
         IsActive = true;

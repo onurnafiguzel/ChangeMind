@@ -2,16 +2,9 @@
   "project": "ChangeMind",
   "section": "Technical",
   "description": "Technical infrastructure, patterns, and code quality tasks",
-  "total_tasks": 18,
-  "total_story_points": 169,
+  "total_tasks": 17,
+  "total_story_points": 161,
   "tasks": [
-    {
-      "id": "TECH-001",
-      "title": "Primary Constructor'ı C# 12+ Feature'ını Tüm Domain Entities'de Uygula",
-      "priority": "P1",
-      "storyPoints": 8,
-      "category": "Architecture"
-    },
     {
       "id": "TECH-002",
       "title": "Value Objects Oluştur (UserId, Email, Phone gibi)",
@@ -134,7 +127,6 @@
   ],
   "by_category": {
     "Architecture": [
-      "TECH-001",
       "TECH-002",
       "TECH-003",
       "TECH-004",
@@ -167,11 +159,10 @@
     ]
   },
   "by_priority": {
-    "P1": 10,
+    "P1": 9,
     "P2": 8
   },
   "implementation_order": [
-    "TECH-001: Primary Constructor (foundation)",
     "TECH-004: Validation Layer",
     "TECH-002: Value Objects",
     "TECH-003: Domain Events",

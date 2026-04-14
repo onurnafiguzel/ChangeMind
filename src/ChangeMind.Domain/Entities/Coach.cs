@@ -2,12 +2,13 @@ namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
 
-public class Coach
+public sealed class Coach
 {
-    // Identifier
+    // EF Core constructor — object creation only through factory method
+    private Coach() { }
+
     public Guid Id { get; private set; }
 
-    // Primitive Properties
     public string Email { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
     public string FirstName { get; private set; } = string.Empty;
@@ -16,7 +17,6 @@ public class Coach
     public bool IsActive { get; private set; } = true;
     public UserRole Role { get; private set; } = UserRole.Coach;
 
-    // DateTime Properties
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
@@ -26,9 +26,6 @@ public class Coach
 
     private readonly List<TrainingProgram> _createdPrograms = new();
     public IReadOnlyCollection<TrainingProgram> CreatedPrograms => _createdPrograms.AsReadOnly();
-
-    // EF Constructor
-    private protected Coach() { }
 
     /// <summary>
     /// Factory method to create a new Coach

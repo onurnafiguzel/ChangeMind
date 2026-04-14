@@ -1,43 +1,60 @@
-﻿namespace ChangeMind.Domain.Entities;
+namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
 
-public class UserPhoto
+public sealed class UserPhoto
 {
+    // EF Core constructor — object creation only through factory method
     private UserPhoto() { }
 
-    // Identifier
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    // Primitive Properties
-    public string ImageUrl { get; set; } = string.Empty; // S3/MinIO/Azure URL
-    public PhotoViewType ViewType { get; set; }
-    public string? Notes { get; set; }
-    /// <summary>
-    /// Vücut Ölçümleri (JSON: chest, waist, biceps, etc.)
-    /// </summary>
-    public string? MeasurementsJson { get; set; }
+    public Guid UserId { get; private set; }
 
-    // DateTime Properties
-    public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
+    /// <summary>S3 / MinIO / Azure Blob Storage URL</summary>
+    public string ImageUrl { get; private set; } = string.Empty;
+    public PhotoViewType ViewType { get; private set; }
+    public string? Notes { get; private set; }
+    /// <summary>Vücut ölçümleri (JSON: chest, waist, biceps, …)</summary>
+    public string? MeasurementsJson { get; private set; }
 
-    // Foreign Keys
-    public Guid UserId { get; set; }
+    public DateTime UploadedAt { get; private set; }
 
     // Navigation Properties
-    public User User { get; set; } = null!;
+    public User User { get; private set; } = null!;
 
-    public static UserPhoto Create(Guid userId, string imageUrl, PhotoViewType viewType, string? notes = null, string? measurementsJson = null)
+    public static UserPhoto Create(
+        Guid userId,
+        string imageUrl,
+        PhotoViewType viewType,
+        string? notes = null,
+        string? measurementsJson = null)
     {
         return new UserPhoto
         {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            ImageUrl = imageUrl,
-            ViewType = viewType,
-            Notes = notes,
+            Id               = Guid.NewGuid(),
+            UserId           = userId,
+            ImageUrl         = imageUrl,
+            ViewType         = viewType,
+            Notes            = notes,
             MeasurementsJson = measurementsJson,
-            UploadedAt = DateTime.UtcNow
+            UploadedAt       = DateTime.UtcNow
         };
+    }
+
+    /// <summary>
+    /// Updates the body measurement JSON snapshot associated with this photo.
+    /// </summary>
+    public void UpdateMeasurements(string measurementsJson)
+    {
+        MeasurementsJson = measurementsJson;
+    }
+
+    /// <summary>
+    /// Updates optional coach/user notes on the photo.
+    /// </summary>
+    public void UpdateNotes(string? notes)
+    {
+        Notes = notes;
     }
 }

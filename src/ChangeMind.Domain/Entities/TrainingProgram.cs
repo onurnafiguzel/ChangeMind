@@ -1,44 +1,37 @@
-﻿namespace ChangeMind.Domain.Entities;
+namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
 
-public class TrainingProgram
+public sealed class TrainingProgram
 {
+    // EF Core constructor — object creation only through factory method
     private TrainingProgram() { }
 
-    // Identifier
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    // Primitive Properties
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    /// <summary>
-    /// Hafta cinsinden süre
-    /// </summary>
-    public int DurationWeeks { get; set; }
-    public DifficultyLevel? Difficulty { get; set; }
-    /// <summary>
-    /// Program versiyonu (düzenleme sırasında increments)
-    /// </summary>
-    public int VersionNumber { get; set; } = 1;
-    public bool IsActive { get; set; } = true;
+    public string Name { get; private set; } = string.Empty;
+    public string? Description { get; private set; }
+    /// <summary>Hafta cinsinden süre</summary>
+    public int DurationWeeks { get; private set; }
+    public DifficultyLevel? Difficulty { get; private set; }
+    /// <summary>Program versiyonu — her UpdateDailyProgram çağrısında artar</summary>
+    public int VersionNumber { get; private set; } = 1;
+    public bool IsActive { get; private set; } = true;
 
-    // DateTime Properties
-    public DateTime? StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime? StartDate { get; private set; }
+    public DateTime? EndDate { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
-    // Foreign Keys
-    public Guid CoachId { get; set; }
-    public Guid UserId { get; set; }
+    public Guid CoachId { get; private set; }
+    public Guid UserId { get; private set; }
 
-    // Primitive Properties - Daily Program Schedule (JSON)
+    /// <summary>Günlük egzersiz planı (JSON) — UpdateDailyProgram ile güncellenir</summary>
     public string? DailyProgramJson { get; private set; }
 
     // Navigation Properties
-    public Coach CreatedBy { get; set; } = null!;
-    public User AssignedTo { get; set; } = null!;
+    public Coach CreatedBy { get; private set; } = null!;
+    public User AssignedTo { get; private set; } = null!;
 
     public static TrainingProgram Create(
         string name,
@@ -53,34 +46,41 @@ public class TrainingProgram
         var now = DateTime.UtcNow;
         return new TrainingProgram
         {
-            Id = Guid.NewGuid(),
-            Name = name,
-            Description = description,
+            Id            = Guid.NewGuid(),
+            Name          = name,
+            Description   = description,
             DurationWeeks = durationWeeks,
-            Difficulty = difficulty,
-            IsActive = true,
+            Difficulty    = difficulty,
+            IsActive      = true,
             VersionNumber = 1,
-            StartDate = startDate ?? now,
-            EndDate = endDate ?? now.AddDays(durationWeeks * 7),
-            CoachId = coachId,
-            UserId = userId,
-            CreatedAt = now,
-            UpdatedAt = null
+            StartDate     = startDate ?? now,
+            EndDate       = endDate   ?? now.AddDays(durationWeeks * 7),
+            CoachId       = coachId,
+            UserId        = userId,
+            CreatedAt     = now,
+            UpdatedAt     = null
         };
     }
 
     /// <summary>
-    /// Update the daily program JSON (weekly schedule with exercises)
+    /// Updates the weekly exercise schedule. Increments VersionNumber on each call.
     /// </summary>
     public void UpdateDailyProgram(string dailyProgramJson)
     {
         DailyProgramJson = dailyProgramJson;
+        VersionNumber++;
         UpdatedAt = DateTime.UtcNow;
     }
 
     public void Deactivate()
     {
-        IsActive = false;
+        IsActive  = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Activate()
+    {
+        IsActive  = true;
         UpdatedAt = DateTime.UtcNow;
     }
 }

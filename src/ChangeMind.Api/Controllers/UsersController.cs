@@ -2,6 +2,7 @@ namespace ChangeMind.Api.Controllers;
 
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Users.Commands;
@@ -17,6 +18,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     /// These are users with completed payments and no assigned coach yet.
     /// </summary>
     [HttpGet("waiting")]
+    [RequestTimeout("bulk-list")]
     public async Task<ActionResult<List<UserAssignmentDto>>> GetWaitingUsers(
         CancellationToken cancellationToken = default)
     {
@@ -29,6 +31,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     /// Get all users with optional pagination and active filter
     /// </summary>
     [HttpGet]
+    [RequestTimeout("bulk-list")]
     public async Task<ActionResult<PagedResult<UserDto>>> GetUsers(
         [FromQuery] bool? isActiveOnly = true,
         [FromQuery] int page = 1,

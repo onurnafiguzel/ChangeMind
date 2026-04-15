@@ -1,8 +1,5 @@
 namespace ChangeMind.Infrastructure.Extensions;
 
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
@@ -10,7 +7,6 @@ using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Infrastructure.Data;
 using ChangeMind.Infrastructure.Repositories;
 using ChangeMind.Infrastructure.Services;
-using ChangeMind.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,10 +20,19 @@ public static class InfrastructureServiceExtensions
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+        // EF Core seviyesinde son bariyer: tek bir SQL sorgusu bu süreyi geçemez.
+        // Api'nin en kısa timeout'undan (default: 8s) küçük tutulur;
+        // uzun süren sorgular token iptali olmadan da burada kesilir.
+        var commandTimeout = configuration.GetValue("Timeout:Database:CommandTimeoutSeconds", 5);
+
         services.AddDbContext<ChangeMindDbContext>(options =>
             options.UseNpgsql(
                 connectionString,
-                npgsqlOptions => npgsqlOptions.MigrationsAssembly("ChangeMind.Infrastructure")));
+                npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsAssembly("ChangeMind.Infrastructure");
+                    npgsqlOptions.CommandTimeout(commandTimeout);
+                }));
 
         // Register Unit of Work
         services.AddScoped<IUnitOfWork, ChangeMind.Infrastructure.UnitOfWork.UnitOfWork>();

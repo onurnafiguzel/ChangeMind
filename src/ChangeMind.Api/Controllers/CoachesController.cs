@@ -2,6 +2,7 @@ namespace ChangeMind.Api.Controllers;
 
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Coaches.Commands;
@@ -15,6 +16,7 @@ public class CoachesController(IMediator mediator) : ControllerBase
     /// Get all coaches with optional pagination and active filter
     /// </summary>
     [HttpGet]
+    [RequestTimeout("bulk-list")]
     public async Task<ActionResult<PagedResult<CoachDto>>> GetCoaches(
         [FromQuery] bool? isActiveOnly = true,
         [FromQuery] int page = 1,

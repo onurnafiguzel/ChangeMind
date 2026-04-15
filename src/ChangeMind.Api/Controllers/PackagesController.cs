@@ -1,7 +1,7 @@
 namespace ChangeMind.Api.Controllers;
 
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Packages.Commands;
@@ -15,6 +15,7 @@ public class PackagesController(IMediator mediator) : ControllerBase
     /// Get all packages with optional pagination and active filter
     /// </summary>
     [HttpGet]
+    [RequestTimeout("bulk-list")]
     public async Task<ActionResult<PagedResult<PackageDto>>> GetPackages(
         [FromQuery] bool? isActiveOnly = true,
         [FromQuery] int page = 1,

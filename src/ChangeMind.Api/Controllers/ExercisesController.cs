@@ -1,6 +1,7 @@
 namespace ChangeMind.Api.Controllers;
 
 using MediatR;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Exercises.Commands;
@@ -15,6 +16,7 @@ public class ExercisesController(IMediator mediator) : ControllerBase
     /// Get all exercises with optional filters, search, sorting, and pagination.
     /// </summary>
     [HttpGet]
+    [RequestTimeout("bulk-list")]
     public async Task<ActionResult<PagedResult<ExerciseDto>>> GetExercises(
         [FromQuery] string? muscleGroup = null,
         [FromQuery] string? difficultyLevel = null,

@@ -3,8 +3,8 @@
   "description": "ASP.NET Core 10.0 API - Fitness/Coaching Platform",
   "version": "1.0",
   "generated": "2026-04-05",
-  "total_tasks": 20,
-  "total_story_points": 185,
+  "total_tasks": 19,
+  "total_story_points": 180,
   "tasks": [
     {
       "id": "PROJ-001",
@@ -309,26 +309,6 @@
       "estimate": "2-3 days"
     },
     {
-      "id": "PROJ-016",
-      "title": "Database Seeding Yapısı",
-      "description": "Development ve test amaçlı database'i initial data'yla populate etmek için seeding altyapısı kur. Admin user, sample coaches, exercises, packages gibi data'ları seed et.",
-      "priority": "P2",
-      "storyPoints": 5,
-      "status": "pending",
-      "category": "Testing & Data",
-      "acceptance_criteria": [
-        "Seed data migration veya configuration created",
-        "Admin user seeded with credentials",
-        "5+ sample coaches seeded",
-        "Exercise library seeded (30+ exercises, muscle groups categorized)",
-        "3+ sample packages seeded",
-        "Test user'ları seeded",
-        "Seed script'i idempotent ve safe"
-      ],
-      "dependencies": [],
-      "estimate": "1 day"
-    },
-    {
       "id": "PROJ-017",
       "title": "Specification Pattern Implementation",
       "description": "DDD pattern'ine uygun olarak Specification pattern'ini implement et. GetActiveUsersQuery, GetCoachesWithSpecializationQuery gibi complex queries'leri cleaner hale getir.",
@@ -414,14 +394,14 @@
     "by_priority": {
       "P0": 0,
       "P1": 12,
-      "P2": 8
+      "P2": 7
     },
     "by_category": {
       "Architecture & Code Quality": 6,
       "Feature Implementation": 7,
       "Cross-Cutting Concerns": 4,
-      "Testing & Data": 3
+      "Testing & Data": 2
     },
-    "total_story_points": 185
+    "total_story_points": 180
   }
 }

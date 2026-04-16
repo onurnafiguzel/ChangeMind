@@ -91,4 +91,28 @@ public sealed class Coach
         IsActive = true;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    /// <summary>
+    /// For DataSeeder only — do not use in business logic.
+    /// </summary>
+    public static Coach Seed(
+        Guid id,
+        string email,
+        string passwordHash,
+        string firstName,
+        string lastName,
+        CoachSpecialization specialization)
+    {
+        return new Coach
+        {
+            Id             = id,
+            Email          = email,
+            PasswordHash   = passwordHash,
+            FirstName      = firstName,
+            LastName       = lastName,
+            Specialization = specialization,
+            IsActive       = true,
+            CreatedAt      = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        };
+    }
 }

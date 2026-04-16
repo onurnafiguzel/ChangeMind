@@ -46,6 +46,8 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IWaitingUserRepository, WaitingUserRepository>();
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
+        services.AddScoped<DataSeeder>();
+
         // Register JWT and Security Services
         var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()
             ?? throw new InvalidOperationException("JWT settings not found in configuration.");

@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using ChangeMind.Api.Middleware;
 using ChangeMind.Application.Extensions;
+using ChangeMind.Infrastructure.Data;
 using ChangeMind.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http.Timeouts;
 
@@ -61,6 +62,14 @@ builder.Services.AddControllers()
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+// Seed development data (idempotent — safe to run on every startup)
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.SeedAsync();
+}
 
 app.UseExceptionHandler();
 

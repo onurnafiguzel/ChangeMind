@@ -1,12 +1,12 @@
 {
   "project": "ChangeMind",
   "description": "ASP.NET Core 10.0 Clean Architecture API - Fitness/Coaching Platform",
-  "total_tasks": 20,
+  "total_tasks": 19,
   "summary": {
     "p0_critical": 0,
     "p1_high": 12,
-    "p2_medium": 8,
-    "total_story_points": 185
+    "p2_medium": 7,
+    "total_story_points": 180
   },
   "task_dependencies_graph": {
     "PROJ-001": [],
@@ -24,7 +24,6 @@
     "PROJ-013": [],
     "PROJ-014": ["PROJ-001"],
     "PROJ-015": ["PROJ-001", "PROJ-003"],
-    "PROJ-016": [],
     "PROJ-017": ["PROJ-001"],
     "PROJ-018": [],
     "PROJ-019": ["PROJ-012"],
@@ -49,8 +48,7 @@
     "PROJ-013: Logging & Monitoring",
     "PROJ-011: Integration Testing",
     "PROJ-017: Specification Pattern",
-    "PROJ-019: API Documentation",
-    "PROJ-016: Database Seeding"
+    "PROJ-019: API Documentation"
   ],
   "business_rules_to_implement": [
     "Email uniqueness validation at creation",

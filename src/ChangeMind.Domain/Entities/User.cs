@@ -130,4 +130,29 @@ public sealed class User
         IsActive = true;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    /// <summary>
+    /// For DataSeeder only — do not use in business logic.
+    /// Allows setting Role and static timestamps required for idempotent seeding.
+    /// </summary>
+    public static User Seed(
+        Guid id,
+        string email,
+        string passwordHash,
+        string firstName,
+        string lastName,
+        UserRole role)
+    {
+        return new User
+        {
+            Id           = id,
+            Email        = email,
+            PasswordHash = passwordHash,
+            FirstName    = firstName,
+            LastName     = lastName,
+            Role         = role,
+            IsActive     = true,
+            CreatedAt    = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        };
+    }
 }

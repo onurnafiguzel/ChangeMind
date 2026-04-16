@@ -3,8 +3,8 @@
   "description": "ASP.NET Core 10.0 API - Fitness/Coaching Platform",
   "version": "1.0",
   "generated": "2026-04-05",
-  "total_tasks": 19,
-  "total_story_points": 180,
+  "total_tasks": 18,
+  "total_story_points": 167,
   "tasks": [
     {
       "id": "PROJ-001",
@@ -23,25 +23,6 @@
       ],
       "dependencies": [],
       "estimate": "1 day"
-    },
-    {
-      "id": "PROJ-002",
-      "title": "Value Objects Oluştur (UserId, Email, Phone gibi)",
-      "description": "DDD pattern'ine göre value objects oluştur. Email, UserId, PhoneNumber gibi tekrar eden primitive types'leri value object'lere dönüştür. Bu sayede domain logic'i centralize et ve data integrity'yi artır.",
-      "priority": "P1",
-      "storyPoints": 13,
-      "status": "pending",
-      "category": "Architecture & Code Quality",
-      "acceptance_criteria": [
-        "Email value object oluşturulmuş ve validation içeriyor",
-        "UserId value object oluşturulmuş (immutable record)",
-        "PhoneNumber value object oluşturulmuş",
-        "Value objects'ler Entity'lerde kullanılıyor",
-        "Database mapping'i yapılandırılmış",
-        "Equality control'ü value'lerle yapılıyor"
-      ],
-      "dependencies": ["PROJ-001"],
-      "estimate": "2-3 days"
     },
     {
       "id": "PROJ-003",
@@ -393,15 +374,15 @@
   "summary": {
     "by_priority": {
       "P0": 0,
-      "P1": 12,
+      "P1": 11,
       "P2": 7
     },
     "by_category": {
-      "Architecture & Code Quality": 6,
+      "Architecture & Code Quality": 5,
       "Feature Implementation": 7,
       "Cross-Cutting Concerns": 4,
       "Testing & Data": 2
     },
-    "total_story_points": 180
+    "total_story_points": 167
   }
 }

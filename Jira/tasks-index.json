@@ -1,20 +1,19 @@
 {
   "project": "ChangeMind",
   "description": "ASP.NET Core 10.0 Clean Architecture API - Fitness/Coaching Platform",
-  "total_tasks": 19,
+  "total_tasks": 18,
   "summary": {
     "p0_critical": 0,
-    "p1_high": 12,
+    "p1_high": 11,
     "p2_medium": 7,
-    "total_story_points": 180
+    "total_story_points": 167
   },
   "task_dependencies_graph": {
     "PROJ-001": [],
-    "PROJ-002": ["PROJ-001"],
     "PROJ-003": ["PROJ-001"],
     "PROJ-004": [],
     "PROJ-005": [],
-    "PROJ-006": ["PROJ-001", "PROJ-002"],
+    "PROJ-006": ["PROJ-001"],
     "PROJ-007": ["PROJ-001", "PROJ-003"],
     "PROJ-008": ["PROJ-003"],
     "PROJ-009": ["PROJ-004"],
@@ -32,7 +31,6 @@
   "recommended_implementation_order": [
     "PROJ-001: Primary Constructor refactoring (foundational)",
     "PROJ-004: Validation Layer",
-    "PROJ-002: Value Objects",
     "PROJ-003: Domain Events",
     "PROJ-009: Error Handling",
     "PROJ-005: Exercise CRUD",

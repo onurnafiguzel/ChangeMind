@@ -3,8 +3,8 @@
   "description": "ASP.NET Core 10.0 API - Fitness/Coaching Platform",
   "version": "1.0",
   "generated": "2026-04-05",
-  "total_tasks": 18,
-  "total_story_points": 167,
+  "total_tasks": 17,
+  "total_story_points": 159,
   "tasks": [
     {
       "id": "PROJ-001",
@@ -56,28 +56,6 @@
         "Geçersiz email, password, age vb. için custom exceptions throw ediliyor",
         "Validation error messages kullanıcı dostu ve Türkçe",
         "API'de validation error'ları 400 Bad Request olarak response veriliyor"
-      ],
-      "dependencies": [],
-      "estimate": "1.5 days"
-    },
-    {
-      "id": "PROJ-005",
-      "title": "Exercise Library Management CRUD Sistemi",
-      "description": "Exercise entity'si için tam CRUD operasyonlarını implement et. ExerciseController oluştur ve Create, Update, Delete, Get, GetAll operasyonlarını implement et. Yalnızca Admin/Coach rolüne izin ver.",
-      "priority": "P1",
-      "storyPoints": 8,
-      "status": "pending",
-      "category": "Feature Implementation",
-      "acceptance_criteria": [
-        "ExerciseController oluşturulmuş",
-        "CreateExerciseCommand ve handler'ı yazılmış",
-        "UpdateExerciseCommand ve handler'ı yazılmış",
-        "DeleteExerciseCommand ve handler'ı yazılmış",
-        "GetExerciseByIdQuery ve handler'ı yazılmış",
-        "GetExercisesQuery (paginated) yazılmış",
-        "Authorization: sadece Admin/Coach tarafından kullanılabiliyor",
-        "IExerciseRepository oluşturulmuş",
-        "API endpoints'leri test edilmiş"
       ],
       "dependencies": [],
       "estimate": "1.5 days"
@@ -374,12 +352,12 @@
   "summary": {
     "by_priority": {
       "P0": 0,
-      "P1": 11,
+      "P1": 10,
       "P2": 7
     },
     "by_category": {
       "Architecture & Code Quality": 5,
-      "Feature Implementation": 7,
+      "Feature Implementation": 6,
       "Cross-Cutting Concerns": 4,
       "Testing & Data": 2
     },

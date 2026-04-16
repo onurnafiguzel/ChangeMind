@@ -16,6 +16,11 @@ public class UpdateExerciseCommandHandler(
         var exercise = await exerciseRepository.GetByIdAsync(request.ExerciseId)
             ?? throw new NotFoundException($"Exercise with ID '{request.ExerciseId}' not found.");
 
+        // Isim değişiyorsa ve yeni isim zaten başka bir aktif egzersizde varsa çakışma fırlat
+        if (!string.Equals(exercise.Name, request.Name, StringComparison.OrdinalIgnoreCase)
+            && await exerciseRepository.ExistsAsync(request.Name))
+            throw new ConflictException($"An exercise named '{request.Name}' already exists.");
+
         var muscleGroup     = request.MuscleGroup.ParseOrThrow<MuscleGroup>();
         var difficultyLevel = request.DifficultyLevel.ParseOrThrow<DifficultyLevel>();
 

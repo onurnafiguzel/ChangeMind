@@ -55,6 +55,10 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPasswordService, PasswordService>();
 
+        // Register Cache
+        services.Configure<CacheOptions>(configuration.GetSection("Cache"));
+        services.AddSingleton<ICacheService, RedisCacheService>();
+
         return services;
     }
 }

@@ -59,6 +59,10 @@ public static class InfrastructureServiceExtensions
         services.Configure<CacheOptions>(configuration.GetSection("Cache"));
         services.AddSingleton<ICacheService, RedisCacheService>();
 
+        // Register Idempotency
+        services.Configure<IdempotencyOptions>(configuration.GetSection("Idempotency"));
+        services.AddSingleton<IIdempotencyService, IdempotencyService>();
+
         return services;
     }
 }

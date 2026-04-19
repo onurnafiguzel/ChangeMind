@@ -2,6 +2,7 @@ namespace ChangeMind.Api.Middleware;
 
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ChangeMind.Domain.Exceptions;
 
 /// <summary>
@@ -84,7 +85,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
 
-            // 409 Conflict — DuplicateEmailException ve InvalidStateTransitionException buraya düşer
+            // 409 Conflict — DuplicateEmailException, DuplicateIdempotencyKeyException ve diğerleri
             ConflictException conflictException => new ProblemDetails
             {
                 Status = StatusCodes.Status409Conflict,
@@ -93,6 +94,18 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 Instance = httpContext.Request.Path,
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
+
+            // 409 Conflict — DB unique constraint violation (idempotency son güvence)
+            DbUpdateException dbEx when dbEx.InnerException?.Message.Contains("23505") == true
+                || dbEx.InnerException?.Message.Contains("UX_Payments_UserId_IdempotencyKey") == true
+                => new ProblemDetails
+                {
+                    Status = StatusCodes.Status409Conflict,
+                    Title = "Conflict",
+                    Detail = "A payment with this idempotency key has already been processed.",
+                    Instance = httpContext.Request.Path,
+                    Type = "https://tools.ietf.org/html/rfc7807"
+                },
 
             // 400 Bad Request (InvalidOperationException — framework hataları)
             InvalidOperationException invalidOpException => new ProblemDetails

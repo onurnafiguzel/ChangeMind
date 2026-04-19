@@ -1,6 +1,7 @@
 namespace ChangeMind.Application.UseCases.Payments.Commands;
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
@@ -15,32 +16,26 @@ public class ProcessPaymentCommandHandler(
 {
     public async Task<PaymentProcessResponse> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
     {
-        // Verify user exists
         var user = await userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 
-        // Verify package exists
         var package = await packageRepository.GetByIdAsync(request.PackageId)
             ?? throw new NotFoundException($"Package with ID '{request.PackageId}' not found.");
 
-        // Verify amount matches package price (or use package price if not provided)
         var paymentAmount = request.Amount > 0 ? request.Amount : package.Price;
 
-        // Create payment record
         var payment = Payment.Create(
             userId: request.UserId,
             packageId: request.PackageId,
             amount: paymentAmount,
-            description: request.Description);
+            description: request.Description,
+            idempotencyKey: request.IdempotencyKey);
 
-        // Mock payment processing - always succeeds
-        // In a real scenario, this would call a payment gateway (Stripe, PayPal, etc.)
+        // Mock payment gateway — replace with real provider (Stripe, PayPal, etc.)
         payment.MarkAsCompleted(transactionId: Guid.NewGuid().ToString());
 
-        // Save payment to repository
         await paymentRepository.AddAsync(payment);
 
-        // Add user to WaitingUsers table if not already there
         var existingWaitingUser = await waitingUserRepository.GetByUserIdAsync(request.UserId);
         if (existingWaitingUser == null)
         {
@@ -49,18 +44,29 @@ public class ProcessPaymentCommandHandler(
         }
         else if (!existingWaitingUser.IsWaitingForAssignment)
         {
-            // If user was previously assigned but needs to be marked as waiting again
             existingWaitingUser.MarkAsWaiting();
             await waitingUserRepository.UpdateAsync(existingWaitingUser);
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        {
+            // DB-level duplicate guard: fires when Redis is down and a retry slips through
+            throw new DuplicateIdempotencyKeyException(request.IdempotencyKey ?? Guid.Empty);
+        }
 
         return new PaymentProcessResponse
         {
-            Success = true,
+            Success   = true,
             PaymentId = payment.Id,
-            Message = "Payment processed successfully. User added to waiting list for coach assignment."
+            Message   = "Payment processed successfully. User added to waiting list for coach assignment."
         };
     }
+
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex) =>
+        ex.InnerException?.Message.Contains("23505") == true ||
+        ex.InnerException?.Message.Contains("UX_Payments_UserId_IdempotencyKey") == true;
 }

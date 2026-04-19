@@ -16,6 +16,7 @@ public sealed class Payment
     public PaymentStatus Status { get; private set; } = PaymentStatus.Pending;
     public string? TransactionId { get; private set; }
     public string? Description { get; private set; }
+    public string? IdempotencyKey { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
     public DateTime? CompletedAt { get; private set; }
@@ -28,25 +29,24 @@ public sealed class Payment
         Guid userId,
         Guid packageId,
         decimal amount,
-        string? description = null)
+        string? description = null,
+        Guid? idempotencyKey = null)
     {
         return new Payment
         {
-            Id            = Guid.NewGuid(),
-            UserId        = userId,
-            PackageId     = packageId,
-            Amount        = amount,
-            Status        = PaymentStatus.Pending,
-            Description   = description,
-            CreatedAt     = DateTime.UtcNow,
-            CompletedAt   = null,
-            TransactionId = null
+            Id             = Guid.NewGuid(),
+            UserId         = userId,
+            PackageId      = packageId,
+            Amount         = amount,
+            Status         = PaymentStatus.Pending,
+            Description    = description,
+            IdempotencyKey = idempotencyKey?.ToString("D"),
+            CreatedAt      = DateTime.UtcNow,
+            CompletedAt    = null,
+            TransactionId  = null
         };
     }
 
-    /// <summary>
-    /// Marks the payment as successfully completed with the external transaction ID.
-    /// </summary>
     public void MarkAsCompleted(string transactionId)
     {
         Status        = PaymentStatus.Completed;
@@ -54,17 +54,11 @@ public sealed class Payment
         CompletedAt   = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Marks the payment as failed. Can only fail from Pending state.
-    /// </summary>
     public void MarkAsFailed()
     {
         Status = PaymentStatus.Failed;
     }
 
-    /// <summary>
-    /// Marks the payment as refunded. Can only refund a completed payment.
-    /// </summary>
     public void MarkAsRefunded()
     {
         Status = PaymentStatus.Refunded;

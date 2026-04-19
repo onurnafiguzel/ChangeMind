@@ -47,6 +47,10 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(p => p.CompletedAt)
             .IsRequired(false);
 
+        builder.Property(p => p.IdempotencyKey)
+            .IsRequired(false)
+            .HasMaxLength(36);
+
         // Indexes
         builder.HasIndex(p => p.UserId)
             .HasDatabaseName("IX_Payments_UserId");
@@ -59,6 +63,11 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         builder.HasIndex(p => p.CreatedAt)
             .HasDatabaseName("IX_Payments_CreatedAt");
+
+        builder.HasIndex(p => new { p.UserId, p.IdempotencyKey })
+            .IsUnique()
+            .HasFilter("\"IdempotencyKey\" IS NOT NULL")
+            .HasDatabaseName("UX_Payments_UserId_IdempotencyKey");
 
         // Relationships
         builder.HasOne(p => p.User)

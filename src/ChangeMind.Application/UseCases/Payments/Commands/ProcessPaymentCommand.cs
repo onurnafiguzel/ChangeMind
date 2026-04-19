@@ -6,7 +6,8 @@ public record ProcessPaymentCommand(
     Guid UserId,
     Guid PackageId,
     decimal Amount,
-    string? Description = null) : IRequest<PaymentProcessResponse>;
+    string? Description = null,
+    Guid? IdempotencyKey = null) : IRequest<PaymentProcessResponse>;
 
 public class PaymentProcessResponse
 {

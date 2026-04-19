@@ -39,8 +39,10 @@ public static class SecurityServiceExtensions
         // Configure Authorization Policies
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-            options.AddPolicy("CoachOrAdmin", policy => policy.RequireRole("Coach", "Admin"));
+            options.AddPolicy("auth",          policy => policy.RequireAuthenticatedUser());
+            options.AddPolicy("admin-only",    policy => policy.RequireRole("Admin"));
+            options.AddPolicy("coach-only",    policy => policy.RequireRole("Coach"));
+            options.AddPolicy("coach-or-admin", policy => policy.RequireRole("Coach", "Admin"));
         });
 
         return services;

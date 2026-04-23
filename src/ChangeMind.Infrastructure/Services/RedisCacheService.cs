@@ -1,6 +1,7 @@
 namespace ChangeMind.Infrastructure.Services;
 
 using System.Text.Json;
+using System.Threading.RateLimiting;
 using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Services;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,7 @@ public sealed class RedisCacheService(
     private readonly CacheOptions _options = options.Value;
     private readonly ConnectionMultiplexer _connection = CreateConnection(options.Value);
     private readonly ResiliencePipeline _pipeline = BuildPipeline(options.Value.Resilience, logger);
+    private readonly ConcurrencyLimiter _bulkhead = CreateBulkhead(options.Value.Resilience);
 
     private IDatabase Db => _connection.GetDatabase();
 
@@ -51,9 +53,21 @@ public sealed class RedisCacheService(
         LoggerMessage.Define(LogLevel.Information, new EventId(6, "CircuitHalfOpen"),
             "Redis circuit HALF-OPEN. Probing...");
 
+    private static readonly Action<ILogger, string, string, Exception?> _logBulkheadFull =
+        LoggerMessage.Define<string, string>(LogLevel.Warning, new EventId(7, "BulkheadFull"),
+            "Redis bulkhead full. {Operation} '{Key}' rejected — too many concurrent operations.");
+
     public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
     {
         var fullKey = BuildKey(key);
+
+        using var lease = _bulkhead.AttemptAcquire();
+        if (!lease.IsAcquired)
+        {
+            _logBulkheadFull(logger, "GET", fullKey, null);
+            return default;
+        }
+
         try
         {
             return await _pipeline.ExecuteAsync(async ct =>
@@ -78,6 +92,14 @@ public sealed class RedisCacheService(
     public async Task SetAsync<T>(string key, T value, TimeSpan? ttl = null, CancellationToken cancellationToken = default)
     {
         var fullKey = BuildKey(key);
+
+        using var lease = _bulkhead.AttemptAcquire();
+        if (!lease.IsAcquired)
+        {
+            _logBulkheadFull(logger, "SET", fullKey, null);
+            return;
+        }
+
         try
         {
             await _pipeline.ExecuteAsync(async ct =>
@@ -102,6 +124,14 @@ public sealed class RedisCacheService(
     public async Task RemoveAsync(string key, CancellationToken cancellationToken = default)
     {
         var fullKey = BuildKey(key);
+
+        using var lease = _bulkhead.AttemptAcquire();
+        if (!lease.IsAcquired)
+        {
+            _logBulkheadFull(logger, "REMOVE", fullKey, null);
+            return;
+        }
+
         try
         {
             await _pipeline.ExecuteAsync(async ct =>
@@ -120,6 +150,14 @@ public sealed class RedisCacheService(
     }
 
     private string BuildKey(string key) => $"{_options.InstanceName}{key}";
+
+    private static ConcurrencyLimiter CreateBulkhead(ResilienceOptions opts) =>
+        new(new ConcurrencyLimiterOptions
+        {
+            PermitLimit = opts.MaxConcurrentOperations,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            QueueLimit = opts.ConcurrentQueueLimit
+        });
 
     private static ConnectionMultiplexer CreateConnection(CacheOptions opts)
     {
@@ -192,6 +230,7 @@ public sealed class RedisCacheService(
 
     public async ValueTask DisposeAsync()
     {
+        _bulkhead.Dispose();
         await _connection.CloseAsync();
         _connection.Dispose();
     }

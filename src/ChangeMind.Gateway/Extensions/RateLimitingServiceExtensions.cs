@@ -15,6 +15,7 @@ public static class RateLimitingServiceExtensions
         var pub      = configuration.GetSection("RateLimiting:Public");
         var standard = configuration.GetSection("RateLimiting:Standard");
         var admin    = configuration.GetSection("RateLimiting:Admin");
+        var payment  = configuration.GetSection("RateLimiting:Payment");
 
         services.AddRateLimiter(options =>
         {
@@ -68,6 +69,21 @@ public static class RateLimitingServiceExtensions
                 opt.QueueProcessingOrder     = QueueProcessingOrder.OldestFirst;
                 opt.QueueLimit               = 0;
             });
+
+            // Payment — Zaman penceresi koruması standard ile aynı, ayrıca gateway
+            // katmanında eş zamanlı slot sınırı eklenir (bulkhead). İki koruma aynı anda aktif:
+            // "standard" policy → zaman penceresi (DDoS/spam), "payment" → eş zamanlı slot (kaynak koruması).
+            // Not: YARP tek policy desteklediğinden payment route'u bu policy'yi kullanır;
+            // sliding window mantığı buraya gömülüdür.
+            options.AddPolicy<string>("payment", context =>
+                RateLimitPartition.GetConcurrencyLimiter(
+                    partitionKey: "payment-global",
+                    factory: _ => new ConcurrencyLimiterOptions
+                    {
+                        PermitLimit          = payment.GetValue("MaxConcurrent", 20),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit           = payment.GetValue("QueueLimit", 5)
+                    }));
         });
 
         return services;

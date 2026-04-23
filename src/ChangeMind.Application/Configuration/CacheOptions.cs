@@ -24,4 +24,10 @@ public sealed class ResilienceOptions
 
     /// <summary>Per-operation timeout (independent of the request-level timeout).</summary>
     public int OperationTimeoutMs { get; init; } = 1000;
+
+    /// <summary>Maximum concurrent Redis operations. Excess requests are rejected immediately.</summary>
+    public int MaxConcurrentOperations { get; init; } = 50;
+
+    /// <summary>Queue depth when bulkhead is full. 0 = reject immediately (no queuing).</summary>
+    public int ConcurrentQueueLimit { get; init; } = 0;
 }

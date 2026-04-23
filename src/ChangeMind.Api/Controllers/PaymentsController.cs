@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ChangeMind.Api.Filters;
 using ChangeMind.Application.UseCases.Payments.Commands;
 
@@ -18,6 +19,7 @@ public class PaymentsController(IMediator mediator) : ControllerBase
     [HttpPost]
     [RequestTimeout("external")]
     [Idempotent]
+    [EnableRateLimiting("payment-bulkhead")]
     public async Task<ActionResult<PaymentProcessResponse>> ProcessPayment(
         [FromBody] ProcessPaymentCommand command,
         CancellationToken cancellationToken = default)

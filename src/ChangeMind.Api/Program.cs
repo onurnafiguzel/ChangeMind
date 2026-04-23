@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddTimeoutPolicies();
+builder.Services.AddBulkhead(builder.Configuration);
 builder.Services.AddCorsPolicy(builder.Configuration);
 builder.Services.AddHealthCheckServices(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -33,6 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 app.UseRequestTimeouts();
+app.UseRateLimiter();
 
 if (app.Environment.IsDevelopment())
     app.MapOpenApi();

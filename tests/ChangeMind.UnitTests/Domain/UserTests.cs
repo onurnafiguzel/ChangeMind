@@ -87,4 +87,20 @@ public class UserTests
         Assert.Equal(firstName, user.FirstName);
         Assert.Equal(lastName,  user.LastName);
     }
+
+    [Theory]
+    [InlineData("new-hash-1")]
+    [InlineData("new-hash-2")]
+    public void ChangePassword_ShouldUpdatePasswordHashAndSetUpdatedAt(string newPasswordHash)
+    {
+        // Arrange
+        var user = User.Create("test@example.com", "old-hash");
+
+        // Act
+        user.ChangePassword(newPasswordHash);
+    
+        // Assert
+        Assert.Equal(newPasswordHash, user.PasswordHash);
+        Assert.NotNull(user.UpdatedAt); // UpdatedAt güncellenmeli
+    }
 }

@@ -10,4 +10,7 @@
     <Project Path="src/ChangeMind.Gateway/ChangeMind.Gateway.csproj" />
     <Project Path="src/ChangeMind.Infrastructure/ChangeMind.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ChangeMind.UnitTests/ChangeMind.UnitTests.csproj" />
+  </Folder>
 </Solution>

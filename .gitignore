@@ -370,3 +370,6 @@ FodyWeavers.xsd
 
 # Documentation (local only)
 docs/
+
+# Local development notes — never commit
+skills.md

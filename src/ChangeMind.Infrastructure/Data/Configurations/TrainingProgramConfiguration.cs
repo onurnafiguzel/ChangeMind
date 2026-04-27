@@ -47,6 +47,19 @@ public class TrainingProgramConfiguration : IEntityTypeConfiguration<TrainingPro
             .IsRequired()
             .HasDefaultValue(true);
 
+        builder.Property(tp => tp.IsCompleted)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.Property(tp => tp.CompletedWeeks)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(tp => tp.CompletedAt)
+            .IsRequired(false);
+
+        builder.Ignore(tp => tp.ProgressPercentage);
+
         builder.Property(tp => tp.StartDate)
             .IsRequired(false);
 

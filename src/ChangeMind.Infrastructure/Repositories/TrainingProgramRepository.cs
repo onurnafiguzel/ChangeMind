@@ -13,6 +13,12 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
         await context.TrainingPrograms.AddAsync(program);
     }
 
+    public Task UpdateAsync(TrainingProgram program)
+    {
+        context.TrainingPrograms.Update(program);
+        return Task.CompletedTask;
+    }
+
     public async Task<TrainingProgram?> GetByIdAsync(Guid id)
     {
         return await context.TrainingPrograms

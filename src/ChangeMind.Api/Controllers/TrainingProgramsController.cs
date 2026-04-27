@@ -50,7 +50,6 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
         Guid userId,
         CancellationToken cancellationToken = default)
     {
-
         var query = new GetUserActiveProgramQuery { UserId = userId };
         var result = await mediator.Send(query, cancellationToken);
 
@@ -60,4 +59,67 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Update the daily exercise schedule of a training program. Increments version number.
+    /// </summary>
+    [HttpPut("{id:guid}/daily-program")]
+    public async Task<IActionResult> UpdateDailyProgram(
+        Guid id,
+        [FromBody] UpdateDailyProgramCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(command with { ProgramId = id }, cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Activate a training program.
+    /// </summary>
+    [HttpPost("{id:guid}/activate")]
+    public async Task<IActionResult> Activate(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new ActivateTrainingProgramCommand(id), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Deactivate a training program.
+    /// </summary>
+    [HttpPost("{id:guid}/deactivate")]
+    public async Task<IActionResult> Deactivate(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new DeactivateTrainingProgramCommand(id), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Mark a training program as completed.
+    /// </summary>
+    [HttpPost("{id:guid}/complete")]
+    public async Task<IActionResult> Complete(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new CompleteTrainingProgramCommand(id), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Update progress (completed weeks) for a training program.
+    /// </summary>
+    [HttpPut("{id:guid}/progress")]
+    public async Task<IActionResult> UpdateProgress(
+        Guid id,
+        [FromBody] UpdateProgressRequest body,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new UpdateProgressCommand(id, body.CompletedWeeks), cancellationToken);
+        return NoContent();
+    }
 }
+
+public record UpdateProgressRequest(int CompletedWeeks);

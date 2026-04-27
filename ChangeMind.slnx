@@ -11,6 +11,7 @@
     <Project Path="src/ChangeMind.Infrastructure/ChangeMind.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/ChangeMind.IntegrationTests/ChangeMind.IntegrationTests.csproj" />
     <Project Path="tests/ChangeMind.UnitTests/ChangeMind.UnitTests.csproj" />
   </Folder>
 </Solution>

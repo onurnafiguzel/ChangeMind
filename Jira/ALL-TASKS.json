@@ -149,7 +149,8 @@
       "description": "xUnit, Moq veya similar frameworks'ü kullanarak test altyapısını kur. Application layer için unit test'lerini yaz (CommandHandlers, QueryHandlers). Test base classes ve fixtures oluştur.",
       "priority": "P2",
       "storyPoints": 13,
-      "status": "pending",
+      "status": "done",
+      "completedAt": "2026-04-27",
       "category": "Testing & Data",
       "acceptance_criteria": [
         "ChangeMind.Tests projesi oluşturulmuş",

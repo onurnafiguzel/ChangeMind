@@ -14,7 +14,8 @@
     "Minimum %70 code coverage target belirtilmiş"
   ],
   "dependencies": [],
-  "status": "pending",
+  "status": "done",
+  "completedAt": "2026-04-27",
   "estimate": "2 days",
   "businessValue": "Code quality, regression prevention"
 }

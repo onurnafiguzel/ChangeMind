@@ -2,7 +2,7 @@ namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
 
-public sealed class Payment
+public sealed class Payment : AggregateRoot
 {
     // EF Core constructor — object creation only through factory method
     private Payment() { }

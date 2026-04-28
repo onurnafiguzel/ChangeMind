@@ -1,10 +1,14 @@
 namespace ChangeMind.Infrastructure.Extensions;
 
 using ChangeMind.Application.Configuration;
+using ChangeMind.Application.EventHandlers;
+using ChangeMind.Application.Events;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
+using ChangeMind.Domain.Events;
 using ChangeMind.Infrastructure.Data;
+using ChangeMind.Infrastructure.Events;
 using ChangeMind.Infrastructure.Repositories;
 using ChangeMind.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +37,15 @@ public static class InfrastructureServiceExtensions
                     npgsqlOptions.MigrationsAssembly("ChangeMind.Infrastructure");
                     npgsqlOptions.CommandTimeout(commandTimeout);
                 }));
+
+        // Register Domain Event Publisher
+        services.AddScoped<IEventPublisher, DomainEventPublisher>();
+
+        // Register Domain Event Handlers
+        services.AddScoped<IEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
+        services.AddScoped<IEventHandler<UserDeactivatedEvent>, UserDeactivatedEventHandler>();
+        services.AddScoped<IEventHandler<CoachCreatedEvent>, CoachCreatedEventHandler>();
+        services.AddScoped<IEventHandler<TrainingProgramAssignedEvent>, TrainingProgramAssignedEventHandler>();
 
         // Register Unit of Work
         services.AddScoped<IUnitOfWork, ChangeMind.Infrastructure.UnitOfWork.UnitOfWork>();

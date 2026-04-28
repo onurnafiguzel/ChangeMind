@@ -30,7 +30,7 @@
       "description": "Domain Events pattern'ini kullanarak entity'ler arasında loose coupling sağla. UserCreatedEvent, UserDeactivatedEvent, TrainingProgramAssignedEvent gibi events oluştur ve publish et.",
       "priority": "P2",
       "storyPoints": 13,
-      "status": "pending",
+      "status": "done",
       "category": "Cross-Cutting Concerns",
       "acceptance_criteria": [
         "IDomainEvent interface oluşturulmuş",
@@ -40,7 +40,8 @@
         "Event handlers örneği yazılmış (UserCreatedEvent → SendWelcomeEmail)"
       ],
       "dependencies": ["PROJ-001"],
-      "estimate": "2-3 days"
+      "estimate": "2-3 days",
+      "completedAt": "2026-04-28"
     },
     {
       "id": "PROJ-004",

@@ -41,6 +41,6 @@ public static class TestCoachFactory
         string passwordHash = "hashed-password",
         string firstName = "Test",
         string lastName = "Coach",
-        CoachSpecialization? specialization = CoachSpecialization.Fitness) =>
+        CoachSpecialization? specialization = CoachSpecialization.Strength) =>
         Coach.Create(email, passwordHash, firstName, lastName, specialization);
 }

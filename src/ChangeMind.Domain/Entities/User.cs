@@ -1,8 +1,9 @@
 namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Events;
 
-public sealed class User
+public sealed class User : AggregateRoot
 {
     // EF Core constructor — object creation only through factory method
     private User() { }
@@ -49,7 +50,7 @@ public sealed class User
         string firstName = "",
         string lastName = "")
     {
-        return new User
+        var user = new User
         {
             Id = Guid.NewGuid(),
             Email = email,
@@ -66,6 +67,8 @@ public sealed class User
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = null
         };
+        user.AddDomainEvent(new UserCreatedEvent(user.Id, user.Email));
+        return user;
     }
 
     /// <summary>
@@ -123,6 +126,7 @@ public sealed class User
     {
         IsActive = false;
         UpdatedAt = DateTime.UtcNow;
+        AddDomainEvent(new UserDeactivatedEvent(Id));
     }
 
     public void Activate()

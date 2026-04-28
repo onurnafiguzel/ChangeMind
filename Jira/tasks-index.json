@@ -5,8 +5,10 @@
   "summary": {
     "p0_critical": 0,
     "p1_high": 10,
-    "p2_medium": 7,
-    "total_story_points": 159
+    "p2_medium": 6,
+    "total_story_points": 146,
+    "completed_tasks": 4,
+    "completed_story_points": 47
   },
   "task_dependencies_graph": {
     "PROJ-001": [],
@@ -27,19 +29,19 @@
     "PROJ-020": []
   },
   "recommended_implementation_order": [
-    "PROJ-001: Primary Constructor refactoring (foundational)",
+    "PROJ-001: Primary Constructor refactoring (foundational) ✓ DONE",
     "PROJ-004: Validation Layer",
-    "PROJ-003: Domain Events",
     "PROJ-009: Error Handling",
-    "PROJ-006: TrainingProgram Advanced",
-    "PROJ-007: Payment System",
+    "PROJ-007: Payment System (requires PROJ-003 ✓ DONE)",
     "PROJ-012: Authorization & Roles",
-    "PROJ-008: Notification System",
+    "PROJ-008: Notification System (requires PROJ-003 ✓ DONE)",
     "PROJ-014: UserPhoto Management",
-    "PROJ-015: Waiting Queue System",
+    "PROJ-015: Waiting Queue System (requires PROJ-003 ✓ DONE)",
     "PROJ-018: DTO Mapping",
     "PROJ-020: Pagination & Filtering",
-    "PROJ-010: Unit Testing",
+    "PROJ-006: TrainingProgram Advanced ✓ DONE",
+    "PROJ-010: Unit Testing ✓ DONE",
+    "PROJ-003: Domain Events ✓ DONE",
     "PROJ-013: Logging & Monitoring",
     "PROJ-011: Integration Testing",
     "PROJ-017: Specification Pattern",

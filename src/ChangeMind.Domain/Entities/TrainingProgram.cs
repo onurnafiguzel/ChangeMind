@@ -1,9 +1,10 @@
 namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Events;
 using ChangeMind.Domain.Exceptions;
 
-public sealed class TrainingProgram
+public sealed class TrainingProgram : AggregateRoot
 {
     // EF Core constructor — object creation only through factory method
     private TrainingProgram() { }
@@ -60,7 +61,7 @@ public sealed class TrainingProgram
             throw new ValidationException("Program süresi 1 ile 52 hafta arasında olmalıdır.");
 
         var now = DateTime.UtcNow;
-        return new TrainingProgram
+        var program = new TrainingProgram
         {
             Id             = Guid.NewGuid(),
             Name           = name,
@@ -79,6 +80,8 @@ public sealed class TrainingProgram
             UpdatedAt      = null,
             CompletedAt    = null
         };
+        program.AddDomainEvent(new TrainingProgramAssignedEvent(program.Id, userId));
+        return program;
     }
 
     /// <summary>

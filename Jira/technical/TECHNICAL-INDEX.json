@@ -2,116 +2,60 @@
   "project": "ChangeMind",
   "section": "Technical",
   "description": "Technical infrastructure, patterns, and code quality tasks",
-  "total_tasks": 16,
-  "total_story_points": 153,
+  "total_tasks": 8,
+  "total_story_points": 71,
   "tasks": [
     {
-      "id": "TECH-002",
-      "title": "Value Objects Oluştur (UserId, Email, Phone gibi)",
-      "priority": "P1",
-      "storyPoints": 13,
-      "category": "Architecture"
-    },
-    {
-      "id": "TECH-003",
-      "title": "Domain Events Pattern'ini Implement Et",
-      "priority": "P2",
-      "storyPoints": 13,
-      "category": "Architecture"
-    },
-    {
-      "id": "TECH-005",
-      "title": "Exercise Library Management CRUD Sistemi",
-      "priority": "P1",
-      "storyPoints": 8,
-      "category": "Data Access"
-    },
-    {
-      "id": "TECH-006",
-      "title": "TrainingProgram Entity'sini Rich Model'e Dönüştür",
-      "priority": "P1",
-      "storyPoints": 13,
-      "category": "Architecture"
-    },
-    {
-      "id": "TECH-007",
-      "title": "Payment System Geliştirilmesi",
-      "priority": "P1",
-      "storyPoints": 13,
-      "category": "Architecture"
-    },
-    {
-      "id": "TECH-008",
+      "id": "PROJ-008",
       "title": "Notification System Altyapısı (Email/SMS)",
       "priority": "P2",
       "storyPoints": 13,
       "category": "Infrastructure"
     },
     {
-      "id": "TECH-010",
-      "title": "Unit Testing Infrastructure Setup",
-      "priority": "P2",
-      "storyPoints": 13,
-      "category": "Testing"
-    },
-    {
-      "id": "TECH-011",
-      "title": "Integration Testing Framework",
-      "priority": "P2",
-      "storyPoints": 13,
-      "category": "Testing"
-    },
-    {
-      "id": "TECH-013",
+      "id": "PROJ-013",
       "title": "Logging ve Monitoring Altyapısı",
       "priority": "P2",
       "storyPoints": 8,
       "category": "Observability"
     },
     {
-      "id": "TECH-014",
+      "id": "PROJ-014",
       "title": "UserPhoto Management CRUD",
       "priority": "P1",
       "storyPoints": 13,
       "category": "Data Access"
     },
     {
-      "id": "TECH-015",
+      "id": "PROJ-015",
       "title": "WaitingUser Queue System Implementation",
       "priority": "P1",
       "storyPoints": 13,
       "category": "Business Logic"
     },
     {
-      "id": "TECH-016",
-      "title": "Database Seeding Yapısı",
-      "priority": "P2",
-      "storyPoints": 5,
-      "category": "Infrastructure"
-    },
-    {
-      "id": "TECH-017",
+      "id": "PROJ-017",
       "title": "Specification Pattern Implementation",
       "priority": "P2",
       "storyPoints": 8,
       "category": "Architecture"
     },
     {
-      "id": "TECH-018",
+      "id": "PROJ-018",
       "title": "DTO Mapping Strategy (AutoMapper)",
       "priority": "P1",
       "storyPoints": 8,
       "category": "Architecture"
     },
     {
-      "id": "TECH-019",
+      "id": "PROJ-019",
       "title": "OpenAPI/Swagger Documentation",
       "priority": "P2",
       "storyPoints": 8,
       "category": "Documentation"
     },
     {
-      "id": "TECH-020",
+      "id": "PROJ-020",
       "title": "Pagination ve Filtering Sistemi",
       "priority": "P1",
       "storyPoints": 8,
@@ -119,58 +63,25 @@
     }
   ],
   "by_category": {
-    "Architecture": [
-      "TECH-002",
-      "TECH-003",
-      "TECH-004",
-      "TECH-006",
-      "TECH-007",
-      "TECH-017",
-      "TECH-018"
-    ],
-    "Data Access": [
-      "TECH-005",
-      "TECH-014",
-      "TECH-020"
-    ],
-    "Infrastructure": [
-      "TECH-008",
-      "TECH-016"
-    ],
-    "Testing": [
-      "TECH-010",
-      "TECH-011"
-    ],
-    "Observability": [
-      "TECH-013"
-    ],
-    "Business Logic": [
-      "TECH-015"
-    ],
-    "Documentation": [
-      "TECH-019"
-    ]
+    "Architecture": ["PROJ-017", "PROJ-018"],
+    "Data Access": ["PROJ-014", "PROJ-020"],
+    "Infrastructure": ["PROJ-008"],
+    "Observability": ["PROJ-013"],
+    "Business Logic": ["PROJ-015"],
+    "Documentation": ["PROJ-019"]
   },
   "by_priority": {
-    "P1": 8,
-    "P2": 8
+    "P1": 4,
+    "P2": 4
   },
   "implementation_order": [
-    "TECH-002: Value Objects",
-    "TECH-003: Domain Events",
-    "TECH-005: Exercise CRUD",
-    "TECH-006: TrainingProgram Rich Model",
-    "TECH-007: Payment System",
-    "TECH-008: Notification System",
-    "TECH-014: UserPhoto Management",
-    "TECH-015: Waiting Queue",
-    "TECH-018: DTO Mapping",
-    "TECH-020: Pagination & Filtering",
-    "TECH-010: Unit Testing",
-    "TECH-013: Logging",
-    "TECH-011: Integration Testing",
-    "TECH-017: Specification Pattern",
-    "TECH-019: API Documentation",
-    "TECH-016: Database Seeding"
+    "PROJ-008: Notification System",
+    "PROJ-013: Logging",
+    "PROJ-014: UserPhoto Management",
+    "PROJ-015: Waiting Queue",
+    "PROJ-017: Specification Pattern",
+    "PROJ-018: DTO Mapping",
+    "PROJ-019: API Documentation",
+    "PROJ-020: Pagination & Filtering"
   ]
 }

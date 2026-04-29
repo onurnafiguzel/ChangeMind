@@ -2,108 +2,7 @@
   "project": "ChangeMind",
   "description": "ASP.NET Core 10.0 API - Fitness/Coaching Platform",
   "version": "1.0",
-  "generated": "2026-04-05",
-  "total_tasks": 17,
-  "total_story_points": 159,
   "tasks": [
-    {
-      "id": "PROJ-001",
-      "title": "Primary Constructor'ı C# 12+ Feature'ını Tüm Domain Entities'de Uygula",
-      "description": "Domain entities'lerde Primary Constructor pattern'ini implement et. Skills.md'de belirtilen C# 12+ feature'ını kullanarak boilerplate kodu azalt. User, Coach, TrainingProgram, Package, Exercise gibi entities'lerde uygulanmalı.",
-      "priority": "P1",
-      "storyPoints": 8,
-      "status": "pending",
-      "category": "Architecture & Code Quality",
-      "acceptance_criteria": [
-        "Tüm Domain entities Primary Constructor ile tanımlanmış",
-        "Eski constructor syntax'ı kaldırılmış",
-        "Properties private set olarak ayarlanmış",
-        "Factory methods çalışmaya devam ediyor",
-        "Unit tests passing"
-      ],
-      "dependencies": [],
-      "estimate": "1 day"
-    },
-    {
-      "id": "PROJ-003",
-      "title": "Domain Events Pattern'ini Implement Et",
-      "description": "Domain Events pattern'ini kullanarak entity'ler arasında loose coupling sağla. UserCreatedEvent, UserDeactivatedEvent, TrainingProgramAssignedEvent gibi events oluştur ve publish et.",
-      "priority": "P2",
-      "storyPoints": 13,
-      "status": "done",
-      "category": "Cross-Cutting Concerns",
-      "acceptance_criteria": [
-        "IDomainEvent interface oluşturulmuş",
-        "Domain entity'lerde AddDomainEvent metodu var",
-        "Temel domain events tanımlanmış (User, Coach, TrainingProgram events)",
-        "Event publishing altyapısı ayarlanmış",
-        "Event handlers örneği yazılmış (UserCreatedEvent → SendWelcomeEmail)"
-      ],
-      "dependencies": ["PROJ-001"],
-      "estimate": "2-3 days",
-      "completedAt": "2026-04-28"
-    },
-    {
-      "id": "PROJ-004",
-      "title": "Entity Validation Layer Oluştur",
-      "description": "Domain entity'lerine comprehensive validation logic ekle. Email format, password strength, age range gibi validations'ı implement et. FluentValidation veya custom validation pattern kullan.",
-      "priority": "P1",
-      "storyPoints": 8,
-      "status": "pending",
-      "category": "Cross-Cutting Concerns",
-      "acceptance_criteria": [
-        "Tüm entity'lerin özel bir Validator class'ı var",
-        "CreateUser command'ında validation yapılıyor",
-        "Geçersiz email, password, age vb. için custom exceptions throw ediliyor",
-        "Validation error messages kullanıcı dostu ve Türkçe",
-        "API'de validation error'ları 400 Bad Request olarak response veriliyor"
-      ],
-      "dependencies": [],
-      "estimate": "1.5 days"
-    },
-    {
-      "id": "PROJ-006",
-      "title": "TrainingProgram Entity'sini Rich Model'e Dönüştür",
-      "description": "TrainingProgram entity'sini DDD rich model pattern'ine göre geliştirir. Behavior ekle: programı active/inactive yap, progress track et, version management'ı implement et.",
-      "priority": "P1",
-      "storyPoints": 13,
-      "status": "done",
-      "category": "Feature Implementation",
-      "acceptance_criteria": [
-        "TrainingProgram Primary Constructor ile tanımlanmış",
-        "UpdateDailyProgram metodu improved (validation ekle)",
-        "Activate/Deactivate behavior'ı eklenmiş",
-        "Version control logic'i iyileştirilmiş",
-        "Program progress tracking için foundation oluşturulmuş",
-        "Completion validation'ı yapılmış",
-        "Tests yazılmış"
-      ],
-      "dependencies": ["PROJ-001", "PROJ-002"],
-      "estimate": "2 days",
-      "completedAt": "2026-04-27"
-    },
-    {
-      "id": "PROJ-007",
-      "title": "Payment System Geliştirilmesi",
-      "description": "Payment entity'sinin üzerinden tam bir payment workflow oluştur. CreatePaymentCommand, UpdatePaymentStatusCommand, GetPaymentQuery gibi use case'leri implement et. Payment status management'ı (Pending, Completed, Failed, Refunded) çalışır hale getir.",
-      "priority": "P1",
-      "storyPoints": 13,
-      "status": "done",
-      "completedAt": "2026-04-29",
-      "category": "Feature Implementation",
-      "acceptance_criteria": [
-        "Payment entity'sine Primary Constructor uygulanmış",
-        "CreatePaymentCommand ve handler'ı yazılmış",
-        "UpdatePaymentStatusCommand yazılmış",
-        "PaymentStatusChangedEvent event'i oluşturulmuş",
-        "PaymentRepository implemented",
-        "Payment validation'ı yapılmış (amount > 0, status transitions valid)",
-        "API controller'ı yapılandırılmış",
-        "Tests yazılmış"
-      ],
-      "dependencies": ["PROJ-001", "PROJ-003"],
-      "estimate": "2 days"
-    },
     {
       "id": "PROJ-008",
       "title": "Notification System Altyapısı (Email/SMS)",
@@ -124,89 +23,6 @@
       ],
       "dependencies": ["PROJ-003"],
       "estimate": "2-3 days"
-    },
-    {
-      "id": "PROJ-009",
-      "title": "Domain Exception Handling İyileştirilmesi",
-      "description": "Mevcut exception hierarchy'sini genişletip daha spesifik exception'lar oluştur. ValidationException, DuplicateEmailException, InvalidCoachSpecializationException gibi typed exceptions kullan.",
-      "priority": "P1",
-      "storyPoints": 8,
-      "status": "pending",
-      "category": "Architecture & Code Quality",
-      "acceptance_criteria": [
-        "ValidationException oluşturulmuş (IEnumerable<string> errors parameter'ı ile)",
-        "DuplicateEmailException yazılmış",
-        "InvalidStateTransitionException yazılmış",
-        "BadRequestException yazılmış",
-        "GlobalExceptionHandler improved (tüm exception types'leri handle ediyor)",
-        "Türkçe error messages'lar konsistent",
-        "API responses'ları standardized"
-      ],
-      "dependencies": ["PROJ-004"],
-      "estimate": "1.5 days"
-    },
-    {
-      "id": "PROJ-010",
-      "title": "Unit Testing Infrastructure Setup",
-      "description": "xUnit, Moq veya similar frameworks'ü kullanarak test altyapısını kur. Application layer için unit test'lerini yaz (CommandHandlers, QueryHandlers). Test base classes ve fixtures oluştur.",
-      "priority": "P2",
-      "storyPoints": 13,
-      "status": "done",
-      "completedAt": "2026-04-27",
-      "category": "Testing & Data",
-      "acceptance_criteria": [
-        "ChangeMind.Tests projesi oluşturulmuş",
-        "xUnit, Moq, FluentAssertions kütüphaneleri added",
-        "CreateUserCommandHandler için test cases yazılmış",
-        "CreateCoachCommandHandler için test cases yazılmış",
-        "GetUsersQueryHandler için test cases yazılmış",
-        "Test fixtures ve helpers oluşturulmuş (TestUserFactory vb)",
-        "Minimum %70 code coverage target belirtilmiş"
-      ],
-      "dependencies": [],
-      "estimate": "2 days"
-    },
-    {
-      "id": "PROJ-011",
-      "title": "Integration Testing Framework",
-      "description": "API endpoint'leri ve database interaction'ları test etmek için integration test framework'ü kur. WebApplicationFactory ve test database setup'ını yapılandır.",
-      "priority": "P2",
-      "storyPoints": 13,
-      "status": "done",
-      "completedAt": "2026-04-29",
-      "category": "Testing & Data",
-      "acceptance_criteria": [
-        "WebApplicationFactory base class oluşturulmuş",
-        "Test database configuration (in-memory veya test container)",
-        "AuthController endpoints için integration tests",
-        "UsersController endpoints için integration tests",
-        "CoachesController endpoints için integration tests",
-        "Database transaction rollback'ı her test'ten sonra",
-        "Test data seeding utilities"
-      ],
-      "dependencies": ["PROJ-010"],
-      "estimate": "2-3 days"
-    },
-    {
-      "id": "PROJ-012",
-      "title": "Authorization ve Role-Based Access Control",
-      "description": "API endpoints'lerine role-based access control ekle. [Authorize(Roles=\"Admin,Coach\")] attribute'ları ekle, policy-based authorization implement et ve role transitions'ları kontrol et.",
-      "priority": "P1",
-      "storyPoints": 8,
-      "status": "pending",
-      "category": "Feature Implementation",
-      "acceptance_criteria": [
-        "[Authorize] attribute'ları tüm protected endpoints'e eklenmişi",
-        "Role-based policies tanımlanmış (Admin, Coach, User roles)",
-        "CreateCoachCommand sadece Admin'e açık",
-        "CreateTrainingProgram sadece Coach'a açık",
-        "TrainingProgram assign etme sadece Coach'a açık",
-        "Package management sadece Admin'e açık",
-        "401/403 error'ları doğru şekilde handle ediliyor",
-        "Integration tests'ler yazılmış"
-      ],
-      "dependencies": ["PROJ-001"],
-      "estimate": "1.5 days"
     },
     {
       "id": "PROJ-013",
@@ -288,7 +104,7 @@
         "Repository'lerde Specification'ları kullanabiliyor",
         "Tests yazılmış"
       ],
-      "dependencies": ["PROJ-001"],
+      "dependencies": [],
       "estimate": "1.5 days"
     },
     {
@@ -329,7 +145,7 @@
         "Authentication header'ı documented",
         "Example request/response'ları var"
       ],
-      "dependencies": ["PROJ-012"],
+      "dependencies": [],
       "estimate": "1.5 days"
     },
     {
@@ -355,17 +171,16 @@
     }
   ],
   "summary": {
+    "total_tasks": 8,
+    "total_story_points": 71,
     "by_priority": {
-      "P0": 0,
-      "P1": 10,
-      "P2": 7
+      "P1": 4,
+      "P2": 4
     },
     "by_category": {
-      "Architecture & Code Quality": 5,
-      "Feature Implementation": 6,
-      "Cross-Cutting Concerns": 4,
-      "Testing & Data": 2
-    },
-    "total_story_points": 167
+      "Architecture & Code Quality": 3,
+      "Feature Implementation": 3,
+      "Cross-Cutting Concerns": 2
+    }
   }
 }

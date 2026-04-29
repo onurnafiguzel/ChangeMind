@@ -172,7 +172,8 @@
       "description": "API endpoint'leri ve database interaction'ları test etmek için integration test framework'ü kur. WebApplicationFactory ve test database setup'ını yapılandır.",
       "priority": "P2",
       "storyPoints": 13,
-      "status": "pending",
+      "status": "done",
+      "completedAt": "2026-04-29",
       "category": "Testing & Data",
       "acceptance_criteria": [
         "WebApplicationFactory base class oluşturulmuş",

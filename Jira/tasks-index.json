@@ -7,8 +7,8 @@
     "p1_high": 10,
     "p2_medium": 6,
     "total_story_points": 146,
-    "completed_tasks": 4,
-    "completed_story_points": 47
+    "completed_tasks": 5,
+    "completed_story_points": 60
   },
   "task_dependencies_graph": {
     "PROJ-001": [],

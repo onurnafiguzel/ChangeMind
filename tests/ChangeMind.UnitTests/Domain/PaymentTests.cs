@@ -88,21 +88,37 @@ public class PaymentTests
     // MarkAsFailed ve MarkAsRefunded farklı Status değerleri üretmeli.
     // Enum değerini parametre olarak geçmek için object[] kullanıyoruz.
     // -----------------------------------------------------------------------
-    [Theory]
-    [InlineData(PaymentStatus.Failed)]
-    [InlineData(PaymentStatus.Refunded)]
-    public void StatusTransitions_ShouldUpdateCorrectly(PaymentStatus expectedStatus)
+    [Fact]
+    public void MarkAsFailed_FromPending_ShouldSetFailedStatus()
     {
-        // Arrange
         var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 75m);
+        payment.MarkAsFailed();
+        payment.Status.Should().Be(PaymentStatus.Failed);
+    }
 
-        // Act
-        if (expectedStatus == PaymentStatus.Failed)
-            payment.MarkAsFailed();
-        else
-            payment.MarkAsRefunded();
+    [Fact]
+    public void MarkAsRefunded_FromCompleted_ShouldSetRefundedStatus()
+    {
+        var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 75m);
+        payment.MarkAsCompleted("TXN-REF");
+        payment.MarkAsRefunded();
+        payment.Status.Should().Be(PaymentStatus.Refunded);
+    }
 
-        // Assert
-        payment.Status.Should().Be(expectedStatus);
+    [Fact]
+    public void MarkAsRefunded_FromPending_ShouldThrow()
+    {
+        var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 75m);
+        var act = () => payment.MarkAsRefunded();
+        act.Should().Throw<ChangeMind.Domain.Exceptions.InvalidStateTransitionException>();
+    }
+
+    [Fact]
+    public void MarkAsCompleted_WhenAlreadyCompleted_ShouldThrow()
+    {
+        var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 100m);
+        payment.MarkAsCompleted("TXN-1");
+        var act = () => payment.MarkAsCompleted("TXN-2");
+        act.Should().Throw<ChangeMind.Domain.Exceptions.InvalidStateTransitionException>();
     }
 }

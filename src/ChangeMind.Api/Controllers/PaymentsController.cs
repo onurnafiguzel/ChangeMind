@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using ChangeMind.Api.Filters;
 using ChangeMind.Application.UseCases.Payments.Commands;
+using ChangeMind.Application.UseCases.Payments.Queries;
 
 [ApiController]
 [Route("api/payments")]
@@ -28,4 +29,15 @@ public class PaymentsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command with { IdempotencyKey = idempotencyKey }, cancellationToken);
         return Ok(result);
     }
+
+    /// <summary>
+    /// Get payment details by id.
+    /// </summary>
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<PaymentDto>> GetPayment(Guid id, CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(new GetPaymentQuery(id), cancellationToken);
+        return Ok(result);
+    }
+
 }

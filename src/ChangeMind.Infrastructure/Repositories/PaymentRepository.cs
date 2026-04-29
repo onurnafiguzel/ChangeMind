@@ -14,6 +14,9 @@ public class PaymentRepository(ChangeMindDbContext context) : IPaymentRepository
         => await context.Payments.FirstOrDefaultAsync(p =>
             p.UserId == userId && p.IdempotencyKey == idempotencyKey);
 
+    public async Task<IReadOnlyList<Payment>> GetByUserIdAsync(Guid userId)
+        => await context.Payments.Where(p => p.UserId == userId).ToListAsync();
+
     public async Task AddAsync(Payment payment)
         => await context.Payments.AddAsync(payment);
 }

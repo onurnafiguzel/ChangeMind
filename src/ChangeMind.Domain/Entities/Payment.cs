@@ -1,6 +1,8 @@
 namespace ChangeMind.Domain.Entities;
 
 using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Events;
+using ChangeMind.Domain.Exceptions;
 
 public sealed class Payment : AggregateRoot
 {
@@ -49,18 +51,33 @@ public sealed class Payment : AggregateRoot
 
     public void MarkAsCompleted(string transactionId)
     {
+        if (Status != PaymentStatus.Pending)
+            throw new InvalidStateTransitionException(nameof(Payment), Status.ToString(), nameof(MarkAsCompleted));
+
+        var old    = Status;
         Status        = PaymentStatus.Completed;
         TransactionId = transactionId;
         CompletedAt   = DateTime.UtcNow;
+        AddDomainEvent(new PaymentStatusChangedEvent(Id, UserId, old, Status, Amount));
     }
 
     public void MarkAsFailed()
     {
+        if (Status != PaymentStatus.Pending)
+            throw new InvalidStateTransitionException(nameof(Payment), Status.ToString(), nameof(MarkAsFailed));
+
+        var old = Status;
         Status = PaymentStatus.Failed;
+        AddDomainEvent(new PaymentStatusChangedEvent(Id, UserId, old, Status, Amount));
     }
 
     public void MarkAsRefunded()
     {
+        if (Status != PaymentStatus.Completed)
+            throw new InvalidStateTransitionException(nameof(Payment), Status.ToString(), nameof(MarkAsRefunded));
+
+        var old = Status;
         Status = PaymentStatus.Refunded;
+        AddDomainEvent(new PaymentStatusChangedEvent(Id, UserId, old, Status, Amount));
     }
 }

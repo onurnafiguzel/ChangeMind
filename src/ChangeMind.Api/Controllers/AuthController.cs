@@ -21,4 +21,17 @@ public class AuthController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }
+
+    /// <summary>
+    /// Register a new user account and return tokens (auto-login).
+    /// Profile details should be completed via PATCH /api/users/{id}/complete-profile.
+    /// </summary>
+    [HttpPost("signup")]
+    public async Task<ActionResult<AuthTokenResponse>> Signup(
+        [FromBody] SignupCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(Login), result);
+    }
 }

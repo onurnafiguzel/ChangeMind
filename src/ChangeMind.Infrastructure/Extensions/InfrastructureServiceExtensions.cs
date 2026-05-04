@@ -76,6 +76,9 @@ public static class InfrastructureServiceExtensions
         services.Configure<IdempotencyOptions>(configuration.GetSection("Idempotency"));
         services.AddSingleton<IIdempotencyService, IdempotencyService>();
 
+        // Register Email
+        services.AddScoped<IEmailService, EmailService>();
+
         return services;
     }
 }

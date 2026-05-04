@@ -29,11 +29,11 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
 
     private static readonly Guid[] UserIds =
     [
-        new("U0000000-0000-0000-0000-000000000001"),
-        new("U0000000-0000-0000-0000-000000000002"),
-        new("U0000000-0000-0000-0000-000000000003"),
-        new("U0000000-0000-0000-0000-000000000004"),
-        new("U0000000-0000-0000-0000-000000000005"),
+        new("E0000000-0000-0000-0000-000000000001"),
+        new("E0000000-0000-0000-0000-000000000002"),
+        new("E0000000-0000-0000-0000-000000000003"),
+        new("E0000000-0000-0000-0000-000000000004"),
+        new("E0000000-0000-0000-0000-000000000005"),
     ];
 
     public async Task SeedAsync()
@@ -46,7 +46,8 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
 
     private async Task SeedAdminAsync()
     {
-        if (await context.Users.AnyAsync(u => u.Id == AdminId))
+        var adminId = AdminId;
+        if (await context.Users.AnyAsync(u => u.Id == adminId))
             return;
 
         var admin = User.Seed(
@@ -73,8 +74,9 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
             (CoachIds[5], "coach.zeynep@changemind.com",  "Zeynep",  "Arslan",  CoachSpecialization.Rehabilitation),
         };
 
+        var coachIds = CoachIds;
         var existingIds = await context.Coaches
-            .Where(c => CoachIds.Contains(c.Id))
+            .Where(c => coachIds.Contains(c.Id))
             .Select(c => c.Id)
             .ToListAsync();
 
@@ -107,8 +109,9 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
             (UserIds[4], "user.berk@test.com",   "Berk",   "Güneş",   FitnessGoal.Endurance,     DifficultyLevel.Intermediate),
         };
 
+        var userIds = UserIds;
         var existingIds = await context.Users
-            .Where(u => UserIds.Contains(u.Id))
+            .Where(u => userIds.Contains(u.Id))
             .Select(u => u.Id)
             .ToListAsync();
 

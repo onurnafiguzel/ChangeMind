@@ -4,8 +4,15 @@ using ChangeMind.Api.Middleware;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Infrastructure.Data;
 using ChangeMind.Infrastructure.Extensions;
+using Prometheus;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, services, config) =>
+    config.ReadFrom.Configuration(ctx.Configuration)
+          .ReadFrom.Services(services)
+          .Enrich.FromLogContext());
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -21,6 +28,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
+builder.Services.AddApiSecurity(builder.Configuration);
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -32,6 +40,8 @@ if (app.Environment.IsDevelopment())
     await seeder.SeedAsync();
 }
 
+app.UseMiddleware<CorrelationIdMiddleware>();
+
 app.UseExceptionHandler();
 app.UseRequestTimeouts();
 app.UseRateLimiter();
@@ -39,8 +49,14 @@ app.UseRateLimiter();
 if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 
-app.UseHttpsRedirection();
+app.UseHttpMetrics();
+app.MapMetrics("/metrics");
+
+if (!app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapHealthCheckEndpoints();
 

@@ -3,6 +3,8 @@ namespace ChangeMind.IntegrationTests.Tests;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Payments.Commands;
 using ChangeMind.Application.UseCases.Payments.Queries;
@@ -13,6 +15,12 @@ using FluentAssertions;
 public class PaymentsControllerTests(PostgreSqlFixture db)
     : IClassFixture<PostgreSqlFixture>, IAsyncLifetime
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
     private HttpClient _client = null!;
     private WebAppFactory _factory = null!;
 
@@ -43,7 +51,7 @@ public class PaymentsControllerTests(PostgreSqlFixture db)
             Description  = "Integration test package",
             Price        = 100m,
             DurationDays = 30,
-            PackageType  = "Basic"
+            Type         = "Basic"
         });
         pkgResp.StatusCode.Should().Be(HttpStatusCode.Created);
         var packageId = await pkgResp.Content.ReadFromJsonAsync<Guid>();
@@ -65,8 +73,12 @@ public class PaymentsControllerTests(PostgreSqlFixture db)
         var (userId, packageId, token) = await SetupAsync("paypayment@example.com");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _client.PostAsJsonAsync("/api/payments",
-            new { UserId = userId, PackageId = packageId, Amount = 100m });
+        var request = new HttpRequestMessage(HttpMethod.Post, "/api/payments")
+        {
+            Content = JsonContent.Create(new { UserId = userId, PackageId = packageId, Amount = 100m })
+        };
+        request.Headers.Add("Idempotency-Key", Guid.NewGuid().ToString());
+        var response = await _client.SendAsync(request);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var result = await response.Content.ReadFromJsonAsync<PaymentProcessResponse>();
@@ -93,14 +105,18 @@ public class PaymentsControllerTests(PostgreSqlFixture db)
         var (userId, packageId, token) = await SetupAsync("getpayment@example.com");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var postResp = await _client.PostAsJsonAsync("/api/payments",
-            new { UserId = userId, PackageId = packageId, Amount = 100m });
+        var payReq = new HttpRequestMessage(HttpMethod.Post, "/api/payments")
+        {
+            Content = JsonContent.Create(new { UserId = userId, PackageId = packageId, Amount = 100m })
+        };
+        payReq.Headers.Add("Idempotency-Key", Guid.NewGuid().ToString());
+        var postResp = await _client.SendAsync(payReq);
         var created = await postResp.Content.ReadFromJsonAsync<PaymentProcessResponse>();
 
         var response = await _client.GetAsync($"/api/payments/{created!.PaymentId}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var body = await response.Content.ReadFromJsonAsync<PaymentDto>();
+        var body = await response.Content.ReadFromJsonAsync<PaymentDto>(JsonOptions);
         body!.Id.Should().Be(created.PaymentId);
         body.Amount.Should().Be(100m);
     }

@@ -1,7 +1,9 @@
 namespace ChangeMind.Application.UseCases.Exercises.Commands;
 
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Enums;
 using ChangeMind.Domain.Exceptions;
@@ -9,14 +11,14 @@ using MediatR;
 
 public class UpdateExerciseCommandHandler(
     IExerciseRepository exerciseRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<UpdateExerciseCommand>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<UpdateExerciseCommand>
 {
     public async Task Handle(UpdateExerciseCommand request, CancellationToken cancellationToken)
     {
         var exercise = await exerciseRepository.GetByIdAsync(request.ExerciseId)
             ?? throw new NotFoundException($"Exercise with ID '{request.ExerciseId}' not found.");
 
-        // Isim değişiyorsa ve yeni isim zaten başka bir aktif egzersizde varsa çakışma fırlat
         if (!string.Equals(exercise.Name, request.Name, StringComparison.OrdinalIgnoreCase)
             && await exerciseRepository.ExistsAsync(request.Name))
             throw new ConflictException($"An exercise named '{request.Name}' already exists.");
@@ -33,5 +35,7 @@ public class UpdateExerciseCommandHandler(
 
         await exerciseRepository.UpdateAsync(exercise);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveAsync(CacheKeys.Exercise(request.ExerciseId), cancellationToken);
     }
 }

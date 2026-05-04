@@ -1,20 +1,24 @@
 namespace ChangeMind.Application.UseCases.Packages.Commands;
 
 using MediatR;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Enums;
 using ChangeMind.Domain.Exceptions;
 
-public class UpdatePackageCommandHandler(IPackageRepository packageRepository, IUnitOfWork unitOfWork)
+public class UpdatePackageCommandHandler(
+    IPackageRepository packageRepository,
+    IUnitOfWork unitOfWork,
+    ICacheService cache)
     : IRequestHandler<UpdatePackageCommand, Unit>
 {
     public async Task<Unit> Handle(UpdatePackageCommand request, CancellationToken cancellationToken)
     {
-        var package = await packageRepository.GetByIdAsync(request.PackageId);
-        if (package == null)
-            throw new NotFoundException($"Package with ID '{request.PackageId}' not found.");
+        var package = await packageRepository.GetByIdAsync(request.PackageId)
+            ?? throw new NotFoundException($"Package with ID '{request.PackageId}' not found.");
 
         if (!package.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase))
         {
@@ -34,6 +38,10 @@ public class UpdatePackageCommandHandler(IPackageRepository packageRepository, I
 
         await packageRepository.UpdateAsync(package);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await Task.WhenAll(
+            cache.RemoveAsync(CacheKeys.Package(request.PackageId), cancellationToken),
+            cache.RemoveByPatternAsync(CacheKeys.PackageListPattern(), cancellationToken));
 
         return Unit.Value;
     }

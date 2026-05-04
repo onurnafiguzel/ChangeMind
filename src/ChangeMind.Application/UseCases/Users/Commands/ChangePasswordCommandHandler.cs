@@ -1,6 +1,7 @@
 namespace ChangeMind.Application.UseCases.Users.Commands;
 
 using MediatR;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
@@ -9,7 +10,8 @@ using ChangeMind.Domain.Exceptions;
 public class ChangePasswordCommandHandler(
     IUserRepository userRepository,
     IPasswordService passwordService,
-    IUnitOfWork unitOfWork) : IRequestHandler<ChangePasswordCommand>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<ChangePasswordCommand>
 {
     public async Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
@@ -24,5 +26,7 @@ public class ChangePasswordCommandHandler(
 
         await userRepository.UpdateAsync(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveAsync(CacheKeys.User(request.UserId), cancellationToken);
     }
 }

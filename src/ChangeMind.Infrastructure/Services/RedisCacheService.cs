@@ -57,6 +57,10 @@ public sealed class RedisCacheService(
         LoggerMessage.Define<string, string>(LogLevel.Warning, new EventId(7, "BulkheadFull"),
             "Redis bulkhead full. {Operation} '{Key}' rejected — too many concurrent operations.");
 
+    private static readonly Action<ILogger, string, long, Exception?> _logPatternRemoved =
+        LoggerMessage.Define<string, long>(LogLevel.Debug, new EventId(8, "PatternRemoved"),
+            "Redis SCAN+DEL pattern '{Pattern}' removed {Count} keys.");
+
     public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
     {
         var fullKey = BuildKey(key);
@@ -146,6 +150,44 @@ public sealed class RedisCacheService(
         catch (Exception ex) when (ex is RedisException or TimeoutRejectedException)
         {
             _logOperationFailed(logger, "REMOVE", fullKey, ex);
+        }
+    }
+
+    public async Task RemoveByPatternAsync(string pattern, CancellationToken cancellationToken = default)
+    {
+        var fullPattern = BuildKey(pattern);
+
+        using var lease = _bulkhead.AttemptAcquire();
+        if (!lease.IsAcquired)
+        {
+            _logBulkheadFull(logger, "SCAN+DEL", fullPattern, null);
+            return;
+        }
+
+        try
+        {
+            await _pipeline.ExecuteAsync(async ct =>
+            {
+                var server = _connection.GetServers().FirstOrDefault();
+                if (server == null) return;
+
+                long deleted = 0;
+                await foreach (var key in server.KeysAsync(pattern: fullPattern).WithCancellation(ct))
+                {
+                    await Db.KeyDeleteAsync(key);
+                    deleted++;
+                }
+
+                _logPatternRemoved(logger, fullPattern, deleted, null);
+            }, cancellationToken);
+        }
+        catch (BrokenCircuitException)
+        {
+            _logCircuitOpen(logger, "SCAN+DEL", fullPattern, null);
+        }
+        catch (Exception ex) when (ex is RedisException or TimeoutRejectedException)
+        {
+            _logOperationFailed(logger, "SCAN+DEL", fullPattern, ex);
         }
     }
 

@@ -1,13 +1,16 @@
 namespace ChangeMind.Application.UseCases.Exercises.Commands;
 
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Exceptions;
 using MediatR;
 
 public class DeleteExerciseCommandHandler(
     IExerciseRepository exerciseRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<DeleteExerciseCommand>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<DeleteExerciseCommand>
 {
     public async Task Handle(DeleteExerciseCommand request, CancellationToken cancellationToken)
     {
@@ -18,5 +21,7 @@ public class DeleteExerciseCommandHandler(
 
         await exerciseRepository.UpdateAsync(exercise);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveAsync(CacheKeys.Exercise(request.ExerciseId), cancellationToken);
     }
 }

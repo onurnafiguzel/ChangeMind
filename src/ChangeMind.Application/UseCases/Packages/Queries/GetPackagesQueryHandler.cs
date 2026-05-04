@@ -2,13 +2,27 @@ namespace ChangeMind.Application.UseCases.Packages.Queries;
 
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
+using Microsoft.Extensions.Options;
 
-public class GetPackagesQueryHandler(IPackageRepository packageRepository) : IRequestHandler<GetPackagesQuery, PagedResult<PackageDto>>
+public class GetPackagesQueryHandler(
+    IPackageRepository packageRepository,
+    ICacheService cache,
+    IOptions<CacheOptions> cacheOptions) : IRequestHandler<GetPackagesQuery, PagedResult<PackageDto>>
 {
+    private readonly CacheOptions _cacheOptions = cacheOptions.Value;
+
     public async Task<PagedResult<PackageDto>> Handle(GetPackagesQuery request, CancellationToken cancellationToken)
     {
+        var key = CacheKeys.PackageList(request.IsActiveOnly, request.Page, request.PageSize);
+
+        var cached = await cache.GetAsync<PagedResult<PackageDto>>(key, cancellationToken);
+        if (cached is not null)
+            return cached;
+
         var query = packageRepository.GetAll(request.IsActiveOnly);
 
         var total = await query.CountAsync(cancellationToken);
@@ -32,7 +46,7 @@ public class GetPackagesQueryHandler(IPackageRepository packageRepository) : IRe
 
         var totalPages = (int)Math.Ceiling((double)total / request.PageSize);
 
-        return new PagedResult<PackageDto>
+        var result = new PagedResult<PackageDto>
         {
             Data = packages,
             Total = total,
@@ -40,5 +54,9 @@ public class GetPackagesQueryHandler(IPackageRepository packageRepository) : IRe
             PageSize = request.PageSize,
             TotalPages = totalPages
         };
+
+        await cache.SetAsync(key, result, TimeSpan.FromSeconds(_cacheOptions.PackageTtlSeconds), cancellationToken);
+
+        return result;
     }
 }

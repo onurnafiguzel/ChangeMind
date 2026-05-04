@@ -1,21 +1,22 @@
 namespace ChangeMind.Application.UseCases.Users.Commands;
 
 using MediatR;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Exceptions;
 
 public class CompleteProfileCommandHandler(
     IUserRepository userRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CompleteProfileCommand>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<CompleteProfileCommand>
 {
     public async Task Handle(CompleteProfileCommand request, CancellationToken cancellationToken)
     {
-        // Get user by ID
         var user = await userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 
-        // Complete profile with personal and fitness information
         user.CompleteProfile(
             firstName: request.FirstName,
             lastName: request.LastName,
@@ -26,10 +27,9 @@ public class CompleteProfileCommandHandler(
             fitnessGoal: request.FitnessGoal,
             fitnessLevel: request.FitnessLevel);
 
-        // Update repository
         await userRepository.UpdateAsync(user);
-
-        // Save all changes in a single transaction
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveAsync(CacheKeys.User(request.UserId), cancellationToken);
     }
 }

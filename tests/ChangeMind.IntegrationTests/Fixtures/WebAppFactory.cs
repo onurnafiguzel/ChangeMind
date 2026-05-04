@@ -52,6 +52,9 @@ file sealed class NullCacheService : ICacheService
 
     public Task RemoveAsync(string key, CancellationToken cancellationToken = default)
         => Task.CompletedTask;
+
+    public Task RemoveByPatternAsync(string pattern, CancellationToken cancellationToken = default)
+        => Task.CompletedTask;
 }
 
 file sealed class NullIdempotencyService : IIdempotencyService

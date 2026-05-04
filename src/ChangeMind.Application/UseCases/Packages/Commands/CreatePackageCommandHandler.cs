@@ -1,14 +1,19 @@
 namespace ChangeMind.Application.UseCases.Packages.Commands;
 
 using MediatR;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
 using ChangeMind.Domain.Enums;
 using ChangeMind.Domain.Exceptions;
 
-public class CreatePackageCommandHandler(IPackageRepository packageRepository, IUnitOfWork unitOfWork)
+public class CreatePackageCommandHandler(
+    IPackageRepository packageRepository,
+    IUnitOfWork unitOfWork,
+    ICacheService cache)
     : IRequestHandler<CreatePackageCommand, Guid>
 {
     public async Task<Guid> Handle(CreatePackageCommand request, CancellationToken cancellationToken)
@@ -28,6 +33,8 @@ public class CreatePackageCommandHandler(IPackageRepository packageRepository, I
 
         await packageRepository.AddAsync(package);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveByPatternAsync(CacheKeys.PackageListPattern(), cancellationToken);
 
         return package.Id;
     }

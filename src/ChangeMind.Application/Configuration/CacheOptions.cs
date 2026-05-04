@@ -5,6 +5,11 @@ public sealed class CacheOptions
     public string ConnectionString { get; init; } = "localhost:6379";
     public int DefaultTtlSeconds { get; init; } = 300;
     public string InstanceName { get; init; } = "changemind:";
+    public int UserTtlSeconds { get; init; } = 600;
+    public int CoachTtlSeconds { get; init; } = 900;
+    public int PackageTtlSeconds { get; init; } = 3600;
+    public int ExerciseTtlSeconds { get; init; } = 1800;
+    public int TrainingProgramTtlSeconds { get; init; } = 300;
     public ResilienceOptions Resilience { get; init; } = new();
 }
 

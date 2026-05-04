@@ -1,11 +1,16 @@
 namespace ChangeMind.Application.UseCases.Users.Commands;
 
 using MediatR;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Exceptions;
 
-public class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork) : IRequestHandler<UpdateUserCommand>
+public class UpdateUserCommandHandler(
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<UpdateUserCommand>
 {
     public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
@@ -23,8 +28,8 @@ public class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWor
             fitnessLevel: request.FitnessLevel);
 
         await userRepository.UpdateAsync(user);
-
-        // Save all changes in a single transaction
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveAsync(CacheKeys.User(request.UserId), cancellationToken);
     }
 }

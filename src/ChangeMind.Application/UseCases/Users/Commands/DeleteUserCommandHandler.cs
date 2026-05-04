@@ -1,13 +1,16 @@
 namespace ChangeMind.Application.UseCases.Users.Commands;
 
 using MediatR;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Exceptions;
 
 public class DeleteUserCommandHandler(
     IUserRepository userRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<DeleteUserCommand>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<DeleteUserCommand>
 {
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
@@ -17,7 +20,8 @@ public class DeleteUserCommandHandler(
         user.Deactivate();
 
         await userRepository.UpdateAsync(user);
-
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveAsync(CacheKeys.User(request.UserId), cancellationToken);
     }
 }

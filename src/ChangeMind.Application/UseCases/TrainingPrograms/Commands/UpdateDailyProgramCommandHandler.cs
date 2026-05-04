@@ -2,13 +2,16 @@ namespace ChangeMind.Application.UseCases.TrainingPrograms.Commands;
 
 using MediatR;
 using System.Text.Json;
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Exceptions;
 
 public class UpdateDailyProgramCommandHandler(
     ITrainingProgramRepository trainingProgramRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<UpdateDailyProgramCommand>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<UpdateDailyProgramCommand>
 {
     public async Task Handle(UpdateDailyProgramCommand request, CancellationToken cancellationToken)
     {
@@ -31,5 +34,9 @@ public class UpdateDailyProgramCommandHandler(
 
         await trainingProgramRepository.UpdateAsync(program);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await Task.WhenAll(
+            cache.RemoveAsync(CacheKeys.TrainingProgram(program.Id), cancellationToken),
+            cache.RemoveAsync(CacheKeys.UserActiveProgram(program.UserId), cancellationToken));
     }
 }

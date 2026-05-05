@@ -13,6 +13,17 @@ using ChangeMind.Domain.Enums;
 public class ExercisesController(IMediator mediator) : ControllerBase
 {
     /// <summary>
+    /// Get all distinct muscle groups present in the exercise library. No authentication required.
+    /// </summary>
+    [HttpGet("muscle-groups")]
+    public async Task<ActionResult<IReadOnlyList<string>>> GetMuscleGroups(
+        CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(new GetMuscleGroupsQuery(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Get all exercises with optional filters, search, sorting, and pagination.
     /// </summary>
     [HttpGet]

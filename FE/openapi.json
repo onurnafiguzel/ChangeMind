@@ -912,6 +912,30 @@
         }
       }
     },
+    "/api/exercises/muscle-groups": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "Get all distinct muscle groups",
+        "description": "Returns a sorted list of all unique muscle groups present in the active exercise library. No authentication required.",
+        "operationId": "GetMuscleGroups",
+        "responses": {
+          "200": {
+            "description": "Muscle groups retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["Abs", "Back", "Biceps", "Calves", "Chest", "Forearms", "Glutes", "Hamstrings", "LatissimusDorsi", "Legs", "LowerBack", "Obliques", "Quadriceps", "Shoulders", "Traps", "Triceps"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/exercises": {
       "get": {
         "tags": ["Exercises"],

@@ -1,7 +1,9 @@
 namespace ChangeMind.Application.UseCases.Exercises.Commands;
 
+using ChangeMind.Application.Configuration;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Application.Repositories;
+using ChangeMind.Application.Services;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
 using ChangeMind.Domain.Enums;
@@ -10,7 +12,8 @@ using MediatR;
 
 public class CreateExerciseCommandHandler(
     IExerciseRepository exerciseRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateExerciseCommand, Guid>
+    IUnitOfWork unitOfWork,
+    ICacheService cache) : IRequestHandler<CreateExerciseCommand, Guid>
 {
     public async Task<Guid> Handle(CreateExerciseCommand request, CancellationToken cancellationToken)
     {
@@ -29,6 +32,10 @@ public class CreateExerciseCommandHandler(
 
         await exerciseRepository.AddAsync(exercise);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await Task.WhenAll(
+            cache.RemoveAsync(CacheKeys.MuscleGroups(), cancellationToken),
+            cache.RemoveByPatternAsync(CacheKeys.ExerciseListPattern(), cancellationToken));
 
         return exercise.Id;
     }

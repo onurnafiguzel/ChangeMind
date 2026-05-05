@@ -36,6 +36,16 @@ public static class SecurityServiceExtensions
                 };
             });
 
+        // Configure CORS
+        services.AddCors(options =>
+        {
+            options.AddPolicy("frontend", policy =>
+                policy.WithOrigins("http://localhost:3001")
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials());
+        });
+
         // Configure Authorization Policies
         services.AddAuthorization(options =>
         {

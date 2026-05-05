@@ -65,6 +65,7 @@ app.UseRateLimiter();
 app.UseRequestTimeouts();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("frontend");
 
 app.MapReverseProxy();
 

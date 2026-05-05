@@ -26,14 +26,14 @@ public class Exercise
     {
         return new Exercise
         {
-            Id             = Guid.NewGuid(),
-            Name           = name,
-            MuscleGroup    = muscleGroup,
+            Id              = Guid.NewGuid(),
+            Name            = name,
+            MuscleGroup     = muscleGroup,
             DifficultyLevel = difficultyLevel,
-            Description    = description,
-            VideoUrl       = videoUrl,
-            IsActive       = true,
-            CreatedAt      = DateTime.UtcNow
+            Description     = description,
+            VideoUrl        = videoUrl,
+            IsActive        = true,
+            CreatedAt       = DateTime.UtcNow
         };
     }
 
@@ -58,13 +58,14 @@ public class Exercise
     /// <summary>
     /// For EF Core HasData seeding only — do not use in business logic.
     /// </summary>
-    public static Exercise Seed(Guid id, string name, MuscleGroup muscleGroup)
+    public static Exercise Seed(Guid id, string name, MuscleGroup muscleGroup, string? description = null)
     {
         return new Exercise
         {
             Id          = id,
             Name        = name,
             MuscleGroup = muscleGroup,
+            Description = description,
             IsActive    = true,
             CreatedAt   = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         };

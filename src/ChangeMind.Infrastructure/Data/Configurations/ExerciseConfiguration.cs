@@ -16,6 +16,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
             .ValueGeneratedNever();
 
         builder.Property(e => e.Name)
+            .HasColumnName("MovementName")
             .IsRequired()
             .HasMaxLength(255);
 
@@ -32,6 +33,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
             .HasMaxLength(1000);
 
         builder.Property(e => e.VideoUrl)
+            .HasColumnName("VideoLink")
             .HasMaxLength(500);
 
         builder.Property(e => e.IsActive)

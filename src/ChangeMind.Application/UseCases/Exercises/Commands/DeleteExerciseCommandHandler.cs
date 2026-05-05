@@ -22,6 +22,9 @@ public class DeleteExerciseCommandHandler(
         await exerciseRepository.UpdateAsync(exercise);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await cache.RemoveAsync(CacheKeys.Exercise(request.ExerciseId), cancellationToken);
+        await Task.WhenAll(
+            cache.RemoveAsync(CacheKeys.Exercise(request.ExerciseId), cancellationToken),
+            cache.RemoveAsync(CacheKeys.MuscleGroups(), cancellationToken),
+            cache.RemoveByPatternAsync(CacheKeys.ExerciseListPattern(), cancellationToken));
     }
 }

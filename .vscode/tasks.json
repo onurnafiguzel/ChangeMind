@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Solution",
+      "type": "shell",
+      "command": "dotnet",
+      "args": ["build", "ChangeMind.slnx", "--configuration", "Debug", "-q"],
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "Run API",
+      "type": "shell",
+      "command": "dotnet",
+      "args": ["run", "--project", "src/ChangeMind.Api", "--launch-profile", "http", "--no-build"],
+      "isBackground": true,
+      "dependsOn": ["Build Solution"],
+      "problemMatcher": {
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "dotnet",
+          "endsPattern": "Now listening on"
+        }
+      },
+      "presentation": { "group": "changemind", "panel": "dedicated", "label": "API :5123" }
+    },
+    {
+      "label": "Run Gateway",
+      "type": "shell",
+      "command": "dotnet",
+      "args": ["run", "--project", "src/ChangeMind.Gateway", "--launch-profile", "http", "--no-build"],
+      "isBackground": true,
+      "dependsOn": ["Build Solution"],
+      "problemMatcher": {
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "dotnet",
+          "endsPattern": "Now listening on"
+        }
+      },
+      "presentation": { "group": "changemind", "panel": "dedicated", "label": "Gateway :5000" }
+    },
+    {
+      "label": "Start ChangeMind",
+      "dependsOn": ["Run API", "Run Gateway"],
+      "dependsOrder": "parallel",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always" }
+    }
+  ]
+}

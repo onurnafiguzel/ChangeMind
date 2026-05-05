@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API (http://localhost:5123)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/ChangeMind.Api/ChangeMind.Api.csproj",
+      "env": { "ASPNETCORE_ENVIRONMENT": "Development" }
+    },
+    {
+      "name": "Gateway (http://localhost:5000)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/ChangeMind.Gateway/ChangeMind.Gateway.csproj",
+      "env": { "ASPNETCORE_ENVIRONMENT": "Development" }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Start ChangeMind (API + Gateway)",
+      "configurations": ["API (http://localhost:5123)", "Gateway (http://localhost:5000)"],
+      "stopAll": true
+    }
+  ]
+}

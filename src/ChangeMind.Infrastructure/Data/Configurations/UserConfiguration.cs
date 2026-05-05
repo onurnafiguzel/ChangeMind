@@ -3,6 +3,7 @@ namespace ChangeMind.Infrastructure.Data.Configurations;
 using ChangeMind.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
@@ -49,9 +50,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired(false)
             .HasConversion<string>();
 
-        builder.Property(u => u.FitnessGoal)
-            .IsRequired(false)
-            .HasConversion<string>();
+        builder.Property(u => u.FitnessGoalId)
+            .IsRequired(false);
 
         builder.Property(u => u.FitnessLevel)
             .IsRequired(false)
@@ -81,6 +81,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasDatabaseName("IX_Users_IsActive");
 
         // Relationships
+        builder.HasOne<FitnessGoalItem>()
+            .WithMany()
+            .HasForeignKey(u => u.FitnessGoalId)
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
+
         builder.HasMany(u => u.Photos)
             .WithOne(p => p.User)
             .HasForeignKey(p => p.UserId)

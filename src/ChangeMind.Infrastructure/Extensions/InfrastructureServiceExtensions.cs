@@ -58,6 +58,7 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
         services.AddScoped<IWaitingUserRepository, WaitingUserRepository>();
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
+        services.AddScoped<IFitnessGoalRepository, FitnessGoalRepository>();
 
         services.AddScoped<DataSeeder>();
 

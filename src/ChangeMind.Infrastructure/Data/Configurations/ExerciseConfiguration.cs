@@ -15,8 +15,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.Property(e => e.Id)
             .ValueGeneratedNever();
 
-        builder.Property(e => e.Name)
-            .HasColumnName("MovementName")
+        builder.Property(e => e.MovementName)
             .IsRequired()
             .HasMaxLength(255);
 
@@ -32,8 +31,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.Property(e => e.Description)
             .HasMaxLength(1000);
 
-        builder.Property(e => e.VideoUrl)
-            .HasColumnName("VideoLink")
+        builder.Property(e => e.VideoLink)
             .HasMaxLength(500);
 
         builder.Property(e => e.IsActive)
@@ -48,7 +46,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.HasIndex(e => e.MuscleGroup)
             .HasDatabaseName("IX_Exercises_MuscleGroup");
 
-        builder.HasIndex(e => e.Name)
+        builder.HasIndex(e => e.MovementName)
             .HasDatabaseName("IX_Exercises_Name");
 
         builder.HasIndex(e => e.IsActive)

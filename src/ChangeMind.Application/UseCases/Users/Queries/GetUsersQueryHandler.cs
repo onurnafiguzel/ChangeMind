@@ -32,7 +32,7 @@ public class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHand
                 Height = user.Height,
                 Weight = user.Weight,
                 Gender = user.Gender,
-                FitnessGoal = user.FitnessGoal,
+                FitnessGoal = user.FitnessGoalId,
                 FitnessLevel = user.FitnessLevel,
                 CreatedAt = user.CreatedAt,
             })

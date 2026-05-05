@@ -15,7 +15,7 @@ public class ExerciseTests
     {
         var exercise = Exercise.Create("Squat", MuscleGroup.Legs, DifficultyLevel.Intermediate);
 
-        exercise.Name.Should().Be("Squat");
+        exercise.MovementName.Should().Be("Squat");
         exercise.MuscleGroup.Should().Be(MuscleGroup.Legs);
         exercise.DifficultyLevel.Should().Be(DifficultyLevel.Intermediate);
     }
@@ -29,7 +29,7 @@ public class ExerciseTests
         exercise.IsActive.Should().BeTrue();
         exercise.UpdatedAt.Should().BeNull();
         exercise.Description.Should().BeNull();
-        exercise.VideoUrl.Should().BeNull();
+        exercise.VideoLink.Should().BeNull();
     }
 
     [Fact]
@@ -40,10 +40,10 @@ public class ExerciseTests
             MuscleGroup.Chest,
             DifficultyLevel.Advanced,
             description: "Göğüs egzersizi",
-            videoUrl: "https://example.com/video");
+            videoLink: "https://example.com/video");
 
         exercise.Description.Should().Be("Göğüs egzersizi");
-        exercise.VideoUrl.Should().Be("https://example.com/video");
+        exercise.VideoLink.Should().Be("https://example.com/video");
     }
 
     [Theory]
@@ -68,7 +68,7 @@ public class ExerciseTests
 
         exercise.Update("Deadlift", MuscleGroup.Back, DifficultyLevel.Advanced, "Sırt egzersizi", null);
 
-        exercise.Name.Should().Be("Deadlift");
+        exercise.MovementName.Should().Be("Deadlift");
         exercise.MuscleGroup.Should().Be(MuscleGroup.Back);
         exercise.DifficultyLevel.Should().Be(DifficultyLevel.Advanced);
         exercise.Description.Should().Be("Sırt egzersizi");
@@ -76,14 +76,14 @@ public class ExerciseTests
     }
 
     [Fact]
-    public void Update_ShouldClearVideoUrlWhenNull()
+    public void Update_ShouldClearVideoLinkWhenNull()
     {
         var exercise = Exercise.Create("Squat", MuscleGroup.Legs, DifficultyLevel.Beginner,
-            videoUrl: "https://example.com/video");
+            videoLink: "https://example.com/video");
 
-        exercise.Update("Squat", MuscleGroup.Legs, DifficultyLevel.Beginner, null, videoUrl: null);
+        exercise.Update("Squat", MuscleGroup.Legs, DifficultyLevel.Beginner, null, videoLink: null);
 
-        exercise.VideoUrl.Should().BeNull();
+        exercise.VideoLink.Should().BeNull();
     }
 
     // -----------------------------------------------------------------------

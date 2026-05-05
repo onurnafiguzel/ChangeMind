@@ -1,7 +1,7 @@
 namespace ChangeMind.Application.UseCases.Users.Commands;
 
 using MediatR;
-using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Enums; // For Gender and DifficultyLevel
 
 public record UpdateUserCommand(
     Guid UserId,
@@ -11,5 +11,5 @@ public record UpdateUserCommand(
     decimal? Height = null,
     decimal? Weight = null,
     Gender? Gender = null,
-    FitnessGoal? FitnessGoal = null,
+    Guid? FitnessGoal = null,
     DifficultyLevel? FitnessLevel = null) : IRequest;

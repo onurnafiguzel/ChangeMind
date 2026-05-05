@@ -24,11 +24,11 @@ public class CreateExerciseCommandHandler(
         var difficultyLevel = request.DifficultyLevel.ParseOrThrow<DifficultyLevel>();
 
         var exercise = Exercise.Create(
-            name:            request.Name,
+            movementName:    request.Name,
             muscleGroup:     muscleGroup,
             difficultyLevel: difficultyLevel,
             description:     request.Description,
-            videoUrl:        request.VideoUrl);
+            videoLink:       request.VideoUrl);
 
         await exerciseRepository.AddAsync(exercise);
         await unitOfWork.SaveChangesAsync(cancellationToken);

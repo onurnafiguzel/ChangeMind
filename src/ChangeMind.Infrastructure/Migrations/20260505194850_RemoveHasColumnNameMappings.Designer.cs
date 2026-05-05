@@ -3,6 +3,7 @@ using System;
 using ChangeMind.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChangeMind.Infrastructure.Migrations
 {
     [DbContext(typeof(ChangeMindDbContext))]
-    partial class ChangeMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260505194850_RemoveHasColumnNameMappings")]
+    partial class RemoveHasColumnNameMappings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -910,8 +913,8 @@ namespace ChangeMind.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("FitnessGoalId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("FitnessGoal")
+                        .HasColumnType("text");
 
                     b.Property<string>("FitnessLevel")
                         .HasColumnType("text");
@@ -954,8 +957,6 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasDatabaseName("IX_Users_Email");
-
-                    b.HasIndex("FitnessGoalId");
 
                     b.HasIndex("IsActive")
                         .HasDatabaseName("IX_Users_IsActive");
@@ -1091,14 +1092,6 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.Navigation("AssignedTo");
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("ChangeMind.Domain.Entities.User", b =>
-                {
-                    b.HasOne("ChangeMind.Domain.Entities.FitnessGoalItem", null)
-                        .WithMany()
-                        .HasForeignKey("FitnessGoalId")
-                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("ChangeMind.Domain.Entities.UserPhoto", b =>

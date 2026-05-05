@@ -19,7 +19,7 @@ public class UpdateExerciseCommandHandler(
         var exercise = await exerciseRepository.GetByIdAsync(request.ExerciseId)
             ?? throw new NotFoundException($"Exercise with ID '{request.ExerciseId}' not found.");
 
-        if (!string.Equals(exercise.Name, request.Name, StringComparison.OrdinalIgnoreCase)
+        if (!string.Equals(exercise.MovementName, request.Name, StringComparison.OrdinalIgnoreCase)
             && await exerciseRepository.ExistsAsync(request.Name))
             throw new ConflictException($"An exercise named '{request.Name}' already exists.");
 
@@ -27,11 +27,11 @@ public class UpdateExerciseCommandHandler(
         var difficultyLevel = request.DifficultyLevel.ParseOrThrow<DifficultyLevel>();
 
         exercise.Update(
-            name:            request.Name,
+            movementName:    request.Name,
             muscleGroup:     muscleGroup,
             difficultyLevel: difficultyLevel,
             description:     request.Description,
-            videoUrl:        request.VideoUrl);
+            videoLink:       request.VideoUrl);
 
         await exerciseRepository.UpdateAsync(exercise);
         await unitOfWork.SaveChangesAsync(cancellationToken);

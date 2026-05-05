@@ -35,7 +35,7 @@ public class GetUserByIdQueryHandler(
                 Height = u.Height,
                 Weight = u.Weight,
                 Gender = u.Gender,
-                FitnessGoal = u.FitnessGoal,
+                FitnessGoal = u.FitnessGoalId,
                 FitnessLevel = u.FitnessLevel,
                 CreatedAt = u.CreatedAt,
             })

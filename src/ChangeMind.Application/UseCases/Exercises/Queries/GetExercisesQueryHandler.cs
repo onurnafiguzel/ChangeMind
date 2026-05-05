@@ -35,9 +35,9 @@ public class GetExercisesQueryHandler(
 
         query = request.SortBy?.ToLowerInvariant() switch
         {
-            "musclegroup" => query.OrderBy(e => e.MuscleGroup).ThenBy(e => e.Name),
-            "difficulty"  => query.OrderBy(e => e.DifficultyLevel).ThenBy(e => e.Name),
-            _             => query.OrderBy(e => e.Name)
+            "musclegroup" => query.OrderBy(e => e.MuscleGroup).ThenBy(e => e.MovementName),
+            "difficulty"  => query.OrderBy(e => e.DifficultyLevel).ThenBy(e => e.MovementName),
+            _             => query.OrderBy(e => e.MovementName)
         };
 
         var total = await query.CountAsync(cancellationToken);
@@ -48,11 +48,11 @@ public class GetExercisesQueryHandler(
             .Select(e => new ExerciseDto
             {
                 Id              = e.Id,
-                Name            = e.Name,
+                Name            = e.MovementName,
                 MuscleGroup     = e.MuscleGroup.ToString(),
                 DifficultyLevel = e.DifficultyLevel.HasValue ? e.DifficultyLevel.Value.ToString() : null,
                 Description     = e.Description,
-                VideoUrl        = e.VideoUrl,
+                VideoUrl        = e.VideoLink,
                 IsActive        = e.IsActive,
                 CreatedAt       = e.CreatedAt,
                 UpdatedAt       = e.UpdatedAt

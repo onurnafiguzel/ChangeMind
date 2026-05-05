@@ -102,11 +102,11 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
     {
         var users = new[]
         {
-            (UserIds[0], "user.can@test.com",    "Can",    "Öztürk",  FitnessGoal.MuscleGain,    DifficultyLevel.Beginner),
-            (UserIds[1], "user.selin@test.com",  "Selin",  "Koç",     FitnessGoal.FatLoss,       DifficultyLevel.Intermediate),
-            (UserIds[2], "user.burak@test.com",  "Burak",  "Kurt",    FitnessGoal.Strength,      DifficultyLevel.Advanced),
-            (UserIds[3], "user.elif@test.com",   "Elif",   "Aydın",   FitnessGoal.GeneralFitness,DifficultyLevel.Beginner),
-            (UserIds[4], "user.berk@test.com",   "Berk",   "Güneş",   FitnessGoal.Endurance,     DifficultyLevel.Intermediate),
+            (UserIds[0], "user.can@test.com",    "Can",    "Öztürk",   new Guid("f0000000-0000-0000-0000-000000000001"), DifficultyLevel.Beginner),      // Muscle Gain
+            (UserIds[1], "user.selin@test.com",  "Selin",  "Koç",      new Guid("f0000000-0000-0000-0000-000000000002"), DifficultyLevel.Intermediate), // Fat Loss
+            (UserIds[2], "user.burak@test.com",  "Burak",  "Kurt",     new Guid("f0000000-0000-0000-0000-000000000003"), DifficultyLevel.Advanced),    // Strength
+            (UserIds[3], "user.elif@test.com",   "Elif",   "Aydın",    new Guid("f0000000-0000-0000-0000-000000000006"), DifficultyLevel.Beginner),      // General Fitness
+            (UserIds[4], "user.berk@test.com",   "Berk",   "Güneş",    new Guid("f0000000-0000-0000-0000-000000000004"), DifficultyLevel.Intermediate), // Endurance
         };
 
         var userIds = UserIds;
@@ -115,7 +115,7 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
             .Select(u => u.Id)
             .ToListAsync();
 
-        foreach (var (id, email, firstName, lastName, fitnessGoal, fitnessLevel) in users)
+        foreach (var (id, email, firstName, lastName, fitnessGoalId, fitnessLevel) in users)
         {
             if (existingIds.Contains(id))
                 continue;
@@ -135,7 +135,7 @@ public class DataSeeder(ChangeMindDbContext context, ILogger<DataSeeder> logger)
                 height:       175,
                 weight:       75,
                 gender:       Gender.Male,
-                fitnessGoal:  fitnessGoal,
+                fitnessGoalId: fitnessGoalId,
                 fitnessLevel: fitnessLevel);
 
             context.Users.Add(user);

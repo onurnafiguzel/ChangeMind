@@ -31,11 +31,11 @@ public class GetExerciseByIdQueryHandler(
             .Select(e => new ExerciseDto
             {
                 Id              = e.Id,
-                Name            = e.Name,
+                Name            = e.MovementName,
                 MuscleGroup     = e.MuscleGroup.ToString(),
                 DifficultyLevel = e.DifficultyLevel.HasValue ? e.DifficultyLevel.Value.ToString() : null,
                 Description     = e.Description,
-                VideoUrl        = e.VideoUrl,
+                VideoUrl        = e.VideoLink,
                 IsActive        = e.IsActive,
                 CreatedAt       = e.CreatedAt,
                 UpdatedAt       = e.UpdatedAt

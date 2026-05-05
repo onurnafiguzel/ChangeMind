@@ -1,6 +1,6 @@
 namespace ChangeMind.Domain.Entities;
 
-using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Enums; // For Gender, DifficultyLevel
 using ChangeMind.Domain.Events;
 
 public sealed class User : AggregateRoot
@@ -18,7 +18,7 @@ public sealed class User : AggregateRoot
     public decimal? Height { get; private set; }
     public decimal? Weight { get; private set; }
     public Gender? Gender { get; private set; }
-    public FitnessGoal? FitnessGoal { get; private set; }
+    public Guid? FitnessGoalId { get; private set; }
     public DifficultyLevel? FitnessLevel { get; private set; }
     public bool IsActive { get; private set; } = true;
     public UserRole Role { get; private set; } = UserRole.User;
@@ -61,7 +61,7 @@ public sealed class User : AggregateRoot
             Height = null,
             Weight = null,
             Gender = null,
-            FitnessGoal = null,
+            FitnessGoalId = null,
             FitnessLevel = null,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,
@@ -81,7 +81,7 @@ public sealed class User : AggregateRoot
         decimal? height = null,
         decimal? weight = null,
         Gender? gender = null,
-        FitnessGoal? fitnessGoal = null,
+        Guid? fitnessGoalId = null,
         DifficultyLevel? fitnessLevel = null)
     {
         FirstName = firstName;
@@ -90,7 +90,7 @@ public sealed class User : AggregateRoot
         Height = height;
         Weight = weight;
         Gender = gender;
-        FitnessGoal = fitnessGoal;
+        FitnessGoalId = fitnessGoalId;
         FitnessLevel = fitnessLevel;
         UpdatedAt = DateTime.UtcNow;
     }
@@ -102,7 +102,7 @@ public sealed class User : AggregateRoot
         decimal? height = null,
         decimal? weight = null,
         Gender? gender = null,
-        FitnessGoal? fitnessGoal = null,
+        Guid? fitnessGoalId = null,
         DifficultyLevel? fitnessLevel = null)
     {
         FirstName = firstName;
@@ -111,7 +111,7 @@ public sealed class User : AggregateRoot
         Height = height;
         Weight = weight;
         Gender = gender;
-        FitnessGoal = fitnessGoal;
+        FitnessGoalId = fitnessGoalId;
         FitnessLevel = fitnessLevel;
         UpdatedAt = DateTime.UtcNow;
     }

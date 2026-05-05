@@ -1,6 +1,6 @@
 namespace ChangeMind.Application.DTOs;
 
-using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Enums; // For Gender and DifficultyLevel
 
 public class UserDto
 {
@@ -12,7 +12,7 @@ public class UserDto
     public decimal? Height { get; set; }
     public decimal? Weight { get; set; }
     public Gender? Gender { get; set; }
-    public FitnessGoal? FitnessGoal { get; set; }
+    public Guid? FitnessGoal { get; set; }
     public DifficultyLevel? FitnessLevel { get; set; }
     public DateTime CreatedAt { get; set; }
 }

@@ -3,6 +3,7 @@ using System;
 using ChangeMind.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChangeMind.Infrastructure.Migrations
 {
     [DbContext(typeof(ChangeMindDbContext))]
-    partial class ChangeMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260505143742_AddFitnessGoalsTable")]
+    partial class AddFitnessGoalsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,33 +141,35 @@ namespace ChangeMind.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("MovementName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
                     b.Property<string>("MuscleGroup")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("MovementName");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("VideoLink")
+                    b.Property<string>("VideoUrl")
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("VideoLink");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IsActive")
                         .HasDatabaseName("IX_Exercises_IsActive");
 
-                    b.HasIndex("MovementName")
-                        .HasDatabaseName("IX_Exercises_Name");
-
                     b.HasIndex("MuscleGroup")
                         .HasDatabaseName("IX_Exercises_MuscleGroup");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Exercises_Name");
 
                     b.ToTable("Exercises", (string)null);
 
@@ -175,8 +180,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Düz bankta bar ile yapılan bu baskı hareketi, pektoral kasların tamamını hedef alır. Omuz genişliğinden biraz daha geniş tutuş ile bar göğse indirilip itilir; göğüs, ön omuz ve triseps birlikte çalışır.",
                             IsActive = true,
-                            MovementName = "Barbell Bench Press",
-                            MuscleGroup = "Chest"
+                            MuscleGroup = "Chest",
+                            Name = "Barbell Bench Press"
                         },
                         new
                         {
@@ -184,8 +189,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Eğimli bankta dumbbell ile yapılan bu egzersiz, üst göğüs (klavikular pektoral) kaslarını özellikle aktive eder. Her iki kol bağımsız hareket ettiğinden kas dengesizliklerini gidermeye yardımcı olur.",
                             IsActive = true,
-                            MovementName = "Incline Dumbbell Press",
-                            MuscleGroup = "Chest"
+                            MuscleGroup = "Chest",
+                            Name = "Incline Dumbbell Press"
                         },
                         new
                         {
@@ -193,8 +198,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Negatif eğimli bankta gerçekleştirilen bu hareket, alt göğüs kaslarını ve sternal pektoral lifleri yoğun biçimde çalıştırır. Bar, normal bench'e göre daha aşağı bir noktaya temas eder.",
                             IsActive = true,
-                            MovementName = "Decline Bench Press",
-                            MuscleGroup = "Chest"
+                            MuscleGroup = "Chest",
+                            Name = "Decline Bench Press"
                         },
                         new
                         {
@@ -202,8 +207,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kablo makinesiyle yapılan bu izolasyon hareketi, göğüs kaslarını en geniş hareket açısında çalıştırır. Sürekli gerilim sağlaması nedeniyle kas bağlantıları üzerinde etkili bir germe ve sıkıştırma hissi yaratır.",
                             IsActive = true,
-                            MovementName = "Cable Flyes",
-                            MuscleGroup = "Chest"
+                            MuscleGroup = "Chest",
+                            Name = "Cable Flyes"
                         },
                         new
                         {
@@ -211,8 +216,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Sabit bir yörüngede hareket eden makine baskısı, özellikle başlangıç seviyesindeki kullanıcılar için güvenli bir göğüs egzersizidir. Yardımcı kasları devre dışı bırakarak pektorallere odaklanmayı kolaylaştırır.",
                             IsActive = true,
-                            MovementName = "Machine Chest Press",
-                            MuscleGroup = "Chest"
+                            MuscleGroup = "Chest",
+                            Name = "Machine Chest Press"
                         },
                         new
                         {
@@ -220,8 +225,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Smith makinesi üzerinde yapılan bu baskı hareketi, barın sabit ray üzerinde hareket etmesiyle denge gerektirmeksizin ağır yük kaldırmaya olanak tanır. Göğüs kaslarını kontrollü biçimde çalıştırır.",
                             IsActive = true,
-                            MovementName = "Smith Machine Press",
-                            MuscleGroup = "Chest"
+                            MuscleGroup = "Chest",
+                            Name = "Smith Machine Press"
                         },
                         new
                         {
@@ -229,8 +234,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Vücut ağırlığıyla yapılan bu egzersiz, latissimus dorsi, rombus ve biceps kaslarını eş zamanlı çalıştırır. Avuç içleri dışa bakacak şekilde tutunularak çene barın üzerine çıkarılır; üst sırt gelişiminin temel hareketlerinden biridir.",
                             IsActive = true,
-                            MovementName = "Pull-ups",
-                            MuscleGroup = "Back"
+                            MuscleGroup = "Back",
+                            Name = "Pull-ups"
                         },
                         new
                         {
@@ -238,8 +243,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kablo makinesiyle geniş bir bar kullanılarak yapılan bu hareket, latissimus dorsi kaslarını etkili biçimde hedef alır. Bar omuz altına kadar çekilir ve sırt kaslarının tam sıkışması hissedilir.",
                             IsActive = true,
-                            MovementName = "Lat Pulldown",
-                            MuscleGroup = "Back"
+                            MuscleGroup = "Back",
+                            Name = "Lat Pulldown"
                         },
                         new
                         {
@@ -247,8 +252,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Öne eğik pozisyonda bar ile yapılan bu çekiş hareketi, orta ve üst sırt kaslarını derinlemesine çalıştırır. Gövde 45 derece açıyla sabit tutulurken bar göbek bölgesine doğru çekilir.",
                             IsActive = true,
-                            MovementName = "Bent-over Barbell Row",
-                            MuscleGroup = "Back"
+                            MuscleGroup = "Back",
+                            Name = "Bent-over Barbell Row"
                         },
                         new
                         {
@@ -256,8 +261,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "T-bar aparatı veya landmine kullanılarak yapılan bu sırt egzersizi, kalın ve hacimli sırt kasları geliştirmek için etkilidir. Barın sabit ucunun yere çakılı olması, hareketi daha stabil hale getirir.",
                             IsActive = true,
-                            MovementName = "T-Bar Row",
-                            MuscleGroup = "Back"
+                            MuscleGroup = "Back",
+                            Name = "T-Bar Row"
                         },
                         new
                         {
@@ -265,8 +270,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Yatay bankta yüz aşağı uzanarak yapılan bu sırt egzersizi, alt trapez ve rombus kaslarını izole eder. Gövde tamamen desteklendiğinden momentum kullanımı minimize edilir ve saf kas kuvveti ölçülür.",
                             IsActive = true,
-                            MovementName = "Seal Row",
-                            MuscleGroup = "Back"
+                            MuscleGroup = "Back",
+                            Name = "Seal Row"
                         },
                         new
                         {
@@ -274,8 +279,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Göğüs destekli sırt çekişi, gövde salınımını ortadan kaldırarak orta sırt kaslarını izole şekilde çalıştırır. Eğimli banka yaslanılarak yapılan bu hareket, bel üzerindeki yükü azaltır.",
                             IsActive = true,
-                            MovementName = "Chest-Supported Row",
-                            MuscleGroup = "Back"
+                            MuscleGroup = "Back",
+                            Name = "Chest-Supported Row"
                         },
                         new
                         {
@@ -283,8 +288,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Omuzların üzerine bar veya dumbbell iterek yapılan bu bileşik egzersiz, ön ve orta deltoid ile trisepsi birlikte çalıştırır. Ayakta veya oturarak uygulanabilir; omuz gelişiminin temel hareketlerinden sayılır.",
                             IsActive = true,
-                            MovementName = "Overhead Press",
-                            MuscleGroup = "Shoulders"
+                            MuscleGroup = "Shoulders",
+                            Name = "Overhead Press"
                         },
                         new
                         {
@@ -292,8 +297,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kolların yanlara doğru kaldırıldığı bu izolasyon hareketi, orta deltoid kasını doğrudan hedef alır. Hafif ağırlıkla kontrollü biçimde yapılması, omuz ekleminin korunması açısından kritiktir.",
                             IsActive = true,
-                            MovementName = "Lateral Raise",
-                            MuscleGroup = "Shoulders"
+                            MuscleGroup = "Shoulders",
+                            Name = "Lateral Raise"
                         },
                         new
                         {
@@ -301,8 +306,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Makine üzerinde yapılan omuz baskısı, sabit yörüngesiyle özellikle başlangıç ve rehabilitasyon aşamasındaki sporcular için güvenli bir seçenektir. Deltoid kaslarını dengeli şekilde çalıştırır.",
                             IsActive = true,
-                            MovementName = "Machine Shoulder Press",
-                            MuscleGroup = "Shoulders"
+                            MuscleGroup = "Shoulders",
+                            Name = "Machine Shoulder Press"
                         },
                         new
                         {
@@ -310,8 +315,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Pec deck makinesi üzerinde ters yönde gerçekleştirilen bu hareket, arka deltoid ve rhomboid kaslarını izole eder. Postür bozukluklarını düzeltmeye yardımcı olan bu egzersiz üst sırt sağlığı için önemlidir.",
                             IsActive = true,
-                            MovementName = "Reverse Pec Deck",
-                            MuscleGroup = "Shoulders"
+                            MuscleGroup = "Shoulders",
+                            Name = "Reverse Pec Deck"
                         },
                         new
                         {
@@ -319,8 +324,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Arnold Schwarzenegger tarafından popülerleştirilen bu hareket, ön ve orta deltoidi geniş bir açıda çalıştırır. Dumbbell'lar avuç içleri içe bakacak şekilde başlar ve baskı sırasında dışa döner.",
                             IsActive = true,
-                            MovementName = "Arnold Press",
-                            MuscleGroup = "Shoulders"
+                            MuscleGroup = "Shoulders",
+                            Name = "Arnold Press"
                         },
                         new
                         {
@@ -328,8 +333,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Düz bar ile yapılan bu klasik biceps egzersizi, hem kısa hem uzun başı eş zamanlı aktive eder. Dirsekler sabit tutularak bar omuz hizasına kadar kaldırılır; biceps gelişiminin temel hareketidir.",
                             IsActive = true,
-                            MovementName = "Barbell Curl",
-                            MuscleGroup = "Biceps"
+                            MuscleGroup = "Biceps",
+                            Name = "Barbell Curl"
                         },
                         new
                         {
@@ -337,8 +342,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Her kol bağımsız çalıştığından kas dengesizliklerini gidermeye yardımcı olan dumbbell curl, supinasyon hareketi ile biceps'in tüm liflerini aktive eder. Oturarak veya ayakta uygulanabilir.",
                             IsActive = true,
-                            MovementName = "Dumbbell Curl",
-                            MuscleGroup = "Biceps"
+                            MuscleGroup = "Biceps",
+                            Name = "Dumbbell Curl"
                         },
                         new
                         {
@@ -346,8 +351,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kablo makinesiyle yapılan bu curl çeşidi, hareket boyunca sabit gerilim sağlar. Serbest ağırlıklara kıyasla pik kasılma noktasında daha fazla direnç sunar ve kasın tam kasılmasını zorlar.",
                             IsActive = true,
-                            MovementName = "Cable Curl",
-                            MuscleGroup = "Biceps"
+                            MuscleGroup = "Biceps",
+                            Name = "Cable Curl"
                         },
                         new
                         {
@@ -355,8 +360,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Vaiz tezgahı üzerinde yapılan bu egzersiz, üst kolun sabitlenmesiyle biceps'i izole eder ve momentum kullanımını engeller. Uzun baş liflerini özellikle gerilim altında tutar.",
                             IsActive = true,
-                            MovementName = "Preacher Curl",
-                            MuscleGroup = "Biceps"
+                            MuscleGroup = "Biceps",
+                            Name = "Preacher Curl"
                         },
                         new
                         {
@@ -364,8 +369,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Paralel bar veya bench üzerinde vücut ağırlığıyla yapılan bu egzersiz, trisepsin tüm üç başını çalıştırır. Gövde dik tutulduğunda triseps aktivasyonu artar; öne eğilince göğüs daha fazla devreye girer.",
                             IsActive = true,
-                            MovementName = "Tricep Dips",
-                            MuscleGroup = "Triceps"
+                            MuscleGroup = "Triceps",
+                            Name = "Tricep Dips"
                         },
                         new
                         {
@@ -373,8 +378,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kablo makinesiyle halat aparatı kullanılarak yapılan bu itme hareketi, trisepsin lateral başını izole eder. Hareketin sonunda halat iki yana açılarak tam kasılma sağlanır.",
                             IsActive = true,
-                            MovementName = "Rope Pushdown",
-                            MuscleGroup = "Triceps"
+                            MuscleGroup = "Triceps",
+                            Name = "Rope Pushdown"
                         },
                         new
                         {
@@ -382,8 +387,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Düz bankta bar veya dumbbell ile yapılan bu egzersiz, trisepsin uzun başını maksimum gerilimde çalıştırır. Ağırlık alnın üzerine indirilip dirseğin açılmasıyla yukarı itilir.",
                             IsActive = true,
-                            MovementName = "Skull Crusher",
-                            MuscleGroup = "Triceps"
+                            MuscleGroup = "Triceps",
+                            Name = "Skull Crusher"
                         },
                         new
                         {
@@ -391,8 +396,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kafanın üzerinde uzatma hareketi olarak bilinen bu egzersiz, trisepsin uzun başını en gergin konumda çalıştırır. Dumbbell veya kablo kullanılarak oturarak ya da ayakta uygulanabilir.",
                             IsActive = true,
-                            MovementName = "Overhead Extension",
-                            MuscleGroup = "Triceps"
+                            MuscleGroup = "Triceps",
+                            Name = "Overhead Extension"
                         },
                         new
                         {
@@ -400,8 +405,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Ters tutuşla yapılan bu curl çeşidi, ön kol ekstansör kaslarını ve brachioradialis'i hedef alır. Normal curl'e göre daha zorlu olan bu hareket, bilek ve ön kol kuvvetini artırır.",
                             IsActive = true,
-                            MovementName = "Barbell Curl (Reverse)",
-                            MuscleGroup = "Forearms"
+                            MuscleGroup = "Forearms",
+                            Name = "Barbell Curl (Reverse)"
                         },
                         new
                         {
@@ -409,8 +414,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bileği büküp düzelterek yapılan bu izolasyon hareketi, ön kol fleksör kaslarını doğrudan çalıştırır. Bench veya diz üzerine desteklenerek uygulanır; kavrama gücünü artırmada etkilidir.",
                             IsActive = true,
-                            MovementName = "Wrist Curls",
-                            MuscleGroup = "Forearms"
+                            MuscleGroup = "Forearms",
+                            Name = "Wrist Curls"
                         },
                         new
                         {
@@ -418,8 +423,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bar arka omuzda taşınarak yapılan bu squat çeşidi, quadriceps, gluteus ve hamstring kaslarını bütünsel olarak çalıştırır. Alt vücut gelişiminin temel bileşik hareketi olup yüksek anabolik etki sağlar.",
                             IsActive = true,
-                            MovementName = "Barbell Back Squat",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Barbell Back Squat"
                         },
                         new
                         {
@@ -427,8 +432,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bacak presi makinesi üzerinde sırt desteğiyle yapılan bu egzersiz, quadriceps ve gluteus kaslarını güvenli biçimde çalıştırır. Bel rahatsızlığı olanlar için squat'a alternatif olarak sıkça tercih edilir.",
                             IsActive = true,
-                            MovementName = "Leg Press",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Leg Press"
                         },
                         new
                         {
@@ -436,8 +441,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Makine üzerinde yapılan bu izolasyon hareketi, quadriceps kasını doğrudan hedef alır. Diz eklemine yönelik kesme kuvveti oluşturduğundan ağırlık seçimine dikkat edilmesi gerekir.",
                             IsActive = true,
-                            MovementName = "Leg Extension",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Leg Extension"
                         },
                         new
                         {
@@ -445,8 +450,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Yatay veya oturur pozisyonda makine üzerinde yapılan bu egzersiz, arka uyluk kaslarını izole eder. Diz bükülerek topuk kalçaya yaklaştırılır; hamstring gelişiminin temel hareketidir.",
                             IsActive = true,
-                            MovementName = "Hamstring Curl",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Hamstring Curl"
                         },
                         new
                         {
@@ -454,8 +459,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Smith makinesi rayları üzerinde yapılan bu squat çeşidi, denge bileşenini ortadan kaldırarak bacak kaslarına odaklanmayı sağlar. Farklı ayak pozisyonlarıyla farklı kas grupları vurgulanabilir.",
                             IsActive = true,
-                            MovementName = "Smith Machine Squat",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Smith Machine Squat"
                         },
                         new
                         {
@@ -463,8 +468,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "45 derecelik makine üzerinde yapılan bu squat varyasyonu, quadriceps kaslarını ön plana çıkarır. Sırt bölgesi makine tarafından desteklendiğinden bel üzerindeki yük minimuma iner.",
                             IsActive = true,
-                            MovementName = "Hack Squat",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Hack Squat"
                         },
                         new
                         {
@@ -472,8 +477,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kızak üzerinde yük iterek yapılan bu fonksiyonel güç egzersizi, tüm alt vücut kaslarını explosive biçimde çalıştırır. Güç, dayanıklılık ve kardiyovasküler kapasiteyi aynı anda geliştirir.",
                             IsActive = true,
-                            MovementName = "Leg Sled",
-                            MuscleGroup = "Legs"
+                            MuscleGroup = "Legs",
+                            Name = "Leg Sled"
                         },
                         new
                         {
@@ -481,8 +486,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bar ön omuzda taşınarak yapılan bu squat çeşidi, arka squat'a kıyasla quadriceps kaslarını daha fazla aktive eder. Gövdenin dik tutulması gerektiğinden esneklik ve mobilite açısından zorlu bir harekettir.",
                             IsActive = true,
-                            MovementName = "Front Squat",
-                            MuscleGroup = "Quadriceps"
+                            MuscleGroup = "Quadriceps",
+                            Name = "Front Squat"
                         },
                         new
                         {
@@ -490,8 +495,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Topuklar yerden kaldırılarak gövde geriye yatırılan bu egzersiz, quadriceps kaslarını tam açıklıkta izole eder. Diz eklemine olan yük nedeniyle ağırlıksız ya da çok hafif ağırlıkla başlanmalıdır.",
                             IsActive = true,
-                            MovementName = "Sissy Squat",
-                            MuscleGroup = "Quadriceps"
+                            MuscleGroup = "Quadriceps",
+                            Name = "Sissy Squat"
                         },
                         new
                         {
@@ -499,8 +504,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Diz hafifçe bükülü tutularak öne doğru eğilme ve düzelme şeklinde yapılan bu hareket, hamstring ve gluteus kaslarını tam aralıkta çalıştırır. Arka zincir gelişimi için en etkili hareketlerden biridir.",
                             IsActive = true,
-                            MovementName = "Romanian Deadlift",
-                            MuscleGroup = "Hamstrings"
+                            MuscleGroup = "Hamstrings",
+                            Name = "Romanian Deadlift"
                         },
                         new
                         {
@@ -508,8 +513,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bar arka omuzda taşınarak kalçadan öne eğilip düzelme şeklinde yapılan bu egzersiz, hamstring, gluteus ve alt sırt kaslarını birlikte çalıştırır. Düşük ağırlıkla kontrollü yapılması önerilir.",
                             IsActive = true,
-                            MovementName = "Good Morning",
-                            MuscleGroup = "Hamstrings"
+                            MuscleGroup = "Hamstrings",
+                            Name = "Good Morning"
                         },
                         new
                         {
@@ -517,8 +522,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Sırt bench'e yaslanarak barın kalça üzerine yerleştirilmesiyle yapılan bu hareket, gluteus maximus kasını maksimum kasılmada çalıştırır. Kalça yükseltme hareketi olarak bilinen en etkili glute egzersizleri arasındadır.",
                             IsActive = true,
-                            MovementName = "Hip Thrust",
-                            MuscleGroup = "Glutes"
+                            MuscleGroup = "Glutes",
+                            Name = "Hip Thrust"
                         },
                         new
                         {
@@ -526,8 +531,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Arka ayak bench üzerinde desteklenirken ön ayakla yapılan bu tek bacak squat varyasyonu, gluteus ve quadriceps kaslarını dengeli biçimde çalıştırır. Kas dengesizliklerini gidermeye yardımcı olur.",
                             IsActive = true,
-                            MovementName = "Bulgarian Split Squat",
-                            MuscleGroup = "Glutes"
+                            MuscleGroup = "Glutes",
+                            Name = "Bulgarian Split Squat"
                         },
                         new
                         {
@@ -535,8 +540,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bacak presinde ayakların platformun üst kısmına yerleştirilmesiyle gluteus kaslarının aktivasyonu artırılır. Kalça açısı değiştirilerek hamstring ve gluteus'un farklı lifleri vurgulanır.",
                             IsActive = true,
-                            MovementName = "Glute-Focused Leg Press",
-                            MuscleGroup = "Glutes"
+                            MuscleGroup = "Glutes",
+                            Name = "Glute-Focused Leg Press"
                         },
                         new
                         {
@@ -544,8 +549,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Ayak uçlarına yükselerek yapılan bu egzersiz, gastrocnemius ve soleus kaslarını çalıştırır. Topuk aşağıda serbest bırakılarak tam aralıkta hareket edilmesi kas gelişimi için kritik öneme sahiptir.",
                             IsActive = true,
-                            MovementName = "Calf Raise",
-                            MuscleGroup = "Calves"
+                            MuscleGroup = "Calves",
+                            Name = "Calf Raise"
                         },
                         new
                         {
@@ -553,8 +558,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Makine üzerinde omuzlardan yüklenerek yapılan bu baldır egzersizi, gastrocnemius kasını izole eder. Kontrollü negatif fazı sayesinde eksantrik stimülasyon yüksektir.",
                             IsActive = true,
-                            MovementName = "Machine Calf Raise",
-                            MuscleGroup = "Calves"
+                            MuscleGroup = "Calves",
+                            Name = "Machine Calf Raise"
                         },
                         new
                         {
@@ -562,8 +567,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kablo makinesi önünde diz üstü pozisyonda yapılan bu karın egzersizi, rectus abdominis'i yoğun biçimde çalıştırır. Ayarlanabilir ağırlık sayesinde kas gelişimine uygun direnç kolayca belirlenir.",
                             IsActive = true,
-                            MovementName = "Cable Crunch",
-                            MuscleGroup = "Abs"
+                            MuscleGroup = "Abs",
+                            Name = "Cable Crunch"
                         },
                         new
                         {
@@ -571,8 +576,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Karın kası makinesi üzerinde yapılan bu izolasyon hareketi, rectus abdominis kasını destekli ve kontrollü biçimde çalıştırır. Başlangıç seviyeleri için güvenli ve etkili bir karın egzersizidir.",
                             IsActive = true,
-                            MovementName = "Machine Crunch",
-                            MuscleGroup = "Abs"
+                            MuscleGroup = "Abs",
+                            Name = "Machine Crunch"
                         },
                         new
                         {
@@ -580,8 +585,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Karın tekeri ile yapılan bu ileri düzey egzersiz, rectus abdominis ve transversus abdominis kaslarını yüksek gerilimde çalıştırır. Gövde stabilitesi ve karın kası kuvveti için son derece etkilidir.",
                             IsActive = true,
-                            MovementName = "Ab Wheel Rollout",
-                            MuscleGroup = "Abs"
+                            MuscleGroup = "Abs",
+                            Name = "Ab Wheel Rollout"
                         },
                         new
                         {
@@ -589,8 +594,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Kablo makinesiyle diyagonal bir hareket yolunda gerçekleştirilen bu egzersiz, iç ve dış oblik kasları döndürme hareketi sırasında aktive eder. Rotasyon kuvveti ve gövde stabilitesi için kritik bir harekettir.",
                             IsActive = true,
-                            MovementName = "Cable Woodchop",
-                            MuscleGroup = "Obliques"
+                            MuscleGroup = "Obliques",
+                            Name = "Cable Woodchop"
                         },
                         new
                         {
@@ -598,8 +603,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Landmine aparatına takılı barın iki elle tutularak yanlara döndürülmesiyle yapılan bu hareket, oblik kasları ve rotator core kaslarını işlevsel biçimde çalıştırır. Sporsal performans gelişimi için değerlidir.",
                             IsActive = true,
-                            MovementName = "Landmine Rotation",
-                            MuscleGroup = "Obliques"
+                            MuscleGroup = "Obliques",
+                            Name = "Landmine Rotation"
                         },
                         new
                         {
@@ -607,8 +612,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Yerden bar kaldırma olarak bilinen bu bileşik egzersiz, alt sırt, gluteus, hamstring ve quadriceps kaslarını eş zamanlı çalıştırır. Vücuttaki en fazla kas kütlesini aktive eden hareketlerden biri olup anabolik etkisi yüksektir.",
                             IsActive = true,
-                            MovementName = "Deadlift",
-                            MuscleGroup = "LowerBack"
+                            MuscleGroup = "LowerBack",
+                            Name = "Deadlift"
                         },
                         new
                         {
@@ -616,8 +621,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Hiperextension tezgahında gövde aşağı sarkıtılıp kaldırılarak yapılan bu hareket, erector spinae ve alt sırt kaslarını güçlendirir. Bel sağlığını desteklemek ve deadlift performansını artırmak için etkilidir.",
                             IsActive = true,
-                            MovementName = "Hyperextension",
-                            MuscleGroup = "LowerBack"
+                            MuscleGroup = "LowerBack",
+                            Name = "Hyperextension"
                         },
                         new
                         {
@@ -625,8 +630,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Bar tutularak omuzların yukarı kaldırılıp bırakılması şeklinde yapılan bu egzersiz, üst trapez kasını izole eder. Ağır ağırlıklarla yapılabilen bu hareket, omuz ve boyun bölgesinin kalın görünümünü destekler.",
                             IsActive = true,
-                            MovementName = "Barbell Shrugs",
-                            MuscleGroup = "Traps"
+                            MuscleGroup = "Traps",
+                            Name = "Barbell Shrugs"
                         },
                         new
                         {
@@ -634,8 +639,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Her iki elde dumbbell tutularak yapılan bu omuz kaldırma hareketi, trapez kasını dengeli biçimde çalıştırır. Dumbbell'ların vücudun yanında serbestçe asılı kalması, hareket açısını artırır.",
                             IsActive = true,
-                            MovementName = "Dumbbell Shrugs",
-                            MuscleGroup = "Traps"
+                            MuscleGroup = "Traps",
+                            Name = "Dumbbell Shrugs"
                         },
                         new
                         {
@@ -643,8 +648,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Geniş tutuşla kablo üzerinden yapılan bu çekiş, latissimus dorsi kasını en geniş açıyla aktive eder. Bar göğüse indirilirken dirsekler yanlara doğru açılır ve sırt kaslarının tam kasılması hissedilir.",
                             IsActive = true,
-                            MovementName = "Wide Grip Lat Pulldown",
-                            MuscleGroup = "LatissimusDorsi"
+                            MuscleGroup = "LatissimusDorsi",
+                            Name = "Wide Grip Lat Pulldown"
                         },
                         new
                         {
@@ -652,8 +657,8 @@ namespace ChangeMind.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Ters tutuşla yapılan bu lat pulldown çeşidi, latissimus dorsi'nin yanı sıra biceps kasını da yoğun biçimde aktive eder. Alt lat liflerini hedef alması bakımından geniş tutuşa tamamlayıcı niteliktedir.",
                             IsActive = true,
-                            MovementName = "Underhand Lat Pulldown",
-                            MuscleGroup = "LatissimusDorsi"
+                            MuscleGroup = "LatissimusDorsi",
+                            Name = "Underhand Lat Pulldown"
                         });
                 });
 
@@ -910,8 +915,8 @@ namespace ChangeMind.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("FitnessGoalId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("FitnessGoal")
+                        .HasColumnType("text");
 
                     b.Property<string>("FitnessLevel")
                         .HasColumnType("text");
@@ -954,8 +959,6 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasDatabaseName("IX_Users_Email");
-
-                    b.HasIndex("FitnessGoalId");
 
                     b.HasIndex("IsActive")
                         .HasDatabaseName("IX_Users_IsActive");
@@ -1091,14 +1094,6 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.Navigation("AssignedTo");
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("ChangeMind.Domain.Entities.User", b =>
-                {
-                    b.HasOne("ChangeMind.Domain.Entities.FitnessGoalItem", null)
-                        .WithMany()
-                        .HasForeignKey("FitnessGoalId")
-                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("ChangeMind.Domain.Entities.UserPhoto", b =>

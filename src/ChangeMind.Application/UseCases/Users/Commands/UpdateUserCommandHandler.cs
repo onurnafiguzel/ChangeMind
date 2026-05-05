@@ -24,7 +24,7 @@ public class UpdateUserCommandHandler(
             height: request.Height,
             weight: request.Weight,
             gender: request.Gender,
-            fitnessGoal: request.FitnessGoal,
+            fitnessGoalId: request.FitnessGoal,
             fitnessLevel: request.FitnessLevel);
 
         await userRepository.UpdateAsync(user);

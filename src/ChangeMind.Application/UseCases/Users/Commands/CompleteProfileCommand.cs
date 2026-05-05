@@ -1,7 +1,7 @@
 namespace ChangeMind.Application.UseCases.Users.Commands;
 
 using MediatR;
-using ChangeMind.Domain.Enums;
+using ChangeMind.Domain.Enums; // For Gender and DifficultyLevel
 
 /// <summary>
 /// Complete user profile with personal and fitness information.
@@ -15,5 +15,5 @@ public record CompleteProfileCommand(
     decimal? Height = null,
     decimal? Weight = null,
     Gender? Gender = null,
-    FitnessGoal? FitnessGoal = null,
+    Guid? FitnessGoal = null,
     DifficultyLevel? FitnessLevel = null) : IRequest;

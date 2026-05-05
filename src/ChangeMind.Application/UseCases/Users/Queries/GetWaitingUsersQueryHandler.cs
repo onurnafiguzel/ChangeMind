@@ -32,7 +32,7 @@ public class GetWaitingUsersQueryHandler(
                 Height = user.Height,
                 Weight = user.Weight,
                 Gender = user.Gender?.ToString(),
-                FitnessGoal = user.FitnessGoal?.ToString(),
+                FitnessGoal = user.FitnessGoalId?.ToString(),
                 FitnessLevel = user.FitnessLevel?.ToString(),
                 CreatedAt = user.CreatedAt
             });

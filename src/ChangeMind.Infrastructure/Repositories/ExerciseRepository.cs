@@ -32,7 +32,7 @@ public class ExerciseRepository(ChangeMindDbContext context) : IExerciseReposito
             query = query.Where(e => e.DifficultyLevel == difficultyLevel.Value);
 
         if (!string.IsNullOrWhiteSpace(search))
-            query = query.Where(e => e.Name.ToLower().Contains(search.ToLower()));
+            query = query.Where(e => e.MovementName.ToLower().Contains(search.ToLower()));
 
         return query;
     }
@@ -47,5 +47,5 @@ public class ExerciseRepository(ChangeMindDbContext context) : IExerciseReposito
     }
 
     public async Task<bool> ExistsAsync(string name)
-        => await context.Exercises.AnyAsync(e => e.Name == name && e.IsActive);
+        => await context.Exercises.AnyAsync(e => e.MovementName == name && e.IsActive);
 }

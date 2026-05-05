@@ -1,13 +1,14 @@
 namespace ChangeMind.Application.UseCases.Payments.Commands;
 
 using MediatR;
+using System.Text.Json.Serialization;
 
 public record ProcessPaymentCommand(
     Guid UserId,
     Guid PackageId,
     decimal Amount,
     string? Description = null,
-    Guid? IdempotencyKey = null) : IRequest<PaymentProcessResponse>;
+    [property: JsonIgnore] Guid? IdempotencyKey = null) : IRequest<PaymentProcessResponse>;
 
 public class PaymentProcessResponse
 {

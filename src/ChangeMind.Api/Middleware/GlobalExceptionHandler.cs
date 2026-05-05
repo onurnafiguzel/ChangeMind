@@ -65,6 +65,16 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 Type = "https://tools.ietf.org/html/rfc7807"
             },
 
+            // 403 Forbidden
+            ForbiddenException forbiddenException => new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Forbidden",
+                Detail = forbiddenException.Message,
+                Instance = httpContext.Request.Path,
+                Type = "https://tools.ietf.org/html/rfc7807"
+            },
+
             // 404 Not Found
             NotFoundException notFoundException => new ProblemDetails
             {

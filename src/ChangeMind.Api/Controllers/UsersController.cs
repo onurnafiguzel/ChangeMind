@@ -131,4 +131,21 @@ public class UsersController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Check if user profile is completed (own profile only)
+    /// </summary>
+    [HttpGet("{id:guid}/profile-complete")]
+    public async Task<ActionResult<bool>> GetProfileCompletionStatus(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        if (!Guid.TryParse(userIdClaim, out var tokenUserId) || tokenUserId != id)
+            return Forbid();
+
+        var query = new GetProfileCompletionStatusQuery(id);
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
 }

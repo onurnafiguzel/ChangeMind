@@ -20,6 +20,7 @@ public sealed class User : AggregateRoot
     public Gender? Gender { get; private set; }
     public Guid? FitnessGoalId { get; private set; }
     public DifficultyLevel? FitnessLevel { get; private set; }
+    public bool IsCompletedProfile { get; private set; } = false;
     public bool IsActive { get; private set; } = true;
     public UserRole Role { get; private set; } = UserRole.User;
 
@@ -92,6 +93,7 @@ public sealed class User : AggregateRoot
         Gender = gender;
         FitnessGoalId = fitnessGoalId;
         FitnessLevel = fitnessLevel;
+        IsCompletedProfile = true;
         UpdatedAt = DateTime.UtcNow;
     }
 

@@ -475,6 +475,68 @@
         }
       }
     },
+    "/api/users/{id}/profile-complete": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Check if user profile is completed",
+        "description": "Returns whether the user's profile has been completed (includes personal and fitness information). Only the user can check their own profile completion status.",
+        "operationId": "GetProfileCompletionStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile completion status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "description": "True if profile is completed, false otherwise"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - user can only check their own profile completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/coaches": {
       "get": {
         "tags": ["Coaches"],

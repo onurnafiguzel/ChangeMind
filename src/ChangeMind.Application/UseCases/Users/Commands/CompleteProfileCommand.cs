@@ -15,5 +15,5 @@ public record CompleteProfileCommand(
     decimal? Height = null,
     decimal? Weight = null,
     Gender? Gender = null,
-    Guid? FitnessGoal = null,
+    Guid? FitnessGoalId = null,
     DifficultyLevel? FitnessLevel = null) : IRequest;

@@ -24,7 +24,7 @@ public class CompleteProfileCommandHandler(
             height: request.Height,
             weight: request.Weight,
             gender: request.Gender,
-            fitnessGoalId: request.FitnessGoal,
+            fitnessGoalId: request.FitnessGoalId,
             fitnessLevel: request.FitnessLevel);
 
         await userRepository.UpdateAsync(user);

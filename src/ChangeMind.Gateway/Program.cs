@@ -61,10 +61,10 @@ app.MapHealthChecks("/health");
 app.UseHttpMetrics();
 app.MapMetrics("/metrics");
 
-app.UseRateLimiter();
-app.UseRequestTimeouts();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
+app.UseRequestTimeouts();
 app.UseCors("frontend");
 
 app.MapReverseProxy();

@@ -1,5 +1,6 @@
 namespace ChangeMind.Gateway.Extensions;
 
+using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Configuration;
@@ -31,59 +32,88 @@ public static class RateLimitingServiceExtensions
                 await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
             };
 
-            // Strict — Login, change-password: brute force koruması
-            options.AddFixedWindowLimiter("strict", opt =>
+            // Strict — Login, change-password: per-IP brute force koruması (auth öncesi, userId yok)
+            options.AddPolicy<string>("strict", context =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit          = strict.GetValue("PermitLimit", 5),
+                        Window               = TimeSpan.FromSeconds(strict.GetValue("WindowSeconds", 60)),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit           = 0
+                    }));
+
+            // Public — Register/signup: per-IP spam koruması (auth öncesi, userId yok)
+            options.AddPolicy<string>("public", context =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit          = pub.GetValue("PermitLimit", 20),
+                        Window               = TimeSpan.FromSeconds(pub.GetValue("WindowSeconds", 60)),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit           = 0
+                    }));
+
+            // Standard — Authenticated genel endpoint'ler: per-user sliding window
+            options.AddPolicy<string>("standard", context =>
             {
-                opt.PermitLimit        = strict.GetValue("PermitLimit", 5);
-                opt.Window             = TimeSpan.FromSeconds(strict.GetValue("WindowSeconds", 60));
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit         = 0;
+                var userId = context.User.FindFirst("sub")?.Value
+                          ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                          ?? context.Connection.RemoteIpAddress?.ToString()
+                          ?? "anonymous";
+
+                return RateLimitPartition.GetSlidingWindowLimiter(
+                    partitionKey: $"standard:{userId}",
+                    factory: _ => new SlidingWindowRateLimiterOptions
+                    {
+                        PermitLimit          = standard.GetValue("PermitLimit", 60),
+                        Window               = TimeSpan.FromSeconds(standard.GetValue("WindowSeconds", 60)),
+                        SegmentsPerWindow    = 6,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit           = 0
+                    });
             });
 
-            // Public — Register: spam koruması
-            options.AddFixedWindowLimiter("public", opt =>
+            // Admin — Admin işlemleri: per-user token bucket (burst'a izin verir)
+            options.AddPolicy<string>("admin", context =>
             {
-                opt.PermitLimit        = pub.GetValue("PermitLimit", 20);
-                opt.Window             = TimeSpan.FromSeconds(pub.GetValue("WindowSeconds", 60));
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit         = 0;
+                var userId = context.User.FindFirst("sub")?.Value
+                          ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                          ?? context.Connection.RemoteIpAddress?.ToString()
+                          ?? "anonymous";
+
+                return RateLimitPartition.GetTokenBucketLimiter(
+                    partitionKey: $"admin:{userId}",
+                    factory: _ => new TokenBucketRateLimiterOptions
+                    {
+                        TokenLimit           = admin.GetValue("TokenLimit", 30),
+                        ReplenishmentPeriod  = TimeSpan.FromSeconds(admin.GetValue("ReplenishmentPeriodSeconds", 10)),
+                        TokensPerPeriod      = admin.GetValue("TokensPerPeriod", 10),
+                        AutoReplenishment    = true,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit           = 0
+                    });
             });
 
-            // Standard — Authenticated genel endpoint'ler: sliding window
-            options.AddSlidingWindowLimiter("standard", opt =>
-            {
-                opt.PermitLimit          = standard.GetValue("PermitLimit", 60);
-                opt.Window               = TimeSpan.FromSeconds(standard.GetValue("WindowSeconds", 60));
-                opt.SegmentsPerWindow    = 6;
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit           = 0;
-            });
-
-            // Admin — Admin işlemleri: token bucket (burst'a izin verir)
-            options.AddTokenBucketLimiter("admin", opt =>
-            {
-                opt.TokenLimit               = admin.GetValue("TokenLimit", 30);
-                opt.ReplenishmentPeriod      = TimeSpan.FromSeconds(admin.GetValue("ReplenishmentPeriodSeconds", 10));
-                opt.TokensPerPeriod          = admin.GetValue("TokensPerPeriod", 10);
-                opt.AutoReplenishment        = true;
-                opt.QueueProcessingOrder     = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit               = 0;
-            });
-
-            // Payment — Zaman penceresi koruması standard ile aynı, ayrıca gateway
-            // katmanında eş zamanlı slot sınırı eklenir (bulkhead). İki koruma aynı anda aktif:
-            // "standard" policy → zaman penceresi (DDoS/spam), "payment" → eş zamanlı slot (kaynak koruması).
-            // Not: YARP tek policy desteklediğinden payment route'u bu policy'yi kullanır;
-            // sliding window mantığı buraya gömülüdür.
+            // Payment — per-user eş zamanlı slot sınırı (bulkhead): her kullanıcı kendi concurrency limitine sahip
             options.AddPolicy<string>("payment", context =>
-                RateLimitPartition.GetConcurrencyLimiter(
-                    partitionKey: "payment-global",
+            {
+                var userId = context.User.FindFirst("sub")?.Value
+                          ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                          ?? context.Connection.RemoteIpAddress?.ToString()
+                          ?? "anonymous";
+
+                return RateLimitPartition.GetConcurrencyLimiter(
+                    partitionKey: $"payment:{userId}",
                     factory: _ => new ConcurrencyLimiterOptions
                     {
-                        PermitLimit          = payment.GetValue("MaxConcurrent", 20),
+                        PermitLimit          = payment.GetValue("MaxConcurrent", 5),
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit           = payment.GetValue("QueueLimit", 5)
-                    }));
+                        QueueLimit           = payment.GetValue("QueueLimit", 2)
+                    });
+            });
         });
 
         return services;

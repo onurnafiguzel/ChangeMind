@@ -13,29 +13,15 @@ public class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHand
         if (request.Page < 1) request.Page = 1;
         if (request.PageSize < 1) request.PageSize = 10;
 
-        var query = userRepository.GetAll(request.IsActiveOnly);
+        var query = userRepository.GetAllWithFitnessGoal(request.IsActiveOnly);
 
         // Count total at database level
         var totalCount = await query.CountAsync(cancellationToken);
 
-        // Apply pagination and projection at database level
+        // Apply pagination at database level
         var userDtos = await query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(user => new UserDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Age = user.Age,
-                Height = user.Height,
-                Weight = user.Weight,
-                Gender = user.Gender,
-                FitnessGoal = user.FitnessGoalId,
-                FitnessLevel = user.FitnessLevel,
-                CreatedAt = user.CreatedAt,
-            })
             .ToListAsync(cancellationToken);
 
         // Calculate total pages

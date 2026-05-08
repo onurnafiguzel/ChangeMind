@@ -24,21 +24,7 @@ public class GetUserByIdQueryHandler(
         if (cached is not null)
             return cached;
 
-        var dto = await userRepository.GetById(request.UserId)
-            .Select(u => new UserDto
-            {
-                Id = u.Id,
-                Email = u.Email,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Age = u.Age,
-                Height = u.Height,
-                Weight = u.Weight,
-                Gender = u.Gender,
-                FitnessGoal = u.FitnessGoalId,
-                FitnessLevel = u.FitnessLevel,
-                CreatedAt = u.CreatedAt,
-            })
+        var dto = await userRepository.GetUserByIdWithFitnessGoal(request.UserId)
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 

@@ -11,4 +11,6 @@ public interface IUserRepository
     Task AddAsync(User user);
     Task UpdateAsync(User user);
     Task<bool> ExistsAsync(string email);
+    IQueryable<DTOs.UserDto> GetUserByIdWithFitnessGoal(Guid id);
+    IQueryable<DTOs.UserDto> GetAllWithFitnessGoal(bool? isActive = null);
 }

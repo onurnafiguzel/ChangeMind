@@ -12,7 +12,7 @@ public class UserDto
     public decimal? Height { get; set; }
     public decimal? Weight { get; set; }
     public Gender? Gender { get; set; }
-    public Guid? FitnessGoal { get; set; }
+    public string? FitnessGoal { get; set; }
     public DifficultyLevel? FitnessLevel { get; set; }
     public DateTime CreatedAt { get; set; }
 }

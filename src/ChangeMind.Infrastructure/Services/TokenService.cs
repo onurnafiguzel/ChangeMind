@@ -1,6 +1,7 @@
 namespace ChangeMind.Infrastructure.Services;
 
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
@@ -34,9 +35,9 @@ public class TokenService(JwtSettings jwtSettings) : ITokenService
 
         var claims = new[]
         {
-            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, userId.ToString()),
-            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Email, email),
-            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, role.ToString())
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, email),
+            new Claim("role", role.ToString())
         };
 
         var token = new JwtSecurityToken(

@@ -1,6 +1,5 @@
 namespace ChangeMind.Gateway.Extensions;
 
-using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Configuration;
@@ -60,7 +59,6 @@ public static class RateLimitingServiceExtensions
             options.AddPolicy<string>("standard", context =>
             {
                 var userId = context.User.FindFirst("sub")?.Value
-                          ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                           ?? context.Connection.RemoteIpAddress?.ToString()
                           ?? "anonymous";
 
@@ -80,7 +78,6 @@ public static class RateLimitingServiceExtensions
             options.AddPolicy<string>("admin", context =>
             {
                 var userId = context.User.FindFirst("sub")?.Value
-                          ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                           ?? context.Connection.RemoteIpAddress?.ToString()
                           ?? "anonymous";
 
@@ -101,7 +98,6 @@ public static class RateLimitingServiceExtensions
             options.AddPolicy<string>("payment", context =>
             {
                 var userId = context.User.FindFirst("sub")?.Value
-                          ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                           ?? context.Connection.RemoteIpAddress?.ToString()
                           ?? "anonymous";
 

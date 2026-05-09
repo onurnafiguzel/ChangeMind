@@ -23,7 +23,7 @@ public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter
             return;
         }
 
-        var userIdClaim = context.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = context.HttpContext.User.FindFirstValue("sub");
         if (!Guid.TryParse(userIdClaim, out var userId))
         {
             context.Result = new UnauthorizedResult();

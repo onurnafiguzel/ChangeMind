@@ -36,8 +36,8 @@ public class WaitingUsersController(IMediator mediator) : ControllerBase
         Guid userId,
         CancellationToken cancellationToken = default)
     {
-        var tokenUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var role        = User.FindFirstValue(ClaimTypes.Role);
+        var tokenUserId = User.FindFirstValue("sub");
+        var role        = User.FindFirstValue("role");
 
         var isPrivileged = role is "Coach" or "Admin";
 

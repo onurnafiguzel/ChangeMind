@@ -6,9 +6,9 @@ namespace ChangeMind.Domain.Exceptions;
 /// </summary>
 public class ValidationException : Exception
 {
-    public IEnumerable<string> Errors { get; }
+    public IReadOnlyDictionary<string, string[]> Errors { get; }
 
-    public ValidationException(IEnumerable<string> errors)
+    public ValidationException(IReadOnlyDictionary<string, string[]> errors)
         : base("One or more validation errors occurred.")
     {
         Errors = errors;
@@ -17,6 +17,9 @@ public class ValidationException : Exception
     public ValidationException(string error)
         : base("One or more validation errors occurred.")
     {
-        Errors = [error];
+        Errors = new Dictionary<string, string[]>
+        {
+            [""] = [error]
+        };
     }
 }

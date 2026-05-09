@@ -23,7 +23,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         httpContext.Response.StatusCode = problemDetails.Status ?? 500;
         httpContext.Response.ContentType = "application/problem+json";
 
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        // Use runtime type so polymorphic types (e.g. ValidationProblemDetails.Errors) are serialized
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, problemDetails.GetType(), cancellationToken);
 
         return true;
     }
@@ -32,11 +33,9 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
     {
         return exception switch
         {
-            // 400 Validation errors — list of field errors
+            // 400 Validation errors — field name → error messages
             ValidationException validationException => new ValidationProblemDetails(
-                validationException.Errors
-                    .Select((e, i) => new { Key = i.ToString(), Value = e })
-                    .ToDictionary(x => x.Key, x => new[] { x.Value }))
+                validationException.Errors.ToDictionary(kv => kv.Key, kv => kv.Value))
             {
                 Status = StatusCodes.Status400BadRequest,
                 Title = "Validation Failed",

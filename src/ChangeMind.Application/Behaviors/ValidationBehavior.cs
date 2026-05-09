@@ -32,11 +32,13 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
 
         if (failures.Count > 0)
         {
-            var errors = failures
-                .Select(f => f.ErrorMessage)
-                .ToList();
+            var errorsByProperty = failures
+                .GroupBy(f => f.PropertyName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(f => f.ErrorMessage).ToArray());
 
-            throw new ValidationException(errors);
+            throw new ValidationException(errorsByProperty);
         }
 
         return await next();

@@ -32,8 +32,9 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
 
         if (failures.Count > 0)
         {
+            // Cross-field rules (RuleFor(x => x)) produce empty PropertyName — bucket them under "_"
             var errorsByProperty = failures
-                .GroupBy(f => f.PropertyName)
+                .GroupBy(f => string.IsNullOrEmpty(f.PropertyName) ? "_" : f.PropertyName)
                 .ToDictionary(
                     g => g.Key,
                     g => g.Select(f => f.ErrorMessage).ToArray());

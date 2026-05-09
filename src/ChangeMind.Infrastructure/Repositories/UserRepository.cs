@@ -73,7 +73,7 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
                     Height = x.user.Height,
                     Weight = x.user.Weight,
                     Gender = x.user.Gender,
-                    FitnessGoal = fitnessGoal == null ? null : fitnessGoal.Description,
+                    FitnessGoal = fitnessGoal == null ? string.Empty : (fitnessGoal.Name ?? string.Empty),
                     FitnessLevel = x.user.FitnessLevel,
                     CreatedAt = x.user.CreatedAt,
                 });
@@ -106,7 +106,7 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
                     Height = x.user.Height,
                     Weight = x.user.Weight,
                     Gender = x.user.Gender,
-                    FitnessGoal = fitnessGoal == null ? null : fitnessGoal.Description,
+                    FitnessGoal = fitnessGoal == null ? string.Empty : (fitnessGoal.Name ?? string.Empty),
                     FitnessLevel = x.user.FitnessLevel,
                     CreatedAt = x.user.CreatedAt,
                 });

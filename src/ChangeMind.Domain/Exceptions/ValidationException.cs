@@ -19,7 +19,7 @@ public class ValidationException : Exception
     {
         Errors = new Dictionary<string, string[]>
         {
-            [""] = [error]
+            ["_"] = [error]
         };
     }
 }

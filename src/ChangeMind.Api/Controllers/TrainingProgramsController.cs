@@ -1,11 +1,13 @@
 namespace ChangeMind.Api.Controllers;
 
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.TrainingPrograms.Commands;
 using ChangeMind.Application.UseCases.TrainingPrograms.Queries;
+using ChangeMind.Domain.Exceptions;
 
 [ApiController]
 [Route("api/training-programs")]
@@ -39,6 +41,38 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
     {
         var programId = await mediator.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetTrainingProgramById), new { id = programId }, programId);
+    }
+
+    /// <summary>
+    /// Get all active training programs assigned by a specific coach,
+    /// joined with assigned user details. Admins can query any coach;
+    /// coaches can query only their own programs.
+    /// </summary>
+    [HttpGet("~/api/coaches/{coachId:guid}/programs")]
+    public async Task<ActionResult<List<CoachProgramListItemDto>>> GetProgramsByCoachId(
+        Guid coachId,
+        CancellationToken cancellationToken = default)
+    {
+        var tokenUserId = User.FindFirstValue("sub");
+        var role        = User.FindFirstValue("role");
+
+        if (role == "Admin")
+        {
+            // Admin tüm coach'ların programlarını görebilir
+        }
+        else if (role == "Coach")
+        {
+            if (!Guid.TryParse(tokenUserId, out var tokenGuid) || tokenGuid != coachId)
+                throw new ForbiddenException("You can only view your own programs.");
+        }
+        else
+        {
+            throw new ForbiddenException("Only coaches and admins can access training programs.");
+        }
+
+        var query  = new GetProgramsByCoachIdQuery { CoachId = coachId };
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
     }
 
     /// <summary>

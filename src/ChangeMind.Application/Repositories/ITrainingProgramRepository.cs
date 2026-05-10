@@ -8,4 +8,5 @@ public interface ITrainingProgramRepository
     Task UpdateAsync(TrainingProgram program);
     Task<TrainingProgram?> GetByIdAsync(Guid id);
     Task<TrainingProgram?> GetActiveByUserIdAsync(Guid userId);
+    Task<IReadOnlyList<TrainingProgram>> GetActiveByCoachIdAsync(Guid coachId);
 }

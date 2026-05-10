@@ -14,6 +14,13 @@ public class ActiveProgramDetailDto
     public DifficultyLevel? Difficulty { get; set; }
     public string Status { get; set; } = string.Empty; // "InProgress" or "Completed"
     public Dictionary<string, List<ProgramExerciseDetail>>? DailyExercises { get; set; }
+
+    // Assigned user details (JOIN'den)
+    public Guid UserId { get; set; }
+    public int? UserAge { get; set; }
+    public decimal? UserHeight { get; set; }
+    public decimal? UserWeight { get; set; }
+    public Gender? UserGender { get; set; }
 }
 
 public class ProgramExerciseDetail

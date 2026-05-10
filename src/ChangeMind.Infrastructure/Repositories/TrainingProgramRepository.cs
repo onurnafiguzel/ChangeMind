@@ -23,6 +23,7 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
     {
         return await context.TrainingPrograms
             .Include(p => p.CreatedBy)
+            .Include(p => p.AssignedTo)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
@@ -31,6 +32,7 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
         var today = DateTime.UtcNow.Date;
         return await context.TrainingPrograms
             .Include(p => p.CreatedBy)
+            .Include(p => p.AssignedTo)
             .FirstOrDefaultAsync(p => p.UserId == userId
                                     && p.IsActive
                                     && (p.StartDate == null || p.StartDate.Value.Date <= today)

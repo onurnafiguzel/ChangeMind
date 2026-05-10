@@ -44,7 +44,13 @@ public class GetTrainingProgramByIdQueryHandler(
             EndDate = program.EndDate,
             Difficulty = program.Difficulty,
             Status = status,
-            DailyExercises = null
+            DailyExercises = new Dictionary<string, List<ProgramExerciseDetail>>(),
+
+            UserId     = program.UserId,
+            UserAge    = program.AssignedTo.Age,
+            UserHeight = program.AssignedTo.Height,
+            UserWeight = program.AssignedTo.Weight,
+            UserGender = program.AssignedTo.Gender
         };
 
         if (!string.IsNullOrEmpty(program.DailyProgramJson))
@@ -53,11 +59,11 @@ public class GetTrainingProgramByIdQueryHandler(
             {
                 dto.DailyExercises = JsonSerializer.Deserialize<Dictionary<string, List<ProgramExerciseDetail>>>(
                     program.DailyProgramJson,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new Dictionary<string, List<ProgramExerciseDetail>>();
             }
             catch
             {
-                dto.DailyExercises = null;
+                // Initial boş dict korunur
             }
         }
 

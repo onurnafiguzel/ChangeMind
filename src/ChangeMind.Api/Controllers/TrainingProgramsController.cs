@@ -95,14 +95,16 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
 
     /// <summary>
     /// Update the daily exercise schedule of a training program. Increments version number.
+    /// Body is a flat dictionary keyed by "Day-1", "Day-2", etc.
     /// </summary>
     [HttpPut("{id:guid}/daily-program")]
     public async Task<IActionResult> UpdateDailyProgram(
         Guid id,
-        [FromBody] UpdateDailyProgramCommand command,
+        [FromBody] Dictionary<string, List<ProgramExerciseInput>> exercisesByDay,
         CancellationToken cancellationToken = default)
     {
-        await mediator.Send(command with { ProgramId = id }, cancellationToken);
+        var command = new UpdateDailyProgramCommand(id, exercisesByDay);
+        await mediator.Send(command, cancellationToken);
         return NoContent();
     }
 

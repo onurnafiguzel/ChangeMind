@@ -23,6 +23,7 @@ public class ChangeMindDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<WaitingUser> WaitingUsers { get; set; }
     public DbSet<FitnessGoalItem> FitnessGoals { get; set; }
+    public DbSet<WorkoutSession> WorkoutSessions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +40,7 @@ public class ChangeMindDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PaymentConfiguration());
         modelBuilder.ApplyConfiguration(new WaitingUserConfiguration());
         modelBuilder.ApplyConfiguration(new FitnessGoalItemConfiguration());
+        modelBuilder.ApplyConfiguration(new WorkoutSessionConfiguration());
 
         // Seed Exercise Library
         SeedExerciseLibrary(modelBuilder);

@@ -1,5 +1,6 @@
 namespace ChangeMind.Api.Controllers;
 
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Timeouts;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Users.Commands;
 using ChangeMind.Application.UseCases.Users.Queries;
+using ChangeMind.Domain.Exceptions;
 
 [ApiController]
 [Route("api/users")]
@@ -129,6 +131,29 @@ public class UsersController(IMediator mediator) : ControllerBase
         var command = baseRequest with { UserId = id };
         await mediator.Send(command, cancellationToken);
         return NoContent();
+    }
+
+    /// <summary>
+    /// User dashboard: profile + active training program + active nutrition plan + waiting status.
+    /// Users may query only themselves; coaches and admins may query any user.
+    /// </summary>
+    [HttpGet("{userId:guid}/dashboard")]
+    [Authorize]
+    public async Task<ActionResult<UserDashboardDto>> GetUserDashboard(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var role        = User.FindFirstValue("role");
+        var tokenUserId = User.FindFirstValue("sub");
+
+        if (role != "Admin" && role != "Coach")
+        {
+            if (!Guid.TryParse(tokenUserId, out var tokenGuid) || tokenGuid != userId)
+                throw new ForbiddenException("Users can only view their own dashboard.");
+        }
+
+        var result = await mediator.Send(new GetUserDashboardQuery(userId), cancellationToken);
+        return Ok(result);
     }
 
     /// <summary>

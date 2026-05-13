@@ -1,5 +1,6 @@
 namespace ChangeMind.Api.Controllers;
 
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Timeouts;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.UseCases.Coaches.Commands;
 using ChangeMind.Application.UseCases.Coaches.Queries;
+using ChangeMind.Domain.Exceptions;
 
 [ApiController]
 [Route("api/coaches")]
@@ -83,6 +85,37 @@ public class CoachesController(IMediator mediator) : ControllerBase
         var command = new DeleteCoachCommand { CoachId = id };
         await mediator.Send(command, cancellationToken);
         return NoContent();
+    }
+
+    /// <summary>
+    /// Coach dashboard: assigned user count, active programs, pending waiting users, recent programs.
+    /// Owning coach or admin only.
+    /// </summary>
+    [HttpGet("{coachId:guid}/dashboard")]
+    [Authorize]
+    public async Task<ActionResult<CoachDashboardDto>> GetCoachDashboard(
+        Guid coachId,
+        CancellationToken cancellationToken = default)
+    {
+        var role        = User.FindFirstValue("role");
+        var tokenUserId = User.FindFirstValue("sub");
+
+        if (role == "Admin")
+        {
+            // allow
+        }
+        else if (role == "Coach")
+        {
+            if (!Guid.TryParse(tokenUserId, out var tokenGuid) || tokenGuid != coachId)
+                throw new ForbiddenException("You can only view your own dashboard.");
+        }
+        else
+        {
+            throw new ForbiddenException("Only coaches and admins can access the coach dashboard.");
+        }
+
+        var result = await mediator.Send(new GetCoachDashboardQuery(coachId), cancellationToken);
+        return Ok(result);
     }
 
     /// <summary>

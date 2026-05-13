@@ -32,7 +32,7 @@ public class ProcessPaymentCommandHandler(
             idempotencyKey: request.IdempotencyKey);
 
         // Mock payment gateway — replace with real provider (Stripe, PayPal, etc.)
-        payment.MarkAsCompleted(transactionId: Guid.NewGuid().ToString());
+        payment.MarkAsCompleted(transactionId: Guid.NewGuid().ToString(), packageDurationDays: package.DurationDays);
 
         await paymentRepository.AddAsync(payment);
 

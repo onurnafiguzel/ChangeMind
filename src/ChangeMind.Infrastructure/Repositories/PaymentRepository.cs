@@ -17,6 +17,21 @@ public class PaymentRepository(ChangeMindDbContext context) : IPaymentRepository
     public async Task<IReadOnlyList<Payment>> GetByUserIdAsync(Guid userId)
         => await context.Payments.Where(p => p.UserId == userId).ToListAsync();
 
+    public async Task<Payment?> GetActivePackageByUserIdAsync(Guid userId)
+    {
+        var now = DateTime.UtcNow;
+        return await context.Payments
+            .AsNoTracking()
+            .Include(p => p.Package)
+            .Where(p => p.UserId == userId
+                     && p.Status == Domain.Enums.PaymentStatus.Completed
+                     && p.PackageStartDate != null
+                     && p.PackageEndDate != null
+                     && p.PackageEndDate >= now)
+            .OrderByDescending(p => p.PackageStartDate)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task AddAsync(Payment payment)
         => await context.Payments.AddAsync(payment);
 }

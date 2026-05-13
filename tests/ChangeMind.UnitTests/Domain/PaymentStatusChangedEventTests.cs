@@ -14,7 +14,7 @@ public class PaymentStatusChangedEventTests
         var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 150m);
 
         // Act
-        payment.MarkAsCompleted("TXN-EVENT");
+        payment.MarkAsCompleted("TXN-EVENT", 30);
 
         // Assert
         payment.DomainEvents.Should().ContainSingle();
@@ -40,7 +40,7 @@ public class PaymentStatusChangedEventTests
     public void MarkAsRefunded_ShouldRaiseDomainEvent()
     {
         var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 100m);
-        payment.MarkAsCompleted("TXN-1");
+        payment.MarkAsCompleted("TXN-1", 30);
         payment.ClearDomainEvents();
 
         payment.MarkAsRefunded();

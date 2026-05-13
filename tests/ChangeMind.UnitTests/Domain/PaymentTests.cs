@@ -51,7 +51,7 @@ public class PaymentTests
         var transactionId = "TXN-12345";
 
         // Act
-        payment.MarkAsCompleted(transactionId);
+        payment.MarkAsCompleted(transactionId, 30);
 
         // Assert
         payment.Status.Should().Be(PaymentStatus.Completed);
@@ -100,7 +100,7 @@ public class PaymentTests
     public void MarkAsRefunded_FromCompleted_ShouldSetRefundedStatus()
     {
         var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 75m);
-        payment.MarkAsCompleted("TXN-REF");
+        payment.MarkAsCompleted("TXN-REF", 30);
         payment.MarkAsRefunded();
         payment.Status.Should().Be(PaymentStatus.Refunded);
     }
@@ -117,8 +117,8 @@ public class PaymentTests
     public void MarkAsCompleted_WhenAlreadyCompleted_ShouldThrow()
     {
         var payment = Payment.Create(Guid.NewGuid(), Guid.NewGuid(), 100m);
-        payment.MarkAsCompleted("TXN-1");
-        var act = () => payment.MarkAsCompleted("TXN-2");
+        payment.MarkAsCompleted("TXN-1", 30);
+        var act = () => payment.MarkAsCompleted("TXN-2", 30);
         act.Should().Throw<ChangeMind.Domain.Exceptions.InvalidStateTransitionException>();
     }
 }

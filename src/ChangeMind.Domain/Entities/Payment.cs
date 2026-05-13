@@ -23,6 +23,12 @@ public sealed class Payment : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     public DateTime? CompletedAt { get; private set; }
 
+    /// <summary>Package access window start — set on MarkAsCompleted.</summary>
+    public DateTime? PackageStartDate { get; private set; }
+
+    /// <summary>Package access window end — set on MarkAsCompleted = Start + Package.DurationDays.</summary>
+    public DateTime? PackageEndDate { get; private set; }
+
     // Navigation Properties
     public User User { get; private set; } = null!;
     public Package Package { get; private set; } = null!;
@@ -49,15 +55,20 @@ public sealed class Payment : AggregateRoot
         };
     }
 
-    public void MarkAsCompleted(string transactionId)
+    public void MarkAsCompleted(string transactionId, int packageDurationDays)
     {
         if (Status != PaymentStatus.Pending)
             throw new InvalidStateTransitionException(nameof(Payment), Status.ToString(), nameof(MarkAsCompleted));
+        if (packageDurationDays <= 0)
+            throw new ValidationException("Package duration must be positive.");
 
-        var old    = Status;
-        Status        = PaymentStatus.Completed;
-        TransactionId = transactionId;
-        CompletedAt   = DateTime.UtcNow;
+        var now           = DateTime.UtcNow;
+        var old           = Status;
+        Status            = PaymentStatus.Completed;
+        TransactionId     = transactionId;
+        CompletedAt       = now;
+        PackageStartDate  = now;
+        PackageEndDate    = now.AddDays(packageDurationDays);
         AddDomainEvent(new PaymentStatusChangedEvent(Id, UserId, old, Status, Amount));
     }
 

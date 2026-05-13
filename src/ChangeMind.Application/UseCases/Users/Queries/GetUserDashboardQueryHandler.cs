@@ -18,13 +18,11 @@ public class GetUserDashboardQueryHandler(
         var user = await userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException($"User '{request.UserId}' not found.");
 
-        var trainingTask = mediator.Send(new GetUserActiveProgramQuery { UserId = request.UserId }, cancellationToken);
-        var nutritionTask = mediator.Send(new GetUserActiveNutritionPlanQuery(request.UserId), cancellationToken);
-        var waitingTask = waitingUserRepository.GetByUserIdAsync(request.UserId);
+        // Sequential — DbContext is not thread-safe; these handlers share the same scoped DbContext.
+        var activeProgram = await mediator.Send(new GetUserActiveProgramQuery { UserId = request.UserId }, cancellationToken);
+        var activeNutrition = await mediator.Send(new GetUserActiveNutritionPlanQuery(request.UserId), cancellationToken);
+        var waiting = await waitingUserRepository.GetByUserIdAsync(request.UserId);
 
-        await Task.WhenAll(trainingTask, nutritionTask, waitingTask);
-
-        var waiting = await waitingTask;
         WaitingUserStatusDto? waitingStatus = waiting is null ? null : new WaitingUserStatusDto
         {
             IsWaitingForAssignment = waiting.IsWaitingForAssignment,
@@ -48,8 +46,8 @@ public class GetUserDashboardQueryHandler(
                 FitnessLevel       = user.FitnessLevel?.ToString(),
                 IsCompletedProfile = user.IsCompletedProfile
             },
-            ActiveTrainingProgram = await trainingTask,
-            ActiveNutritionPlan   = await nutritionTask,
+            ActiveTrainingProgram = activeProgram,
+            ActiveNutritionPlan   = activeNutrition,
             WaitingStatus         = waitingStatus
         };
     }

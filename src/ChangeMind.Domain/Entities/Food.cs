@@ -88,6 +88,66 @@ public class Food
     public void Deactivate() => IsActive = false;
     public void Activate()   => IsActive = true;
 
+    public void Update(
+        string name,
+        FoodMeasurementUnit unit,
+        decimal? caloriesPer100g,
+        decimal? proteinPer100g,
+        decimal? carbsPer100g,
+        decimal? fatPer100g,
+        decimal? caloriesPerPiece,
+        decimal? proteinPerPiece,
+        decimal? carbsPerPiece,
+        decimal? fatPerPiece,
+        string? pieceLabel,
+        decimal? gramsPerPiece)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ValidationException("Besin adı boş olamaz.");
+
+        Name = name;
+        Unit = unit;
+
+        if (unit == FoodMeasurementUnit.Grams)
+        {
+            if (caloriesPer100g is null || proteinPer100g is null || carbsPer100g is null || fatPer100g is null)
+                throw new ValidationException("Grams birimli besinde tüm 100g macro alanları zorunludur.");
+
+            CaloriesPer100g = caloriesPer100g;
+            ProteinPer100g  = proteinPer100g;
+            CarbsPer100g    = carbsPer100g;
+            FatPer100g      = fatPer100g;
+
+            CaloriesPerPiece = null;
+            ProteinPerPiece  = null;
+            CarbsPerPiece    = null;
+            FatPerPiece      = null;
+            PieceLabel       = null;
+            GramsPerPiece    = null;
+        }
+        else
+        {
+            if (caloriesPerPiece is null || proteinPerPiece is null || carbsPerPiece is null || fatPerPiece is null)
+                throw new ValidationException("Piece birimli besinde tüm adet macro alanları zorunludur.");
+            if (string.IsNullOrWhiteSpace(pieceLabel))
+                throw new ValidationException("Piece birimli besinde 'pieceLabel' zorunludur.");
+
+            CaloriesPerPiece = caloriesPerPiece;
+            ProteinPerPiece  = proteinPerPiece;
+            CarbsPerPiece    = carbsPerPiece;
+            FatPerPiece      = fatPerPiece;
+            PieceLabel       = pieceLabel;
+            GramsPerPiece    = gramsPerPiece;
+
+            CaloriesPer100g = null;
+            ProteinPer100g  = null;
+            CarbsPer100g    = null;
+            FatPer100g      = null;
+        }
+
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     /// <summary>EF HasData seeding — grams-based.</summary>
     public static Food SeedGrams(
         Guid id,

@@ -31,6 +31,13 @@ public class FoodRepository(ChangeMindDbContext context) : IFoodRepository
         return count == list.Count;
     }
 
+    public async Task<bool> ExistsByNameAsync(string name, Guid? excludingId = null)
+    {
+        return await context.Foods
+            .AsNoTracking()
+            .AnyAsync(f => f.Name == name && (excludingId == null || f.Id != excludingId));
+    }
+
     public async Task AddAsync(Food food) => await context.Foods.AddAsync(food);
 
     public Task UpdateAsync(Food food)

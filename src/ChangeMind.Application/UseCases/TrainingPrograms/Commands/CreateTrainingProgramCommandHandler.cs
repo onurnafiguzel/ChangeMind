@@ -24,18 +24,15 @@ public class CreateTrainingProgramCommandHandler(
         var user = await userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
 
-        // Mark user as no longer waiting for assignment
-        var waitingUser = await waitingUserRepository.GetByUserIdAsync(request.UserId);
-        if (waitingUser != null && waitingUser.IsWaitingForAssignment)
-        {
-            waitingUser.MarkAsAssigned();
-            await waitingUserRepository.UpdateAsync(waitingUser);
-        }
-        else
-        {
-            throw new InvalidStateTransitionException(
-                "User", "not waiting", "assign training program");
-        }
+        // Resolve waiting record — user must be in waiting queue (payment completed)
+        var waitingUser = await waitingUserRepository.GetByUserIdAsync(request.UserId)
+            ?? throw new NotFoundException(
+                $"Waiting record for user '{request.UserId}' not found. Payment may be incomplete.");
+
+        // Duplicate guard: training program already assigned — do not allow another one
+        if (waitingUser.HasTrainingProgram)
+            throw new ConflictException(
+                $"User '{request.UserId}' already has an active training program assigned.");
 
         // Create training program
         var trainingProgram = TrainingProgram.Create(
@@ -69,7 +66,11 @@ public class CreateTrainingProgramCommandHandler(
         }
 
         // Save training program
-        await trainingProgramRepository.AddAsync(trainingProgram);        
+        await trainingProgramRepository.AddAsync(trainingProgram);
+
+        // Mark waiting record: flips IsWaitingForAssignment=false only if nutrition is also assigned
+        waitingUser.MarkTrainingProgramAssigned();
+        await waitingUserRepository.UpdateAsync(waitingUser);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

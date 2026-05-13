@@ -18,6 +18,8 @@ public class GetWaitingUserStatusQueryHandler(
         return new WaitingUserStatusDto
         {
             IsWaitingForAssignment = waitingUser.IsWaitingForAssignment,
+            HasTrainingProgram     = waitingUser.HasTrainingProgram,
+            HasNutritionPlan       = waitingUser.HasNutritionPlan,
             CreatedAt              = waitingUser.CreatedAt
         };
     }

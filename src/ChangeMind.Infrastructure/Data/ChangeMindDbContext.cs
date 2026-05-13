@@ -24,6 +24,8 @@ public class ChangeMindDbContext : DbContext
     public DbSet<WaitingUser> WaitingUsers { get; set; }
     public DbSet<FitnessGoalItem> FitnessGoals { get; set; }
     public DbSet<WorkoutSession> WorkoutSessions { get; set; }
+    public DbSet<Food> Foods { get; set; }
+    public DbSet<NutritionPlan> NutritionPlans { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,9 +43,80 @@ public class ChangeMindDbContext : DbContext
         modelBuilder.ApplyConfiguration(new WaitingUserConfiguration());
         modelBuilder.ApplyConfiguration(new FitnessGoalItemConfiguration());
         modelBuilder.ApplyConfiguration(new WorkoutSessionConfiguration());
+        modelBuilder.ApplyConfiguration(new FoodConfiguration());
+        modelBuilder.ApplyConfiguration(new NutritionPlanConfiguration());
 
         // Seed Exercise Library
         SeedExerciseLibrary(modelBuilder);
+        SeedFoodLibrary(modelBuilder);
+    }
+
+    private static void SeedFoodLibrary(ModelBuilder modelBuilder)
+    {
+        // Per 100g raw weight: (calories, protein, carbs, fat)
+        var foods = new List<Food>
+        {
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0001"), "Tavuk Göğsü",          165m, 31.0m,  0.0m,  3.6m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0002"), "Dana Bonfile",         217m, 26.1m,  0.0m, 11.8m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0003"), "Hindi Göğsü",          135m, 30.0m,  0.0m,  1.0m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0004"), "Somon",                208m, 20.0m,  0.0m, 13.0m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0005"), "Levrek",               125m, 23.0m,  0.0m,  2.9m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0006"), "Ton Balığı (konserve)",132m, 28.0m,  0.0m,  1.0m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0007"), "Yumurta (bütün)",       78m,  6.5m,  0.5m,  5.5m, "1 adet (orta)", 50m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0008"), "Yumurta Akı",           17m,  3.6m,  0.2m,  0.1m, "1 adet",         33m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0009"), "Süzme Yoğurt",          59m, 10.0m,  3.6m,  0.4m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F000A"), "Yoğurt (tam yağlı)",    61m,  3.5m,  4.7m,  3.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F000B"), "Lor Peyniri",           98m, 11.1m,  3.4m,  4.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F000C"), "Beyaz Peynir",         264m, 17.0m,  2.0m, 21.0m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F000D"), "Süt (tam yağlı)",       61m,  3.2m,  4.8m,  3.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F000E"), "Kefir",                 41m,  3.3m,  4.5m,  1.0m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F000F"), "Whey Protein Tozu",    380m, 80.0m,  7.5m,  3.5m),
+
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0010"), "Pirinç Pilavı",        130m,  2.7m, 28.0m,  0.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0011"), "Esmer Pirinç",         123m,  2.6m, 25.6m,  0.9m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0012"), "Bulgur Pilavı",         83m,  3.1m, 18.6m,  0.2m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0013"), "Yulaf Ezmesi",         389m, 16.9m, 66.3m,  6.9m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0014"), "Kinoa",                120m,  4.4m, 21.3m,  1.9m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0015"), "Makarna (haşlanmış)",  131m,  5.0m, 25.0m,  1.1m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0016"), "Tam Buğday Ekmeği",     74m,  3.9m, 12.3m,  1.0m, "1 dilim",        30m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0017"), "Beyaz Ekmek",           80m,  2.7m, 14.7m,  1.0m, "1 dilim",        30m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0018"), "Tatlı Patates",         86m,  1.6m, 20.1m,  0.1m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0019"), "Patates",               77m,  2.0m, 17.0m,  0.1m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F001A"), "Yeşil Mercimek",       116m,  9.0m, 20.0m,  0.4m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F001B"), "Kırmızı Mercimek",     116m,  9.0m, 20.0m,  0.4m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F001C"), "Nohut (haşlanmış)",    164m,  8.9m, 27.4m,  2.6m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F001D"), "Kuru Fasulye",         127m,  8.7m, 22.8m,  0.5m),
+
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0020"), "Brokoli",               34m,  2.8m,  6.6m,  0.4m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0021"), "Ispanak",               23m,  2.9m,  3.6m,  0.4m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0022"), "Domates",               18m,  0.9m,  3.9m,  0.2m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0023"), "Salatalık",             16m,  0.7m,  3.6m,  0.1m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0024"), "Havuç",                 41m,  0.9m,  9.6m,  0.2m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0025"), "Karnabahar",            25m,  1.9m,  5.0m,  0.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0026"), "Kabak",                 17m,  1.2m,  3.1m,  0.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0027"), "Biber (yeşil)",         20m,  0.9m,  4.6m,  0.2m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0028"), "Marul",                 15m,  1.4m,  2.9m,  0.2m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0029"), "Roka",                  25m,  2.6m,  3.7m,  0.7m),
+
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0030"), "Muz",                  105m,  1.3m, 27.0m,  0.4m, "1 adet (orta)", 118m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0031"), "Elma",                  78m,  0.4m, 21.0m,  0.3m, "1 adet (orta)", 150m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0032"), "Çilek",                 32m,  0.7m,  7.7m,  0.3m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0033"), "Yaban Mersini",         57m,  0.7m, 14.5m,  0.3m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0034"), "Portakal",              65m,  1.3m, 16.3m,  0.2m, "1 adet (orta)", 140m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0035"), "Armut",                102m,  0.6m, 27.0m,  0.2m, "1 adet (orta)", 180m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0036"), "Üzüm",                  69m,  0.7m, 18.0m,  0.2m),
+
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0040"), "Badem",                144m,  5.3m,  5.4m, 12.5m, "1 avuç (~25g)", 25m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0041"), "Ceviz",                 33m,  0.8m,  0.7m,  3.3m, "1 adet (çekirdek)", 5m),
+            Food.SeedPiece(new Guid("00000000-0000-0000-0000-0000000F0042"), "Fındık",               157m,  3.7m,  4.2m, 15.2m, "1 avuç (~25g)", 25m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0043"), "Fıstık Ezmesi",        588m, 25.0m, 20.0m, 50.0m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0044"), "Zeytinyağı",           884m,  0.0m,  0.0m,100.0m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0045"), "Avokado",              160m,  2.0m,  8.5m, 14.7m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0046"), "Zeytin (siyah)",       115m,  0.8m,  6.3m, 10.7m),
+            Food.SeedGrams(new Guid("00000000-0000-0000-0000-0000000F0047"), "Tahin",                595m, 17.0m, 21.2m, 53.8m),
+        };
+
+        modelBuilder.Entity<Food>().HasData(foods);
     }
 
     private static void SeedExerciseLibrary(ModelBuilder modelBuilder)

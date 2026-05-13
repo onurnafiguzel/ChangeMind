@@ -34,7 +34,9 @@ public class GetWaitingUsersQueryHandler(
                 Gender = user.Gender?.ToString(),
                 FitnessGoal = user.FitnessGoalId?.ToString(),
                 FitnessLevel = user.FitnessLevel?.ToString(),
-                CreatedAt = user.CreatedAt
+                CreatedAt = user.CreatedAt,
+                HasTrainingProgram = waitingUser.HasTrainingProgram,
+                HasNutritionPlan   = waitingUser.HasNutritionPlan
             });
         }
 

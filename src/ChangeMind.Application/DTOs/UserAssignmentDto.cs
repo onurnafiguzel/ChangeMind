@@ -13,4 +13,10 @@ public class UserAssignmentDto
     public string? FitnessGoal { get; set; }
     public string? FitnessLevel { get; set; }
     public DateTime CreatedAt { get; set; }
+
+    /// <summary>True if a training program has been assigned to this user.</summary>
+    public bool HasTrainingProgram { get; set; }
+
+    /// <summary>True if a nutrition plan has been assigned to this user.</summary>
+    public bool HasNutritionPlan { get; set; }
 }

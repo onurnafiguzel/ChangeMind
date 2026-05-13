@@ -3,6 +3,7 @@ using System;
 using ChangeMind.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChangeMind.Infrastructure.Migrations
 {
     [DbContext(typeof(ChangeMindDbContext))]
-    partial class ChangeMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260512214559_AddProgramFlagsToWaitingUser")]
+    partial class AddProgramFlagsToWaitingUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -701,34 +704,18 @@ namespace ChangeMind.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal?>("CaloriesPer100g")
+                    b.Property<decimal>("CaloriesPer100g")
                         .HasPrecision(8, 2)
                         .HasColumnType("numeric(8,2)");
 
-                    b.Property<decimal?>("CaloriesPerPiece")
-                        .HasPrecision(8, 2)
-                        .HasColumnType("numeric(8,2)");
-
-                    b.Property<decimal?>("CarbsPer100g")
-                        .HasPrecision(8, 2)
-                        .HasColumnType("numeric(8,2)");
-
-                    b.Property<decimal?>("CarbsPerPiece")
+                    b.Property<decimal>("CarbsPer100g")
                         .HasPrecision(8, 2)
                         .HasColumnType("numeric(8,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal?>("FatPer100g")
-                        .HasPrecision(8, 2)
-                        .HasColumnType("numeric(8,2)");
-
-                    b.Property<decimal?>("FatPerPiece")
-                        .HasPrecision(8, 2)
-                        .HasColumnType("numeric(8,2)");
-
-                    b.Property<decimal?>("GramsPerPiece")
+                    b.Property<decimal>("FatPer100g")
                         .HasPrecision(8, 2)
                         .HasColumnType("numeric(8,2)");
 
@@ -742,24 +729,9 @@ namespace ChangeMind.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("PieceLabel")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<decimal?>("ProteinPer100g")
+                    b.Property<decimal>("ProteinPer100g")
                         .HasPrecision(8, 2)
                         .HasColumnType("numeric(8,2)");
-
-                    b.Property<decimal?>("ProteinPerPiece")
-                        .HasPrecision(8, 2)
-                        .HasColumnType("numeric(8,2)");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasDefaultValue("Grams");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -773,9 +745,6 @@ namespace ChangeMind.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Foods_Name");
 
-                    b.HasIndex("Unit")
-                        .HasDatabaseName("IX_Foods_Unit");
-
                     b.ToTable("Foods", (string)null);
 
                     b.HasData(
@@ -788,8 +757,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 3.6m,
                             IsActive = true,
                             Name = "Tavuk Göğsü",
-                            ProteinPer100g = 31.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 31.0m
                         },
                         new
                         {
@@ -800,8 +768,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 11.8m,
                             IsActive = true,
                             Name = "Dana Bonfile",
-                            ProteinPer100g = 26.1m,
-                            Unit = "Grams"
+                            ProteinPer100g = 26.1m
                         },
                         new
                         {
@@ -812,8 +779,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 1.0m,
                             IsActive = true,
                             Name = "Hindi Göğsü",
-                            ProteinPer100g = 30.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 30.0m
                         },
                         new
                         {
@@ -824,8 +790,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 13.0m,
                             IsActive = true,
                             Name = "Somon",
-                            ProteinPer100g = 20.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 20.0m
                         },
                         new
                         {
@@ -836,8 +801,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 2.9m,
                             IsActive = true,
                             Name = "Levrek",
-                            ProteinPer100g = 23.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 23.0m
                         },
                         new
                         {
@@ -848,36 +812,29 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 1.0m,
                             IsActive = true,
                             Name = "Ton Balığı (konserve)",
-                            ProteinPer100g = 28.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 28.0m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0007"),
-                            CaloriesPerPiece = 78m,
-                            CarbsPerPiece = 0.5m,
+                            CaloriesPer100g = 155m,
+                            CarbsPer100g = 1.1m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 5.5m,
-                            GramsPerPiece = 50m,
+                            FatPer100g = 11.0m,
                             IsActive = true,
                             Name = "Yumurta (bütün)",
-                            PieceLabel = "1 adet (orta)",
-                            ProteinPerPiece = 6.5m,
-                            Unit = "Piece"
+                            ProteinPer100g = 13.0m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0008"),
-                            CaloriesPerPiece = 17m,
-                            CarbsPerPiece = 0.2m,
+                            CaloriesPer100g = 52m,
+                            CarbsPer100g = 0.7m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 0.1m,
-                            GramsPerPiece = 33m,
+                            FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Yumurta Akı",
-                            PieceLabel = "1 adet",
-                            ProteinPerPiece = 3.6m,
-                            Unit = "Piece"
+                            ProteinPer100g = 11.0m
                         },
                         new
                         {
@@ -888,8 +845,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.4m,
                             IsActive = true,
                             Name = "Süzme Yoğurt",
-                            ProteinPer100g = 10.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 10.0m
                         },
                         new
                         {
@@ -900,8 +856,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 3.3m,
                             IsActive = true,
                             Name = "Yoğurt (tam yağlı)",
-                            ProteinPer100g = 3.5m,
-                            Unit = "Grams"
+                            ProteinPer100g = 3.5m
                         },
                         new
                         {
@@ -912,8 +867,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 4.3m,
                             IsActive = true,
                             Name = "Lor Peyniri",
-                            ProteinPer100g = 11.1m,
-                            Unit = "Grams"
+                            ProteinPer100g = 11.1m
                         },
                         new
                         {
@@ -924,8 +878,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 21.0m,
                             IsActive = true,
                             Name = "Beyaz Peynir",
-                            ProteinPer100g = 17.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 17.0m
                         },
                         new
                         {
@@ -936,8 +889,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 3.3m,
                             IsActive = true,
                             Name = "Süt (tam yağlı)",
-                            ProteinPer100g = 3.2m,
-                            Unit = "Grams"
+                            ProteinPer100g = 3.2m
                         },
                         new
                         {
@@ -948,8 +900,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 1.0m,
                             IsActive = true,
                             Name = "Kefir",
-                            ProteinPer100g = 3.3m,
-                            Unit = "Grams"
+                            ProteinPer100g = 3.3m
                         },
                         new
                         {
@@ -960,8 +911,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 3.5m,
                             IsActive = true,
                             Name = "Whey Protein Tozu",
-                            ProteinPer100g = 80.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 80.0m
                         },
                         new
                         {
@@ -972,8 +922,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.3m,
                             IsActive = true,
                             Name = "Pirinç Pilavı",
-                            ProteinPer100g = 2.7m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.7m
                         },
                         new
                         {
@@ -984,8 +933,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.9m,
                             IsActive = true,
                             Name = "Esmer Pirinç",
-                            ProteinPer100g = 2.6m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.6m
                         },
                         new
                         {
@@ -996,8 +944,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Bulgur Pilavı",
-                            ProteinPer100g = 3.1m,
-                            Unit = "Grams"
+                            ProteinPer100g = 3.1m
                         },
                         new
                         {
@@ -1008,8 +955,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 6.9m,
                             IsActive = true,
                             Name = "Yulaf Ezmesi",
-                            ProteinPer100g = 16.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 16.9m
                         },
                         new
                         {
@@ -1020,8 +966,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 1.9m,
                             IsActive = true,
                             Name = "Kinoa",
-                            ProteinPer100g = 4.4m,
-                            Unit = "Grams"
+                            ProteinPer100g = 4.4m
                         },
                         new
                         {
@@ -1032,36 +977,29 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 1.1m,
                             IsActive = true,
                             Name = "Makarna (haşlanmış)",
-                            ProteinPer100g = 5.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 5.0m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0016"),
-                            CaloriesPerPiece = 74m,
-                            CarbsPerPiece = 12.3m,
+                            CaloriesPer100g = 247m,
+                            CarbsPer100g = 41.0m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 1.0m,
-                            GramsPerPiece = 30m,
+                            FatPer100g = 3.4m,
                             IsActive = true,
                             Name = "Tam Buğday Ekmeği",
-                            PieceLabel = "1 dilim",
-                            ProteinPerPiece = 3.9m,
-                            Unit = "Piece"
+                            ProteinPer100g = 13.0m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0017"),
-                            CaloriesPerPiece = 80m,
-                            CarbsPerPiece = 14.7m,
+                            CaloriesPer100g = 265m,
+                            CarbsPer100g = 49.0m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 1.0m,
-                            GramsPerPiece = 30m,
+                            FatPer100g = 3.2m,
                             IsActive = true,
                             Name = "Beyaz Ekmek",
-                            PieceLabel = "1 dilim",
-                            ProteinPerPiece = 2.7m,
-                            Unit = "Piece"
+                            ProteinPer100g = 9.0m
                         },
                         new
                         {
@@ -1072,8 +1010,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.1m,
                             IsActive = true,
                             Name = "Tatlı Patates",
-                            ProteinPer100g = 1.6m,
-                            Unit = "Grams"
+                            ProteinPer100g = 1.6m
                         },
                         new
                         {
@@ -1084,8 +1021,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.1m,
                             IsActive = true,
                             Name = "Patates",
-                            ProteinPer100g = 2.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.0m
                         },
                         new
                         {
@@ -1096,8 +1032,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.4m,
                             IsActive = true,
                             Name = "Yeşil Mercimek",
-                            ProteinPer100g = 9.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 9.0m
                         },
                         new
                         {
@@ -1108,8 +1043,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.4m,
                             IsActive = true,
                             Name = "Kırmızı Mercimek",
-                            ProteinPer100g = 9.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 9.0m
                         },
                         new
                         {
@@ -1120,8 +1054,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 2.6m,
                             IsActive = true,
                             Name = "Nohut (haşlanmış)",
-                            ProteinPer100g = 8.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 8.9m
                         },
                         new
                         {
@@ -1132,8 +1065,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.5m,
                             IsActive = true,
                             Name = "Kuru Fasulye",
-                            ProteinPer100g = 8.7m,
-                            Unit = "Grams"
+                            ProteinPer100g = 8.7m
                         },
                         new
                         {
@@ -1144,8 +1076,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.4m,
                             IsActive = true,
                             Name = "Brokoli",
-                            ProteinPer100g = 2.8m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.8m
                         },
                         new
                         {
@@ -1156,8 +1087,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.4m,
                             IsActive = true,
                             Name = "Ispanak",
-                            ProteinPer100g = 2.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.9m
                         },
                         new
                         {
@@ -1168,8 +1098,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Domates",
-                            ProteinPer100g = 0.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.9m
                         },
                         new
                         {
@@ -1180,8 +1109,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.1m,
                             IsActive = true,
                             Name = "Salatalık",
-                            ProteinPer100g = 0.7m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.7m
                         },
                         new
                         {
@@ -1192,8 +1120,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Havuç",
-                            ProteinPer100g = 0.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.9m
                         },
                         new
                         {
@@ -1204,8 +1131,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.3m,
                             IsActive = true,
                             Name = "Karnabahar",
-                            ProteinPer100g = 1.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 1.9m
                         },
                         new
                         {
@@ -1216,8 +1142,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.3m,
                             IsActive = true,
                             Name = "Kabak",
-                            ProteinPer100g = 1.2m,
-                            Unit = "Grams"
+                            ProteinPer100g = 1.2m
                         },
                         new
                         {
@@ -1228,8 +1153,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Biber (yeşil)",
-                            ProteinPer100g = 0.9m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.9m
                         },
                         new
                         {
@@ -1240,8 +1164,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Marul",
-                            ProteinPer100g = 1.4m,
-                            Unit = "Grams"
+                            ProteinPer100g = 1.4m
                         },
                         new
                         {
@@ -1252,36 +1175,29 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.7m,
                             IsActive = true,
                             Name = "Roka",
-                            ProteinPer100g = 2.6m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.6m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0030"),
-                            CaloriesPerPiece = 105m,
-                            CarbsPerPiece = 27.0m,
+                            CaloriesPer100g = 89m,
+                            CarbsPer100g = 22.8m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 0.4m,
-                            GramsPerPiece = 118m,
+                            FatPer100g = 0.3m,
                             IsActive = true,
                             Name = "Muz",
-                            PieceLabel = "1 adet (orta)",
-                            ProteinPerPiece = 1.3m,
-                            Unit = "Piece"
+                            ProteinPer100g = 1.1m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0031"),
-                            CaloriesPerPiece = 78m,
-                            CarbsPerPiece = 21.0m,
+                            CaloriesPer100g = 52m,
+                            CarbsPer100g = 14.0m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 0.3m,
-                            GramsPerPiece = 150m,
+                            FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Elma",
-                            PieceLabel = "1 adet (orta)",
-                            ProteinPerPiece = 0.4m,
-                            Unit = "Piece"
+                            ProteinPer100g = 0.3m
                         },
                         new
                         {
@@ -1292,8 +1208,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.3m,
                             IsActive = true,
                             Name = "Çilek",
-                            ProteinPer100g = 0.7m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.7m
                         },
                         new
                         {
@@ -1304,36 +1219,29 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.3m,
                             IsActive = true,
                             Name = "Yaban Mersini",
-                            ProteinPer100g = 0.7m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.7m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0034"),
-                            CaloriesPerPiece = 65m,
-                            CarbsPerPiece = 16.3m,
+                            CaloriesPer100g = 47m,
+                            CarbsPer100g = 11.8m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 0.2m,
-                            GramsPerPiece = 140m,
+                            FatPer100g = 0.1m,
                             IsActive = true,
                             Name = "Portakal",
-                            PieceLabel = "1 adet (orta)",
-                            ProteinPerPiece = 1.3m,
-                            Unit = "Piece"
+                            ProteinPer100g = 0.9m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0035"),
-                            CaloriesPerPiece = 102m,
-                            CarbsPerPiece = 27.0m,
+                            CaloriesPer100g = 57m,
+                            CarbsPer100g = 15.0m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 0.2m,
-                            GramsPerPiece = 180m,
+                            FatPer100g = 0.1m,
                             IsActive = true,
                             Name = "Armut",
-                            PieceLabel = "1 adet (orta)",
-                            ProteinPerPiece = 0.6m,
-                            Unit = "Piece"
+                            ProteinPer100g = 0.4m
                         },
                         new
                         {
@@ -1344,50 +1252,40 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 0.2m,
                             IsActive = true,
                             Name = "Üzüm",
-                            ProteinPer100g = 0.7m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.7m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0040"),
-                            CaloriesPerPiece = 144m,
-                            CarbsPerPiece = 5.4m,
+                            CaloriesPer100g = 579m,
+                            CarbsPer100g = 21.6m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 12.5m,
-                            GramsPerPiece = 25m,
+                            FatPer100g = 49.9m,
                             IsActive = true,
                             Name = "Badem",
-                            PieceLabel = "1 avuç (~25g)",
-                            ProteinPerPiece = 5.3m,
-                            Unit = "Piece"
+                            ProteinPer100g = 21.2m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0041"),
-                            CaloriesPerPiece = 33m,
-                            CarbsPerPiece = 0.7m,
+                            CaloriesPer100g = 654m,
+                            CarbsPer100g = 13.7m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 3.3m,
-                            GramsPerPiece = 5m,
+                            FatPer100g = 65.2m,
                             IsActive = true,
                             Name = "Ceviz",
-                            PieceLabel = "1 adet (çekirdek)",
-                            ProteinPerPiece = 0.8m,
-                            Unit = "Piece"
+                            ProteinPer100g = 15.2m
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-0000000f0042"),
-                            CaloriesPerPiece = 157m,
-                            CarbsPerPiece = 4.2m,
+                            CaloriesPer100g = 628m,
+                            CarbsPer100g = 16.7m,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FatPerPiece = 15.2m,
-                            GramsPerPiece = 25m,
+                            FatPer100g = 60.8m,
                             IsActive = true,
                             Name = "Fındık",
-                            PieceLabel = "1 avuç (~25g)",
-                            ProteinPerPiece = 3.7m,
-                            Unit = "Piece"
+                            ProteinPer100g = 14.9m
                         },
                         new
                         {
@@ -1398,8 +1296,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 50.0m,
                             IsActive = true,
                             Name = "Fıstık Ezmesi",
-                            ProteinPer100g = 25.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 25.0m
                         },
                         new
                         {
@@ -1410,8 +1307,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 100.0m,
                             IsActive = true,
                             Name = "Zeytinyağı",
-                            ProteinPer100g = 0.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.0m
                         },
                         new
                         {
@@ -1422,8 +1318,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 14.7m,
                             IsActive = true,
                             Name = "Avokado",
-                            ProteinPer100g = 2.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 2.0m
                         },
                         new
                         {
@@ -1434,8 +1329,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 10.7m,
                             IsActive = true,
                             Name = "Zeytin (siyah)",
-                            ProteinPer100g = 0.8m,
-                            Unit = "Grams"
+                            ProteinPer100g = 0.8m
                         },
                         new
                         {
@@ -1446,8 +1340,7 @@ namespace ChangeMind.Infrastructure.Migrations
                             FatPer100g = 53.8m,
                             IsActive = true,
                             Name = "Tahin",
-                            ProteinPer100g = 17.0m,
-                            Unit = "Grams"
+                            ProteinPer100g = 17.0m
                         });
                 });
 

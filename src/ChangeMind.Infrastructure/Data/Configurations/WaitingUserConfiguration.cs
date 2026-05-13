@@ -25,6 +25,14 @@ public class WaitingUserConfiguration : IEntityTypeConfiguration<WaitingUser>
             .IsRequired()
             .HasDefaultValue(true);
 
+        builder.Property(w => w.HasTrainingProgram)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.Property(w => w.HasNutritionPlan)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.Property(w => w.CreatedAt)
             .IsRequired()
             .HasDefaultValueSql("NOW()");

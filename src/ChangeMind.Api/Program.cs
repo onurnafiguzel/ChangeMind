@@ -4,6 +4,7 @@ using ChangeMind.Api.Middleware;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Infrastructure.Data;
 using ChangeMind.Infrastructure.Extensions;
+using Microsoft.Extensions.FileProviders;
 using Prometheus;
 using Serilog;
 
@@ -54,6 +55,17 @@ app.MapMetrics("/metrics");
 
 if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
+
+// Static file serving for uploaded user photos (path matches LocalDiskPhotoStorageService.PublicUrlPrefix).
+var photosRoot = builder.Configuration["Storage:PhotosRoot"]
+    ?? Path.Combine(AppContext.BaseDirectory, "wwwroot", "uploads", "photos");
+Directory.CreateDirectory(photosRoot);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(photosRoot),
+    RequestPath  = "/uploads/photos"
+});
+
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

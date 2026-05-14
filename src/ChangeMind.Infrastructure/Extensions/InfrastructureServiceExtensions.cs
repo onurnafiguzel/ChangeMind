@@ -62,6 +62,8 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IWorkoutSessionRepository, WorkoutSessionRepository>();
         services.AddScoped<IFoodRepository, FoodRepository>();
         services.AddScoped<INutritionPlanRepository, NutritionPlanRepository>();
+        services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
+        services.AddScoped<IPhotoStorageService, LocalDiskPhotoStorageService>();
 
         services.AddScoped<DataSeeder>();
 

@@ -13,14 +13,12 @@
     "Paket türü gösterilir: Basic, Premium, Elite",
     "User paket seçip 'Purchase' edebilir",
     "Satın alma öncesi özet gösterilir (Fiyat, Tarih, Süresi)",
-    "Ödeme işlemi (Stripe/PayPal entegrasyon - FEAT-010 ile beraber)",
     "Ödeme başarılı olunca subscription activate edilir",
     "User 'My Subscriptions' sayfasında aktif subscription'larını görebilir",
     "Subscription detayında: Package info, start date, end date, auto-renewal status",
     "User subscription'ı iptal edebilir (auto-renewal'ı stop et)",
     "Ödeme geçmişi görüntülenebilir (tüm transactions)"
   ],
-  "dependencies": ["TECH-007"],
   "business_rules": [
     "Package sadece aktif (IsActive=true) olanlar gösterilir",
     "User eş zamanlı farklı paketlere sahip olamaz (aynı anda 1 subscription)",

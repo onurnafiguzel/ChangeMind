@@ -7,20 +7,23 @@ using ChangeMind.Application.Repositories;
 
 public class GetWaitingUsersQueryHandler(
     IWaitingUserRepository waitingUserRepository,
-    IPaymentRepository paymentRepository) : IRequestHandler<GetWaitingUsersQuery, List<UserAssignmentDto>>
+    IFitnessGoalRepository fitnessGoalRepository) : IRequestHandler<GetWaitingUsersQuery, List<UserAssignmentDto>>
 {
     public async Task<List<UserAssignmentDto>> Handle(GetWaitingUsersQuery request, CancellationToken cancellationToken)
     {
-        // Get all users waiting for assignment
         var waitingUsers = await waitingUserRepository
             .GetWaitingForAssignment()
             .ToListAsync(cancellationToken);
+
+        var goalNames = await fitnessGoalRepository
+            .GetAll()
+            .ToDictionaryAsync(g => g.Id, g => g.Name, cancellationToken);
 
         var result = new List<UserAssignmentDto>();
 
         foreach (var waitingUser in waitingUsers)
         {
-            var user = waitingUser.User;    
+            var user = waitingUser.User;
 
             result.Add(new UserAssignmentDto
             {
@@ -32,7 +35,10 @@ public class GetWaitingUsersQueryHandler(
                 Height = user.Height,
                 Weight = user.Weight,
                 Gender = user.Gender?.ToString(),
-                FitnessGoal = user.FitnessGoalId?.ToString(),
+                FitnessGoal = user.FitnessGoalId.HasValue
+                    && goalNames.TryGetValue(user.FitnessGoalId.Value, out var name)
+                        ? name
+                        : null,
                 FitnessLevel = user.FitnessLevel?.ToString(),
                 CreatedAt = user.CreatedAt,
                 HasTrainingProgram = waitingUser.HasTrainingProgram,

@@ -104,6 +104,26 @@ public class NutritionPlansController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Export the user's active nutrition plan as an .xlsx file.
+    /// Each NutritionDayType gets its own sheet; meals are stacked vertically.
+    /// </summary>
+    [HttpGet("~/api/users/{userId:guid}/active-nutrition-plan/export")]
+    public async Task<IActionResult> ExportUserActiveNutritionPlan(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        AuthorizeViewPlan(userId);
+
+        var result = await mediator.Send(new ExportUserNutritionPlanQuery(userId), cancellationToken);
+        if (result is null) return NotFound();
+
+        return File(
+            result.Content,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            result.FileName);
+    }
+
+    /// <summary>
     /// Get all nutrition plans (active + historical) for a user. Coach or Admin only.
     /// </summary>
     [HttpGet("~/api/users/{userId:guid}/nutrition-plans")]

@@ -23,4 +23,15 @@ public class WorkoutSessionRepository(ChangeMindDbContext context) : IWorkoutSes
             .Take(count)
             .ToListAsync();
     }
+
+    public async Task<IReadOnlyList<WorkoutSession>> GetByUserAndProgramAsync(Guid userId, Guid programId)
+    {
+        return await context.WorkoutSessions
+            .AsNoTracking()
+            .Where(s => s.UserId == userId && s.TrainingProgramId == programId)
+            .OrderBy(s => s.DayKey)
+            .ThenBy(s => s.RecordDate)
+            .ThenBy(s => s.CreatedAt)
+            .ToListAsync();
+    }
 }

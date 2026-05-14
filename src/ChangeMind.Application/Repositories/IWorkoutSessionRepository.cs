@@ -6,4 +6,5 @@ public interface IWorkoutSessionRepository
 {
     Task AddAsync(WorkoutSession session);
     Task<IReadOnlyList<WorkoutSession>> GetByUserAndDayAsync(Guid userId, string dayKey, int count);
+    Task<IReadOnlyList<WorkoutSession>> GetByUserAndProgramAsync(Guid userId, Guid programId);
 }

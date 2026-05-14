@@ -145,6 +145,33 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Export a training program (plan + workout history) as an .xlsx file.
+    /// Each program day is rendered on its own sheet.
+    /// </summary>
+    [HttpGet("{id:guid}/export")]
+    public async Task<IActionResult> Export(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var program = await mediator.Send(new GetTrainingProgramByIdQuery { ProgramId = id }, cancellationToken);
+        if (program is null)
+            return NotFound();
+
+        var tokenUserId = User.FindFirstValue("sub");
+        if (!Guid.TryParse(tokenUserId, out var tokenGuid) || tokenGuid != program.UserId)
+            throw new ForbiddenException("You can only export your own training program.");
+
+        var result = await mediator.Send(new ExportTrainingProgramQuery(id), cancellationToken);
+        if (result is null)
+            return NotFound();
+
+        return File(
+            result.Content,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            result.FileName);
+    }
+
+    /// <summary>
     /// Update progress (completed weeks) for a training program.
     /// </summary>
     [HttpPut("{id:guid}/progress")]

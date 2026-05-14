@@ -1,6 +1,6 @@
 namespace ChangeMind.Domain.Entities;
 
-using ChangeMind.Domain.Enums; // For Gender, DifficultyLevel
+using ChangeMind.Domain.Enums;
 using ChangeMind.Domain.Events;
 
 public sealed class User : AggregateRoot
@@ -12,14 +12,6 @@ public sealed class User : AggregateRoot
 
     public string Email { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
-    public string FirstName { get; private set; } = string.Empty;
-    public string LastName { get; private set; } = string.Empty;
-    public int? Age { get; private set; }
-    public decimal? Height { get; private set; }
-    public decimal? Weight { get; private set; }
-    public Gender? Gender { get; private set; }
-    public Guid? FitnessGoalId { get; private set; }
-    public DifficultyLevel? FitnessLevel { get; private set; }
     public bool IsCompletedProfile { get; private set; } = false;
     public bool IsActive { get; private set; } = true;
     public UserRole Role { get; private set; } = UserRole.User;
@@ -27,7 +19,14 @@ public sealed class User : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    // Navigation Properties
+    // Navigation: profile (1:1)
+    public UserProfile? Profile { get; private set; }
+
+    // Backward-compat accessors that delegate to Profile (so callers like
+    // `user.FirstName` continue to compile and read through the navigation).
+    public string FirstName => Profile?.FirstName ?? string.Empty;
+    public string LastName  => Profile?.LastName ?? string.Empty;
+
     private readonly List<UserPhoto> _photos = new();
     public IReadOnlyCollection<UserPhoto> Photos => _photos.AsReadOnly();
 
@@ -43,7 +42,9 @@ public sealed class User : AggregateRoot
     public WaitingUser? WaitingUserRecord { get; private set; }
 
     /// <summary>
-    /// Factory method to create a new User (registration with email and password only)
+    /// Factory method to create a new User (registration with email and password).
+    /// Optional firstName/lastName creates an initial UserProfile row; otherwise profile
+    /// remains null until CompleteProfile is called.
     /// </summary>
     public static User Create(
         string email,
@@ -56,24 +57,23 @@ public sealed class User : AggregateRoot
             Id = Guid.NewGuid(),
             Email = email,
             PasswordHash = passwordHash,
-            FirstName = firstName,
-            LastName = lastName,
-            Age = null,
-            Height = null,
-            Weight = null,
-            Gender = null,
-            FitnessGoalId = null,
-            FitnessLevel = null,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = null
         };
+
+        if (!string.IsNullOrWhiteSpace(firstName) || !string.IsNullOrWhiteSpace(lastName))
+        {
+            user.Profile = UserProfile.Create(user.Id, firstName, lastName);
+        }
+
         user.AddDomainEvent(new UserCreatedEvent(user.Id, user.Email));
         return user;
     }
 
     /// <summary>
-    /// Complete user profile with personal and fitness information (called after registration)
+    /// Complete user profile with personal, fitness, and health/lifestyle information.
+    /// Upserts the related UserProfile row.
     /// </summary>
     public void CompleteProfile(
         string firstName,
@@ -83,16 +83,31 @@ public sealed class User : AggregateRoot
         decimal? weight = null,
         Gender? gender = null,
         Guid? fitnessGoalId = null,
-        DifficultyLevel? fitnessLevel = null)
+        DifficultyLevel? fitnessLevel = null,
+        string? dailyWorkLifestyle = null,
+        int? gymDaysPerWeek = null,
+        string? healthConditions = null,
+        string? foodAllergies = null,
+        string? supplementInterest = null,
+        bool? wantsSupplementSupport = null)
     {
-        FirstName = firstName;
-        LastName = lastName;
-        Age = age;
-        Height = height;
-        Weight = weight;
-        Gender = gender;
-        FitnessGoalId = fitnessGoalId;
-        FitnessLevel = fitnessLevel;
+        if (Profile is null)
+        {
+            Profile = UserProfile.Create(
+                Id, firstName, lastName, age, height, weight, gender,
+                fitnessGoalId, fitnessLevel,
+                dailyWorkLifestyle, gymDaysPerWeek, healthConditions, foodAllergies,
+                supplementInterest, wantsSupplementSupport ?? false);
+        }
+        else
+        {
+            Profile.Update(
+                firstName, lastName, age, height, weight, gender,
+                fitnessGoalId, fitnessLevel,
+                dailyWorkLifestyle, gymDaysPerWeek, healthConditions, foodAllergies,
+                supplementInterest, wantsSupplementSupport);
+        }
+
         IsCompletedProfile = true;
         UpdatedAt = DateTime.UtcNow;
     }
@@ -105,16 +120,31 @@ public sealed class User : AggregateRoot
         decimal? weight = null,
         Gender? gender = null,
         Guid? fitnessGoalId = null,
-        DifficultyLevel? fitnessLevel = null)
+        DifficultyLevel? fitnessLevel = null,
+        string? dailyWorkLifestyle = null,
+        int? gymDaysPerWeek = null,
+        string? healthConditions = null,
+        string? foodAllergies = null,
+        string? supplementInterest = null,
+        bool? wantsSupplementSupport = null)
     {
-        FirstName = firstName;
-        LastName = lastName;
-        Age = age;
-        Height = height;
-        Weight = weight;
-        Gender = gender;
-        FitnessGoalId = fitnessGoalId;
-        FitnessLevel = fitnessLevel;
+        if (Profile is null)
+        {
+            Profile = UserProfile.Create(
+                Id, firstName, lastName, age, height, weight, gender,
+                fitnessGoalId, fitnessLevel,
+                dailyWorkLifestyle, gymDaysPerWeek, healthConditions, foodAllergies,
+                supplementInterest, wantsSupplementSupport ?? false);
+        }
+        else
+        {
+            Profile.Update(
+                firstName, lastName, age, height, weight, gender,
+                fitnessGoalId, fitnessLevel,
+                dailyWorkLifestyle, gymDaysPerWeek, healthConditions, foodAllergies,
+                supplementInterest, wantsSupplementSupport);
+        }
+
         UpdatedAt = DateTime.UtcNow;
     }
 
@@ -139,7 +169,6 @@ public sealed class User : AggregateRoot
 
     /// <summary>
     /// For DataSeeder only — do not use in business logic.
-    /// Allows setting Role and static timestamps required for idempotent seeding.
     /// </summary>
     public static User Seed(
         Guid id,
@@ -149,16 +178,21 @@ public sealed class User : AggregateRoot
         string lastName,
         UserRole role)
     {
-        return new User
+        var user = new User
         {
             Id           = id,
             Email        = email,
             PasswordHash = passwordHash,
-            FirstName    = firstName,
-            LastName     = lastName,
             Role         = role,
             IsActive     = true,
             CreatedAt    = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         };
+
+        if (!string.IsNullOrWhiteSpace(firstName) || !string.IsNullOrWhiteSpace(lastName))
+        {
+            user.Profile = UserProfile.Create(id, firstName, lastName);
+        }
+
+        return user;
     }
 }

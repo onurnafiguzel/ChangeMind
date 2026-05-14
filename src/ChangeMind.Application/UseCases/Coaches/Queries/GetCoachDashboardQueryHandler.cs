@@ -43,10 +43,10 @@ public class GetCoachDashboardQueryHandler(
                 CreatedAt          = p.CreatedAt,
                 IsCompleted        = p.IsCompleted,
                 UserId             = p.UserId,
-                UserAge            = p.AssignedTo?.Age,
-                UserHeight         = p.AssignedTo?.Height,
-                UserWeight         = p.AssignedTo?.Weight,
-                UserGender         = p.AssignedTo?.Gender
+                UserAge            = p.AssignedTo?.Profile?.Age,
+                UserHeight         = p.AssignedTo?.Profile?.Height,
+                UserWeight         = p.AssignedTo?.Profile?.Weight,
+                UserGender         = p.AssignedTo?.Profile?.Gender
             })
             .ToList();
 

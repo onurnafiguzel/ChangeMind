@@ -3,76 +3,32 @@ namespace ChangeMind.Infrastructure.Data.Configurations;
 using ChangeMind.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Collections.Generic;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        // Table
         builder.ToTable("Users");
 
-        // Primary Key
         builder.HasKey(u => u.Id);
 
-        // Properties
-        builder.Property(u => u.Id)
-            .ValueGeneratedNever();
+        builder.Property(u => u.Id).ValueGeneratedNever();
 
-        builder.Property(u => u.Email)
-            .IsRequired()
-            .HasMaxLength(255);
+        builder.Property(u => u.Email).IsRequired().HasMaxLength(255);
+        builder.Property(u => u.PasswordHash).IsRequired().HasMaxLength(512);
 
-        builder.Property(u => u.PasswordHash)
-            .IsRequired()
-            .HasMaxLength(512);
+        builder.Property(u => u.Role).IsRequired().HasConversion<string>();
 
-        builder.Property(u => u.FirstName)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder.Property(u => u.IsActive).IsRequired().HasDefaultValue(true);
+        builder.Property(u => u.IsCompletedProfile).IsRequired().HasDefaultValue(false);
 
-        builder.Property(u => u.LastName)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder.Property(u => u.CreatedAt).IsRequired().HasDefaultValueSql("NOW()");
+        builder.Property(u => u.UpdatedAt).IsRequired(false);
 
-        builder.Property(u => u.Age)
-            .IsRequired(false);
+        // Ignore backward-compat read-only navigation accessors
+        builder.Ignore(u => u.FirstName);
+        builder.Ignore(u => u.LastName);
 
-        builder.Property(u => u.Height)
-            .HasPrecision(5, 2)
-            .IsRequired(false);
-
-        builder.Property(u => u.Weight)
-            .HasPrecision(5, 2)
-            .IsRequired(false);
-
-        builder.Property(u => u.Gender)
-            .IsRequired(false)
-            .HasConversion<string>();
-
-        builder.Property(u => u.FitnessGoalId)
-            .IsRequired(false);
-
-        builder.Property(u => u.FitnessLevel)
-            .IsRequired(false)
-            .HasConversion<string>();
-
-        builder.Property(u => u.Role)
-            .IsRequired()
-            .HasConversion<string>();
-
-        builder.Property(u => u.IsActive)
-            .IsRequired()
-            .HasDefaultValue(true);
-
-        builder.Property(u => u.CreatedAt)
-            .IsRequired()
-            .HasDefaultValueSql("NOW()");
-
-        builder.Property(u => u.UpdatedAt)
-            .IsRequired(false);
-
-        // Indexes
         builder.HasIndex(u => u.Email)
             .IsUnique()
             .HasDatabaseName("IX_Users_Email");
@@ -80,12 +36,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.IsActive)
             .HasDatabaseName("IX_Users_IsActive");
 
-        // Relationships
-        builder.HasOne<FitnessGoalItem>()
-            .WithMany()
-            .HasForeignKey(u => u.FitnessGoalId)
-            .OnDelete(DeleteBehavior.SetNull)
-            .IsRequired(false);
+        // Profile relationship is configured from UserProfileConfiguration.
 
         builder.HasMany(u => u.Photos)
             .WithOne(p => p.User)

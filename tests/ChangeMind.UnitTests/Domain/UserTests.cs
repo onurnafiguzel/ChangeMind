@@ -39,7 +39,7 @@ public class UserTests
 
         // Assert — birden fazla özelliği aynı testte kontrol edebiliriz
         Assert.NotEqual(Guid.Empty, user.Id);   // Id üretilmeli, boş kalmamalı
-        Assert.Null(user.Age);                   // Profil henüz tamamlanmadı
+        Assert.Null(user.Profile);               // Profil henüz tamamlanmadı
         Assert.Null(user.UpdatedAt);             // Hiç güncellenmedi
     }
 

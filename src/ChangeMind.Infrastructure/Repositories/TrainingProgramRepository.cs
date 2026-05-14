@@ -23,7 +23,7 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
     {
         return await context.TrainingPrograms
             .Include(p => p.CreatedBy)
-            .Include(p => p.AssignedTo)
+            .Include(p => p.AssignedTo).ThenInclude(u => u.Profile)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
@@ -32,7 +32,7 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
         var today = DateTime.UtcNow.Date;
         return await context.TrainingPrograms
             .Include(p => p.CreatedBy)
-            .Include(p => p.AssignedTo)
+            .Include(p => p.AssignedTo).ThenInclude(u => u.Profile)
             .FirstOrDefaultAsync(p => p.UserId == userId
                                     && p.IsActive
                                     && (p.StartDate == null || p.StartDate.Value.Date <= today)
@@ -42,7 +42,7 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
     public async Task<IReadOnlyList<TrainingProgram>> GetActiveByCoachIdAsync(Guid coachId)
     {
         return await context.TrainingPrograms
-            .Include(p => p.AssignedTo)
+            .Include(p => p.AssignedTo).ThenInclude(u => u.Profile)
             .AsNoTracking()
             .Where(p => p.CoachId == coachId && p.IsActive)
             .OrderByDescending(p => p.CreatedAt)

@@ -14,6 +14,7 @@ public class ChangeMindDbContext : DbContext
 
     // DbSets
     public DbSet<User> Users { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<Coach> Coaches { get; set; }
     public DbSet<CoachUser> CoachUsers { get; set; }
     public DbSet<TrainingProgram> TrainingPrograms { get; set; }
@@ -33,6 +34,7 @@ public class ChangeMindDbContext : DbContext
 
         // Apply all configurations
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new UserProfileConfiguration());
         modelBuilder.ApplyConfiguration(new CoachConfiguration());
         modelBuilder.ApplyConfiguration(new CoachUserConfiguration());
         modelBuilder.ApplyConfiguration(new TrainingProgramConfiguration());

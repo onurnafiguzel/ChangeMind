@@ -23,23 +23,24 @@ public class GetWaitingUsersQueryHandler(
 
         foreach (var waitingUser in waitingUsers)
         {
-            var user = waitingUser.User;
+            var user    = waitingUser.User;
+            var profile = user.Profile;
 
             result.Add(new UserAssignmentDto
             {
                 Id = user.Id,
                 Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Age = user.Age,
-                Height = user.Height,
-                Weight = user.Weight,
-                Gender = user.Gender?.ToString(),
-                FitnessGoal = user.FitnessGoalId.HasValue
-                    && goalNames.TryGetValue(user.FitnessGoalId.Value, out var name)
+                FirstName = profile?.FirstName ?? string.Empty,
+                LastName = profile?.LastName ?? string.Empty,
+                Age = profile?.Age,
+                Height = profile?.Height,
+                Weight = profile?.Weight,
+                Gender = profile?.Gender?.ToString(),
+                FitnessGoal = profile?.FitnessGoalId is { } goalId
+                    && goalNames.TryGetValue(goalId, out var name)
                         ? name
                         : null,
-                FitnessLevel = user.FitnessLevel?.ToString(),
+                FitnessLevel = profile?.FitnessLevel?.ToString(),
                 CreatedAt = user.CreatedAt,
                 HasTrainingProgram = waitingUser.HasTrainingProgram,
                 HasNutritionPlan   = waitingUser.HasNutritionPlan

@@ -47,10 +47,10 @@ public class GetTrainingProgramByIdQueryHandler(
             DailyExercises = new Dictionary<string, List<ProgramExerciseDetail>>(),
 
             UserId     = program.UserId,
-            UserAge    = program.AssignedTo.Age,
-            UserHeight = program.AssignedTo.Height,
-            UserWeight = program.AssignedTo.Weight,
-            UserGender = program.AssignedTo.Gender
+            UserAge    = program.AssignedTo.Profile?.Age,
+            UserHeight = program.AssignedTo.Profile?.Height,
+            UserWeight = program.AssignedTo.Profile?.Weight,
+            UserGender = program.AssignedTo.Profile?.Gender
         };
 
         if (!string.IsNullOrEmpty(program.DailyProgramJson))

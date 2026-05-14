@@ -11,22 +11,32 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
 {
     public async Task<User?> GetByIdAsync(Guid id)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        return await context.Users
+            .Include(u => u.Profile)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public IQueryable<User> GetById(Guid id)
     {
-        return context.Users.AsNoTracking().Where(u => u.Id == id);
+        return context.Users
+            .Include(u => u.Profile)
+            .AsNoTracking()
+            .Where(u => u.Id == id);
     }
 
     public async Task<User?> GetByEmailAsync(string email)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsActive == true);
+        return await context.Users
+            .Include(u => u.Profile)
+            .FirstOrDefaultAsync(u => u.Email == email && u.IsActive == true);
     }
 
     public IQueryable<User> GetAll(bool? isActive = null)
     {
-        var query = context.Users.AsNoTracking().AsQueryable();
+        var query = context.Users
+            .Include(u => u.Profile)
+            .AsNoTracking()
+            .AsQueryable();
 
         if (isActive.HasValue)
         {
@@ -54,61 +64,62 @@ public class UserRepository(ChangeMindDbContext context) : IUserRepository
 
     public IQueryable<UserDto> GetUserByIdWithFitnessGoal(Guid id)
     {
-        return context.Users.AsNoTracking()
-            .Where(u => u.Id == id)
-            .GroupJoin(
-                context.FitnessGoals,
-                u => u.FitnessGoalId,
-                f => f.Id,
-                (user, fitnessGoals) => new { user, fitnessGoals = fitnessGoals.DefaultIfEmpty() })
-            .SelectMany(
-                x => x.fitnessGoals,
-                (x, fitnessGoal) => new UserDto
-                {
-                    Id = x.user.Id,
-                    Email = x.user.Email,
-                    FirstName = x.user.FirstName,
-                    LastName = x.user.LastName,
-                    Age = x.user.Age,
-                    Height = x.user.Height,
-                    Weight = x.user.Weight,
-                    Gender = x.user.Gender,
-                    FitnessGoal = fitnessGoal == null ? string.Empty : (fitnessGoal.Name ?? string.Empty),
-                    FitnessLevel = x.user.FitnessLevel,
-                    CreatedAt = x.user.CreatedAt,
-                });
+        return BuildUserDtoQuery(context.Users.AsNoTracking().Where(u => u.Id == id));
     }
 
     public IQueryable<UserDto> GetAllWithFitnessGoal(bool? isActive = null)
     {
         var query = context.Users.AsNoTracking().AsQueryable();
-
         if (isActive.HasValue)
         {
             query = query.Where(u => u.IsActive == isActive.Value);
         }
+        return BuildUserDtoQuery(query);
+    }
 
-        return query
+    private IQueryable<UserDto> BuildUserDtoQuery(IQueryable<User> users)
+    {
+        return users
+            .Select(u => new
+            {
+                u.Id,
+                u.Email,
+                u.IsCompletedProfile,
+                u.IsActive,
+                u.CreatedAt,
+                Profile = u.Profile
+            })
             .GroupJoin(
                 context.FitnessGoals,
-                u => u.FitnessGoalId,
+                x => x.Profile != null ? x.Profile.FitnessGoalId : null,
                 f => f.Id,
-                (user, fitnessGoals) => new { user, fitnessGoals = fitnessGoals.DefaultIfEmpty() })
+                (x, fitnessGoals) => new { x, fitnessGoals = fitnessGoals.DefaultIfEmpty() })
             .SelectMany(
-                x => x.fitnessGoals,
-                (x, fitnessGoal) => new UserDto
+                row => row.fitnessGoals,
+                (row, fitnessGoal) => new UserDto
                 {
-                    Id = x.user.Id,
-                    Email = x.user.Email,
-                    FirstName = x.user.FirstName,
-                    LastName = x.user.LastName,
-                    Age = x.user.Age,
-                    Height = x.user.Height,
-                    Weight = x.user.Weight,
-                    Gender = x.user.Gender,
+                    Id = row.x.Id,
+                    Email = row.x.Email,
+                    FirstName = row.x.Profile == null ? string.Empty : row.x.Profile.FirstName,
+                    LastName = row.x.Profile == null ? string.Empty : row.x.Profile.LastName,
+                    Age = row.x.Profile == null ? null : row.x.Profile.Age,
+                    Height = row.x.Profile == null ? null : row.x.Profile.Height,
+                    Weight = row.x.Profile == null ? null : row.x.Profile.Weight,
+                    Gender = row.x.Profile == null ? null : row.x.Profile.Gender,
                     FitnessGoal = fitnessGoal == null ? string.Empty : (fitnessGoal.Name ?? string.Empty),
-                    FitnessLevel = x.user.FitnessLevel,
-                    CreatedAt = x.user.CreatedAt,
+                    FitnessLevel = row.x.Profile == null ? null : row.x.Profile.FitnessLevel,
+                    IsCompletedProfile = row.x.IsCompletedProfile,
+                    IsActive = row.x.IsActive,
+                    CreatedAt = row.x.CreatedAt,
+                    HealthProfile = row.x.Profile == null ? null : new UserHealthBlockDto
+                    {
+                        DailyWorkLifestyle     = row.x.Profile.DailyWorkLifestyle,
+                        GymDaysPerWeek         = row.x.Profile.GymDaysPerWeek,
+                        HealthConditions       = row.x.Profile.HealthConditions,
+                        FoodAllergies          = row.x.Profile.FoodAllergies,
+                        SupplementInterest     = row.x.Profile.SupplementInterest,
+                        WantsSupplementSupport = row.x.Profile.WantsSupplementSupport
+                    }
                 });
     }
 }

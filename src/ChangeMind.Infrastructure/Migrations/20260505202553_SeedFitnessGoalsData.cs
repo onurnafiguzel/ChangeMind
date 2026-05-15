@@ -15,15 +15,16 @@ namespace ChangeMind.Infrastructure.Migrations
                 columns: new[] { "Id", "Name", "Description", "IsActive", "CreatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("f0000000-0000-0000-0000-000000000001"), "Muscle Gain", "Focus on building and increasing muscle mass through resistance training and proper nutrition.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000002"), "Fat Loss", "Aim to reduce body fat percentage through caloric deficit and consistent exercise.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000003"), "Strength", "Develop maximum strength and power through heavy resistance training.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000004"), "Endurance", "Build cardiovascular and muscular endurance for sustained physical activity.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000005"), "Flexibility", "Improve range of motion and flexibility through stretching and mobility work.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000006"), "General Fitness", "Maintain overall health and fitness with balanced training across all aspects.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000007"), "Weight Loss", "Lose weight through a combination of exercise and dietary changes.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000008"), "Toning", "Develop muscle definition and create a leaner appearance through targeted training.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { new Guid("f0000000-0000-0000-0000-000000000009"), "Athletic", "Train for athletic performance and sport-specific skills and fitness.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) }
+                    { new Guid("f0000000-0000-0000-0000-000000000001"), "Kas Kazanımı", "Direnç antrenmanı ve doğru beslenme ile kas kütlesini artırmaya odaklan.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000002"), "Yağ Kaybı", "Kalori açığı ve düzenli egzersizle vücut yağ oranını düşürmeyi hedefle.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000003"), "Kuvvet", "Ağır direnç antrenmanı ile maksimum kuvvet ve güç geliştir.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000004"), "Dayanıklılık", "Sürdürülebilir fiziksel aktivite için kardiyovasküler ve kas dayanıklılığı geliştir.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000005"), "Esneklik", "Esneme ve mobilite çalışmaları ile hareket açıklığını ve esnekliği artır.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000006"), "Genel Fitness", "Tüm yönleri kapsayan dengeli bir antrenmanla genel sağlığını ve formunu koru.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000007"), "Kilo Verme", "Egzersiz ve beslenme değişiklikleriyle kilo ver.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000008"), "Sıkılaşma", "Hedefe yönelik antrenmanla kas tanımı kazan ve daha sıkı bir görünüm elde et.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000009"), "Atletik Performans", "Atletik performans ve spora özgü beceriler için antrenman yap.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { new Guid("f0000000-0000-0000-0000-000000000010"), "Koça bırakıyorum", "Hedefinizi koçunuz sizin için belirlesin.", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) }
                 });
         }
 
@@ -74,6 +75,11 @@ namespace ChangeMind.Infrastructure.Migrations
                 table: "FitnessGoals",
                 keyColumn: "Id",
                 keyValue: new Guid("f0000000-0000-0000-0000-000000000009"));
+
+            migrationBuilder.DeleteData(
+                table: "FitnessGoals",
+                keyColumn: "Id",
+                keyValue: new Guid("f0000000-0000-0000-0000-000000000010"));
         }
     }
 }

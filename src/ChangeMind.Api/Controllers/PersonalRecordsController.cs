@@ -31,8 +31,7 @@ public class PersonalRecordsController(IMediator mediator, ICoachUserRepository 
             UserId:     userId,
             Lift:       body.Lift,
             WeightKg:   body.WeightKg,
-            RecordedAt: body.RecordedAt,
-            Notes:      body.Notes);
+            RecordedAt: body.RecordedAt);
 
         var id = await mediator.Send(command, cancellationToken);
         return CreatedAtAction(nameof(Current), new { userId }, id);
@@ -80,5 +79,4 @@ public class PersonalRecordsController(IMediator mediator, ICoachUserRepository 
 public record AddPersonalRecordRequest(
     PersonalRecordLift Lift,
     decimal WeightKg,
-    DateTime? RecordedAt,
-    string? Notes);
+    DateTime? RecordedAt);

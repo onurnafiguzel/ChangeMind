@@ -7,5 +7,4 @@ public record AddPersonalRecordCommand(
     Guid UserId,
     PersonalRecordLift Lift,
     decimal WeightKg,
-    DateTime? RecordedAt,
-    string? Notes) : IRequest<Guid>;
+    DateTime? RecordedAt) : IRequest<Guid>;

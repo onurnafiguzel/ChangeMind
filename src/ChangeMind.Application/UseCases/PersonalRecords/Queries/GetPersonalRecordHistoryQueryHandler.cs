@@ -17,7 +17,6 @@ public class GetPersonalRecordHistoryQueryHandler(IPersonalRecordRepository repo
             Lift        = pr.Lift,
             WeightKg    = pr.WeightKg,
             RecordedAt  = pr.RecordedAt,
-            Notes       = pr.Notes,
             CreatedAt   = pr.CreatedAt
         }).ToList();
     }

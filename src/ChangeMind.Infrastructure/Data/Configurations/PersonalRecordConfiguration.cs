@@ -20,7 +20,6 @@ public class PersonalRecordConfiguration : IEntityTypeConfiguration<PersonalReco
         builder.Property(p => p.WeightKg).HasColumnType("numeric(6,2)").IsRequired();
         builder.Property(p => p.RecordedAt).IsRequired();
         builder.Property(p => p.CreatedAt).IsRequired().HasDefaultValueSql("NOW()");
-        builder.Property(p => p.Notes).HasMaxLength(200);
 
         builder.HasOne(p => p.User)
             .WithMany()

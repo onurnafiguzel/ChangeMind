@@ -20,8 +20,7 @@ public class AddPersonalRecordCommandHandler(
             userId:     user.Id,
             lift:       request.Lift,
             weightKg:   request.WeightKg,
-            recordedAt: request.RecordedAt ?? DateTime.UtcNow,
-            notes:      request.Notes);
+            recordedAt: request.RecordedAt ?? DateTime.UtcNow);
 
         await repository.AddAsync(pr);
         await unitOfWork.SaveChangesAsync(cancellationToken);

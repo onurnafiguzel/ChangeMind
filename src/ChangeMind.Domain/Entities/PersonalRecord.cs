@@ -12,7 +12,6 @@ public sealed class PersonalRecord : AggregateRoot
     public PersonalRecordLift Lift { get; private set; }
     public decimal WeightKg { get; private set; }
     public DateTime RecordedAt { get; private set; }
-    public string? Notes { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     public User User { get; private set; } = null!;
@@ -21,8 +20,7 @@ public sealed class PersonalRecord : AggregateRoot
         Guid userId,
         PersonalRecordLift lift,
         decimal weightKg,
-        DateTime recordedAt,
-        string? notes)
+        DateTime recordedAt)
     {
         if (userId == Guid.Empty)
             throw new ValidationException("Kullanıcı kimliği geçersiz.");
@@ -33,9 +31,6 @@ public sealed class PersonalRecord : AggregateRoot
         if (recordedAt > DateTime.UtcNow.AddDays(1))
             throw new ValidationException("Kayıt tarihi gelecekte olamaz.");
 
-        if (notes is { Length: > 200 })
-            throw new ValidationException("Notes en fazla 200 karakter olabilir.");
-
         return new PersonalRecord
         {
             Id          = Guid.NewGuid(),
@@ -43,7 +38,6 @@ public sealed class PersonalRecord : AggregateRoot
             Lift        = lift,
             WeightKg    = weightKg,
             RecordedAt  = recordedAt,
-            Notes       = notes,
             CreatedAt   = DateTime.UtcNow
         };
     }

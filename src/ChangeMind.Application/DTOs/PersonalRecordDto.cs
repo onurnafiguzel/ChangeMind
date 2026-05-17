@@ -9,7 +9,6 @@ public class PersonalRecordDto
     public PersonalRecordLift Lift { get; set; }
     public decimal WeightKg { get; set; }
     public DateTime RecordedAt { get; set; }
-    public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 

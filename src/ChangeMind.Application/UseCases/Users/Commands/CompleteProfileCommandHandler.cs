@@ -79,7 +79,7 @@ public class CompleteProfileCommandHandler(
     private async Task AddPrIfPresent(Guid userId, PersonalRecordLift lift, decimal? weight)
     {
         if (weight is null) return;
-        var pr = PersonalRecord.Create(userId, lift, weight.Value, DateTime.UtcNow, notes: null);
+        var pr = PersonalRecord.Create(userId, lift, weight.Value, DateTime.UtcNow);
         await personalRecordRepository.AddAsync(pr);
     }
 }

@@ -39,7 +39,11 @@ public class GetTrainingProgramByIdQueryHandler(
             Name = program.Name,
             Description = program.Description,
             DurationWeeks = program.DurationWeeks,
-            CoachName = $"{program.CreatedBy.FirstName} {program.CreatedBy.LastName}",
+            CreatedByType = program.CreatedByType,
+            CoachId = program.CoachId,
+            CoachName = program.CreatedBy is null
+                ? null
+                : $"{program.CreatedBy.FirstName} {program.CreatedBy.LastName}",
             StartDate = program.StartDate,
             EndDate = program.EndDate,
             Difficulty = program.Difficulty,

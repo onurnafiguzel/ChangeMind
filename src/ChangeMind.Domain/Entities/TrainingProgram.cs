@@ -27,8 +27,9 @@ public sealed class TrainingProgram : AggregateRoot
     public DateTime? UpdatedAt { get; private set; }
     public DateTime? CompletedAt { get; private set; }
 
-    public Guid CoachId { get; private set; }
+    public Guid? CoachId { get; private set; }
     public Guid UserId { get; private set; }
+    public CreatedByType CreatedByType { get; private set; }
 
     /// <summary>Tamamlanan hafta sayısı — progress takibi için</summary>
     public int CompletedWeeks { get; private set; } = 0;
@@ -37,14 +38,14 @@ public sealed class TrainingProgram : AggregateRoot
     public string? DailyProgramJson { get; private set; }
 
     // Navigation Properties
-    public Coach CreatedBy { get; private set; } = null!;
+    public Coach? CreatedBy { get; private set; }
     public User AssignedTo { get; private set; } = null!;
 
     /// <summary>0-100 arası ilerleme yüzdesi</summary>
     public double ProgressPercentage =>
         DurationWeeks > 0 ? Math.Min(100.0, (CompletedWeeks / (double)DurationWeeks) * 100.0) : 0;
 
-    public static TrainingProgram Create(
+    public static TrainingProgram CreateByCoach(
         string name,
         string? description,
         int durationWeeks,
@@ -54,6 +55,37 @@ public sealed class TrainingProgram : AggregateRoot
         DateTime? startDate = null,
         DateTime? endDate = null)
     {
+        var program = BuildCore(name, description, durationWeeks, difficulty, userId, startDate, endDate);
+        program.CoachId = coachId;
+        program.CreatedByType = CreatedByType.Coach;
+        program.AddDomainEvent(new TrainingProgramAssignedEvent(program.Id, userId));
+        return program;
+    }
+
+    public static TrainingProgram CreateBySelf(
+        string name,
+        string? description,
+        int durationWeeks,
+        DifficultyLevel? difficulty,
+        Guid userId,
+        DateTime? startDate = null,
+        DateTime? endDate = null)
+    {
+        var program = BuildCore(name, description, durationWeeks, difficulty, userId, startDate, endDate);
+        program.CoachId = null;
+        program.CreatedByType = CreatedByType.Self;
+        return program;
+    }
+
+    private static TrainingProgram BuildCore(
+        string name,
+        string? description,
+        int durationWeeks,
+        DifficultyLevel? difficulty,
+        Guid userId,
+        DateTime? startDate,
+        DateTime? endDate)
+    {
         if (string.IsNullOrWhiteSpace(name))
             throw new ValidationException("Program adı boş olamaz.");
 
@@ -61,7 +93,7 @@ public sealed class TrainingProgram : AggregateRoot
             throw new ValidationException("Program süresi 1 ile 52 hafta arasında olmalıdır.");
 
         var now = DateTime.UtcNow;
-        var program = new TrainingProgram
+        return new TrainingProgram
         {
             Id             = Guid.NewGuid(),
             Name           = name,
@@ -74,14 +106,11 @@ public sealed class TrainingProgram : AggregateRoot
             CompletedWeeks = 0,
             StartDate      = startDate ?? now,
             EndDate        = endDate   ?? now.AddDays(durationWeeks * 7),
-            CoachId        = coachId,
             UserId         = userId,
             CreatedAt      = now,
             UpdatedAt      = null,
             CompletedAt    = null
         };
-        program.AddDomainEvent(new TrainingProgramAssignedEvent(program.Id, userId));
-        return program;
     }
 
     /// <summary>

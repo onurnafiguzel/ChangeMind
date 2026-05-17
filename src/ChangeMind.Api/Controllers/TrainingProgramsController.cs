@@ -76,8 +76,9 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Get a user's active training program with daily exercises.
-    /// A user can have at most one active program at a time.
+    /// Get the user's active training program.
+    /// Coach-assigned takes precedence; Self-created is returned only when no coach program exists.
+    /// Returns a single program or 404 if none active.
     /// </summary>
     [HttpGet("~/api/users/{userId:guid}/active-program")]
     public async Task<ActionResult<ActiveProgramDetailDto>> GetUserActiveProgram(
@@ -86,11 +87,41 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
     {
         var query = new GetUserActiveProgramQuery { UserId = userId };
         var result = await mediator.Send(query, cancellationToken);
-
-        if (result == null)
-            return NotFound();
-
+        if (result is null) return NotFound();
         return Ok(result);
+    }
+
+    /// <summary>
+    /// User creates their own training program (no payment / no coach required).
+    /// Only the authenticated user themselves may create a self program.
+    /// </summary>
+    [HttpPost("~/api/users/{userId:guid}/training-programs/self")]
+    public async Task<ActionResult<Guid>> CreateSelf(
+        Guid userId,
+        [FromBody] CreateSelfTrainingProgramRequest body,
+        CancellationToken cancellationToken = default)
+    {
+        EnsureSelf(userId);
+
+        var command = new CreateSelfTrainingProgramCommand(
+            UserId:         userId,
+            Name:           body.Name,
+            Description:    body.Description,
+            DurationWeeks:  body.DurationWeeks,
+            Difficulty:     body.Difficulty,
+            StartDate:      body.StartDate,
+            EndDate:        body.EndDate,
+            ExercisesByDay: body.ExercisesByDay);
+
+        var programId = await mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(GetTrainingProgramById), new { id = programId }, programId);
+    }
+
+    private void EnsureSelf(Guid userId)
+    {
+        var tokenUserId = User.FindFirstValue("sub");
+        if (!Guid.TryParse(tokenUserId, out var tokenGuid) || tokenGuid != userId)
+            throw new ForbiddenException("You can only create your own training program.");
     }
 
     /// <summary>
@@ -186,3 +217,12 @@ public class TrainingProgramsController(IMediator mediator) : ControllerBase
 }
 
 public record UpdateProgressRequest(int CompletedWeeks);
+
+public record CreateSelfTrainingProgramRequest(
+    string Name,
+    string? Description = null,
+    int DurationWeeks = 12,
+    ChangeMind.Domain.Enums.DifficultyLevel? Difficulty = null,
+    DateTime? StartDate = null,
+    DateTime? EndDate = null,
+    Dictionary<string, List<ProgramExerciseInput>>? ExercisesByDay = null);

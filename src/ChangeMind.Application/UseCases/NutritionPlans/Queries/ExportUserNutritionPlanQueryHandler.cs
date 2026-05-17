@@ -1,18 +1,23 @@
 namespace ChangeMind.Application.UseCases.NutritionPlans.Queries;
 
 using MediatR;
+using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UseCases.TrainingPrograms.Queries;
 
-public class ExportUserNutritionPlanQueryHandler(IMediator mediator)
-    : IRequestHandler<ExportUserNutritionPlanQuery, ProgramExportResult?>
+public class ExportNutritionPlanQueryHandler(
+    INutritionPlanRepository nutritionPlanRepository,
+    IFoodRepository foodRepository)
+    : IRequestHandler<ExportNutritionPlanQuery, ProgramExportResult?>
 {
-    public async Task<ProgramExportResult?> Handle(ExportUserNutritionPlanQuery request, CancellationToken cancellationToken)
+    public async Task<ProgramExportResult?> Handle(ExportNutritionPlanQuery request, CancellationToken cancellationToken)
     {
-        var plan = await mediator.Send(new GetUserActiveNutritionPlanQuery(request.UserId), cancellationToken);
-        if (plan is null)
-            return null;
+        var plan = await nutritionPlanRepository.GetByIdAsync(request.PlanId);
+        if (plan is null) return null;
 
-        var bytes = NutritionPlanExcelBuilder.Build(plan);
+        var foods = await foodRepository.ListActiveAsync();
+        var dto = NutritionPlanMapper.ToDetailDto(plan, foods);
+
+        var bytes = NutritionPlanExcelBuilder.Build(dto);
         var safeTitle = SanitizeFileName(string.IsNullOrWhiteSpace(plan.Title) ? "NutritionPlan" : plan.Title);
         var fileName = $"{safeTitle}_{DateTime.UtcNow:yyyyMMdd}.xlsx";
 

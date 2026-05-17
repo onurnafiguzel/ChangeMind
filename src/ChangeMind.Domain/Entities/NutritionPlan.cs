@@ -1,5 +1,6 @@
 namespace ChangeMind.Domain.Entities;
 
+using ChangeMind.Domain.Enums;
 using ChangeMind.Domain.Exceptions;
 
 public sealed class NutritionPlan
@@ -7,8 +8,9 @@ public sealed class NutritionPlan
     private NutritionPlan() { }
 
     public Guid Id { get; private set; }
-    public Guid CoachId { get; private set; }
+    public Guid? CoachId { get; private set; }
     public Guid UserId { get; private set; }
+    public CreatedByType CreatedByType { get; private set; }
 
     public string Title { get; private set; } = string.Empty;
     public string? Description { get; private set; }
@@ -24,10 +26,34 @@ public sealed class NutritionPlan
 
     // Navigation
     public User User { get; private set; } = null!;
-    public Coach Coach { get; private set; } = null!;
+    public Coach? Coach { get; private set; }
 
-    public static NutritionPlan Create(
+    public static NutritionPlan CreateByCoach(
         Guid coachId,
+        Guid userId,
+        string title,
+        string? description,
+        string dailyPlanJson)
+    {
+        var plan = BuildCore(userId, title, description, dailyPlanJson);
+        plan.CoachId = coachId;
+        plan.CreatedByType = CreatedByType.Coach;
+        return plan;
+    }
+
+    public static NutritionPlan CreateBySelf(
+        Guid userId,
+        string title,
+        string? description,
+        string dailyPlanJson)
+    {
+        var plan = BuildCore(userId, title, description, dailyPlanJson);
+        plan.CoachId = null;
+        plan.CreatedByType = CreatedByType.Self;
+        return plan;
+    }
+
+    private static NutritionPlan BuildCore(
         Guid userId,
         string title,
         string? description,
@@ -41,7 +67,6 @@ public sealed class NutritionPlan
         return new NutritionPlan
         {
             Id            = Guid.NewGuid(),
-            CoachId       = coachId,
             UserId        = userId,
             Title         = title,
             Description   = description,

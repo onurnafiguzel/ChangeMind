@@ -8,31 +8,16 @@ using ChangeMind.Domain.Entities;
 using ChangeMind.Domain.Enums;
 using ChangeMind.Domain.Exceptions;
 
-public class CreateNutritionPlanCommandHandler(
+public class CreateSelfNutritionPlanCommandHandler(
     INutritionPlanRepository nutritionPlanRepository,
     IFoodRepository foodRepository,
     IUserRepository userRepository,
-    ICoachRepository coachRepository,
-    IWaitingUserRepository waitingUserRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateNutritionPlanCommand, Guid>
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateSelfNutritionPlanCommand, Guid>
 {
-    public async Task<Guid> Handle(CreateNutritionPlanCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateSelfNutritionPlanCommand request, CancellationToken cancellationToken)
     {
-        _ = await coachRepository.GetByIdAsync(request.CoachId)
-            ?? throw new NotFoundException($"Coach with ID '{request.CoachId}' not found.");
-
         _ = await userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException($"User with ID '{request.UserId}' not found.");
-
-        // Resolve waiting record — user must be in waiting queue (payment completed)
-        var waitingUser = await waitingUserRepository.GetByUserIdAsync(request.UserId)
-            ?? throw new NotFoundException(
-                $"Waiting record for user '{request.UserId}' not found. Payment may be incomplete.");
-
-        // Duplicate guard: nutrition plan already assigned — do not allow another one
-        if (waitingUser.HasNutritionPlan)
-            throw new ConflictException(
-                $"User '{request.UserId}' already has an active nutrition plan assigned.");
 
         if (request.Days is null || request.Days.Count == 0)
             throw new ValidationException("En az bir gün (WorkoutDay veya OffDay) tanımlanmalıdır.");
@@ -55,22 +40,23 @@ public class CreateNutritionPlanCommandHandler(
             ValidateUnitMatch(food, item);
         }
 
+        // Single Self rule: deactivate existing Self plans for this user.
+        var activePlans = await nutritionPlanRepository.GetActiveByUserIdAsync(request.UserId);
+        foreach (var existing in activePlans.Where(p => p.CreatedByType == CreatedByType.Self))
+        {
+            existing.Deactivate();
+            await nutritionPlanRepository.UpdateAsync(existing);
+        }
+
         var json = JsonSerializer.Serialize(request.Days);
-        var plan = NutritionPlan.CreateByCoach(
-            coachId:       request.CoachId,
+        var plan = NutritionPlan.CreateBySelf(
             userId:        request.UserId,
             title:         request.Title,
             description:   request.Description,
             dailyPlanJson: json);
 
         await nutritionPlanRepository.AddAsync(plan);
-
-        // Mark waiting record: flips IsWaitingForAssignment=false only if training is also assigned
-        waitingUser.MarkNutritionPlanAssigned();
-        await waitingUserRepository.UpdateAsync(waitingUser);
-
         await unitOfWork.SaveChangesAsync(cancellationToken);
-
         return plan.Id;
     }
 

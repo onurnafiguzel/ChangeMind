@@ -88,8 +88,9 @@ public class NutritionPlansController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Get the user's latest active nutrition plan.
-    /// User can only request their own; Coach/Admin can request anyone.
+    /// Get the user's active nutrition plan.
+    /// Coach-assigned takes precedence; Self-created is returned only when no coach plan exists.
+    /// Returns a single plan or 404 if none active.
     /// </summary>
     [HttpGet("~/api/users/{userId:guid}/active-nutrition-plan")]
     public async Task<ActionResult<NutritionPlanDetailDto>> GetUserActiveNutritionPlan(
@@ -99,22 +100,49 @@ public class NutritionPlansController(IMediator mediator) : ControllerBase
         AuthorizeViewPlan(userId);
 
         var result = await mediator.Send(new GetUserActiveNutritionPlanQuery(userId), cancellationToken);
-        if (result == null) return NotFound();
+        if (result is null) return NotFound();
         return Ok(result);
     }
 
     /// <summary>
-    /// Export the user's active nutrition plan as an .xlsx file.
-    /// Each NutritionDayType gets its own sheet; meals are stacked vertically.
+    /// User creates their own nutrition plan (no payment / no coach required).
+    /// Only the authenticated user themselves may create a self plan.
     /// </summary>
-    [HttpGet("~/api/users/{userId:guid}/active-nutrition-plan/export")]
-    public async Task<IActionResult> ExportUserActiveNutritionPlan(
+    [HttpPost("~/api/users/{userId:guid}/nutrition-plans/self")]
+    public async Task<ActionResult<Guid>> CreateSelf(
         Guid userId,
+        [FromBody] CreateSelfNutritionPlanRequest body,
         CancellationToken cancellationToken = default)
     {
-        AuthorizeViewPlan(userId);
+        var tokenUserId = User.FindFirstValue("sub");
+        if (!Guid.TryParse(tokenUserId, out var tokenGuid) || tokenGuid != userId)
+            throw new ForbiddenException("You can only create your own nutrition plan.");
 
-        var result = await mediator.Send(new ExportUserNutritionPlanQuery(userId), cancellationToken);
+        var command = new CreateSelfNutritionPlanCommand(
+            UserId:      userId,
+            Title:       body.Title,
+            Description: body.Description,
+            Days:        body.Days);
+
+        var planId = await mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = planId }, planId);
+    }
+
+    /// <summary>
+    /// Export a nutrition plan (by planId) as an .xlsx file.
+    /// Each NutritionDayType gets its own sheet; meals are stacked vertically.
+    /// </summary>
+    [HttpGet("{id:guid}/export")]
+    public async Task<IActionResult> Export(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var detail = await mediator.Send(new GetNutritionPlanByIdQuery(id), cancellationToken);
+        if (detail is null) return NotFound();
+
+        AuthorizeViewPlan(detail.UserId);
+
+        var result = await mediator.Send(new ExportNutritionPlanQuery(id), cancellationToken);
         if (result is null) return NotFound();
 
         return File(
@@ -177,6 +205,11 @@ public record CreateNutritionPlanRequest(
     Dictionary<NutritionDayType, List<MealInput>> Days);
 
 public record UpdateNutritionPlanRequest(
+    string Title,
+    string? Description,
+    Dictionary<NutritionDayType, List<MealInput>> Days);
+
+public record CreateSelfNutritionPlanRequest(
     string Title,
     string? Description,
     Dictionary<NutritionDayType, List<MealInput>> Days);

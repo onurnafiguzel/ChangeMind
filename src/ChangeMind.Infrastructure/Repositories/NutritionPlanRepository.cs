@@ -46,7 +46,9 @@ public class NutritionPlanRepository(ChangeMindDbContext context) : INutritionPl
     public async Task<IReadOnlyList<NutritionPlan>> GetActiveByUserIdAsync(Guid userId)
     {
         return await context.NutritionPlans
+            .Include(np => np.Coach)
             .Where(np => np.UserId == userId && np.IsActive)
+            .OrderByDescending(np => np.CreatedAt)
             .ToListAsync();
     }
 }

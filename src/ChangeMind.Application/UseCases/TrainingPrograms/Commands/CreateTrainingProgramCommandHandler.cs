@@ -35,7 +35,7 @@ public class CreateTrainingProgramCommandHandler(
                 $"User '{request.UserId}' already has an active training program assigned.");
 
         // Create training program
-        var trainingProgram = TrainingProgram.Create(
+        var trainingProgram = TrainingProgram.CreateByCoach(
             name: request.Name,
             description: request.Description,
             durationWeeks: request.DurationWeeks,

@@ -39,6 +39,21 @@ public class TrainingProgramRepository(ChangeMindDbContext context) : ITrainingP
                                     && (p.EndDate == null || p.EndDate.Value.Date > today));
     }
 
+    public async Task<IReadOnlyList<TrainingProgram>> GetActiveListByUserIdAsync(Guid userId)
+    {
+        var today = DateTime.UtcNow.Date;
+        return await context.TrainingPrograms
+            .Include(p => p.CreatedBy)
+            .Include(p => p.AssignedTo).ThenInclude(u => u.Profile)
+            .AsNoTracking()
+            .Where(p => p.UserId == userId
+                     && p.IsActive
+                     && (p.StartDate == null || p.StartDate.Value.Date <= today)
+                     && (p.EndDate == null || p.EndDate.Value.Date > today))
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task<IReadOnlyList<TrainingProgram>> GetActiveByCoachIdAsync(Guid coachId)
     {
         return await context.TrainingPrograms

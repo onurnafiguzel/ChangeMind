@@ -8,7 +8,9 @@ public class ActiveProgramDetailDto
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public int DurationWeeks { get; set; }
-    public string CoachName { get; set; } = string.Empty;
+    public CreatedByType CreatedByType { get; set; }
+    public Guid? CoachId { get; set; }
+    public string? CoachName { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public DifficultyLevel? Difficulty { get; set; }

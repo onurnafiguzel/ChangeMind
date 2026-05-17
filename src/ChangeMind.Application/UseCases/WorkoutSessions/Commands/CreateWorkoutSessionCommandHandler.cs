@@ -5,13 +5,22 @@ using MediatR;
 using ChangeMind.Application.Repositories;
 using ChangeMind.Application.UnitOfWork;
 using ChangeMind.Domain.Entities;
+using ChangeMind.Domain.Exceptions;
 
 public class CreateWorkoutSessionCommandHandler(
     IWorkoutSessionRepository workoutSessionRepository,
+    ITrainingProgramRepository trainingProgramRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<CreateWorkoutSessionCommand, Guid>
 {
     public async Task<Guid> Handle(CreateWorkoutSessionCommand request, CancellationToken cancellationToken)
     {
+        if (request.TrainingProgramId is { } programId)
+        {
+            var program = await trainingProgramRepository.GetByIdAsync(programId);
+            if (program is null || program.UserId != request.UserId)
+                throw new ValidationException("TrainingProgramId user ile uyuşmuyor.");
+        }
+
         var payload = new
         {
             exercises = request.Exercises.Select(e => new

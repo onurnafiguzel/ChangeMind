@@ -13,8 +13,12 @@ public class NutritionPlanConfiguration : IEntityTypeConfiguration<NutritionPlan
 
         builder.Property(np => np.Id).ValueGeneratedNever();
 
-        builder.Property(np => np.CoachId).IsRequired();
+        builder.Property(np => np.CoachId).IsRequired(false);
         builder.Property(np => np.UserId).IsRequired();
+        builder.Property(np => np.CreatedByType)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasMaxLength(20);
 
         builder.Property(np => np.Title)
             .IsRequired()
@@ -46,6 +50,7 @@ public class NutritionPlanConfiguration : IEntityTypeConfiguration<NutritionPlan
         builder.HasOne(np => np.Coach)
             .WithMany()
             .HasForeignKey(np => np.CoachId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -8,7 +8,7 @@ using FluentAssertions;
 public class TrainingProgramTests
 {
     private static TrainingProgram CreateProgram(int durationWeeks = 8) =>
-        TrainingProgram.Create(
+        TrainingProgram.CreateByCoach(
             name: "Güç Programı",
             description: "Test programı",
             durationWeeks: durationWeeks,
@@ -38,7 +38,7 @@ public class TrainingProgramTests
     [Fact]
     public void Create_WithEmptyName_ShouldThrowValidationException()
     {
-        var act = () => TrainingProgram.Create(
+        var act = () => TrainingProgram.CreateByCoach(
             name: "   ",
             description: null,
             durationWeeks: 8,
@@ -54,7 +54,7 @@ public class TrainingProgramTests
     [InlineData(53)]
     public void Create_WithInvalidDuration_ShouldThrowValidationException(int weeks)
     {
-        var act = () => TrainingProgram.Create(
+        var act = () => TrainingProgram.CreateByCoach(
             name: "Test",
             description: null,
             durationWeeks: weeks,

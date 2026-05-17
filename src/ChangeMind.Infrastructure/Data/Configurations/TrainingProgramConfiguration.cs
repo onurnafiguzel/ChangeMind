@@ -27,10 +27,15 @@ public class TrainingProgramConfiguration : IEntityTypeConfiguration<TrainingPro
             .HasMaxLength(1000);
 
         builder.Property(tp => tp.CoachId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(tp => tp.UserId)
             .IsRequired();
+
+        builder.Property(tp => tp.CreatedByType)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasMaxLength(20);
 
         builder.Property(tp => tp.DurationWeeks)
             .IsRequired();
@@ -91,7 +96,8 @@ public class TrainingProgramConfiguration : IEntityTypeConfiguration<TrainingPro
         builder.HasOne(tp => tp.CreatedBy)
             .WithMany(c => c.CreatedPrograms)
             .HasForeignKey(tp => tp.CoachId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(tp => tp.AssignedTo)
             .WithMany(u => u.AssignedPrograms)

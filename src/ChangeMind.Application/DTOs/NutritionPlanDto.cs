@@ -39,8 +39,9 @@ public class NutritionPlanDetailDto
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
-    public Guid CoachId { get; set; }
-    public string CoachName { get; set; } = string.Empty;
+    public Guid? CoachId { get; set; }
+    public string? CoachName { get; set; }
+    public CreatedByType CreatedByType { get; set; }
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
     public bool IsActive { get; set; }

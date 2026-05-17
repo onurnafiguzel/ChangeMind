@@ -2,54 +2,52 @@ namespace ChangeMind.Application.UseCases.TrainingPrograms.Queries;
 
 using MediatR;
 using System.Text.Json;
-using ChangeMind.Application.Configuration;
 using ChangeMind.Application.DTOs;
 using ChangeMind.Application.Repositories;
-using ChangeMind.Application.Services;
-using Microsoft.Extensions.Options;
+using ChangeMind.Domain.Entities;
+using ChangeMind.Domain.Enums;
 
 public class GetUserActiveProgramQueryHandler(
-    ITrainingProgramRepository trainingProgramRepository,
-    ICacheService cache,
-    IOptions<CacheOptions> cacheOptions)
+    ITrainingProgramRepository trainingProgramRepository)
     : IRequestHandler<GetUserActiveProgramQuery, ActiveProgramDetailDto?>
 {
-    private readonly CacheOptions _cacheOptions = cacheOptions.Value;
-
     public async Task<ActiveProgramDetailDto?> Handle(GetUserActiveProgramQuery request, CancellationToken cancellationToken)
     {
-        var key = CacheKeys.UserActiveProgram(request.UserId);
-
-        var cached = await cache.GetAsync<ActiveProgramDetailDto>(key, cancellationToken);
-        if (cached is not null)
-            return cached;
-
-        var program = await trainingProgramRepository.GetActiveByUserIdAsync(request.UserId);
-
-        if (program == null)
+        var programs = await trainingProgramRepository.GetActiveListByUserIdAsync(request.UserId);
+        if (programs.Count == 0)
             return null;
 
-        var today = DateTime.UtcNow.Date;
-        var status = DetermineStatus(program.EndDate, today);
+        // Coach-assigned takes precedence; fall back to Self if none.
+        var selected =
+            programs.FirstOrDefault(p => p.CreatedByType == CreatedByType.Coach)
+            ?? programs.FirstOrDefault(p => p.CreatedByType == CreatedByType.Self);
 
+        return selected is null ? null : MapToDto(selected, DateTime.UtcNow.Date);
+    }
+
+    private static ActiveProgramDetailDto MapToDto(TrainingProgram program, DateTime today)
+    {
         var dto = new ActiveProgramDetailDto
         {
-            Id = program.Id,
-            Name = program.Name,
-            Description = program.Description,
-            DurationWeeks = program.DurationWeeks,
-            CoachName = $"{program.CreatedBy.FirstName} {program.CreatedBy.LastName}",
-            StartDate = program.StartDate,
-            EndDate = program.EndDate,
-            Difficulty = program.Difficulty,
-            Status = status,
+            Id             = program.Id,
+            Name           = program.Name,
+            Description    = program.Description,
+            DurationWeeks  = program.DurationWeeks,
+            CreatedByType  = program.CreatedByType,
+            CoachId        = program.CoachId,
+            CoachName      = program.CreatedBy is null
+                ? null
+                : $"{program.CreatedBy.FirstName} {program.CreatedBy.LastName}",
+            StartDate      = program.StartDate,
+            EndDate        = program.EndDate,
+            Difficulty     = program.Difficulty,
+            Status         = DetermineStatus(program.EndDate, today),
             DailyExercises = new Dictionary<string, List<ProgramExerciseDetail>>(),
-
-            UserId     = program.UserId,
-            UserAge    = program.AssignedTo.Profile?.Age,
-            UserHeight = program.AssignedTo.Profile?.Height,
-            UserWeight = program.AssignedTo.Profile?.Weight,
-            UserGender = program.AssignedTo.Profile?.Gender
+            UserId         = program.UserId,
+            UserAge        = program.AssignedTo.Profile?.Age,
+            UserHeight     = program.AssignedTo.Profile?.Height,
+            UserWeight     = program.AssignedTo.Profile?.Weight,
+            UserGender     = program.AssignedTo.Profile?.Gender
         };
 
         if (!string.IsNullOrEmpty(program.DailyProgramJson))
@@ -63,11 +61,9 @@ public class GetUserActiveProgramQueryHandler(
             }
             catch
             {
-                // Initial boş dict korunur
+                // ignored — keep empty
             }
         }
-
-        await cache.SetAsync(key, dto, TimeSpan.FromSeconds(_cacheOptions.TrainingProgramTtlSeconds), cancellationToken);
 
         return dto;
     }
@@ -76,7 +72,6 @@ public class GetUserActiveProgramQueryHandler(
     {
         if (endDate == null || endDate.Value.Date >= today)
             return "InProgress";
-
         return "Completed";
     }
 }

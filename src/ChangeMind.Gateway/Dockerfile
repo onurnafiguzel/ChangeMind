@@ -17,6 +17,9 @@ RUN dotnet publish src/ChangeMind.Gateway/ChangeMind.Gateway.csproj \
     --no-restore /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+LABEL org.opencontainers.image.source="https://github.com/onurnafiguzel/ChangeMind"
+LABEL org.opencontainers.image.description="ChangeMind YARP Gateway"
+LABEL org.opencontainers.image.licenses="MIT"
 WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080 \

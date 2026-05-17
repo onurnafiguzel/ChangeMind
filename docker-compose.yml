@@ -98,6 +98,7 @@ services:
       - prometheus
 
   changemind-api:
+    image: ghcr.io/onurnafiguzel/changemind/api:${API_VERSION:-0.1.0}
     build:
       context: .
       dockerfile: src/ChangeMind.Api/Dockerfile
@@ -119,6 +120,7 @@ services:
         condition: service_healthy
 
   changemind-gateway:
+    image: ghcr.io/onurnafiguzel/changemind/gateway:${GATEWAY_VERSION:-0.1.0}
     build:
       context: .
       dockerfile: src/ChangeMind.Gateway/Dockerfile

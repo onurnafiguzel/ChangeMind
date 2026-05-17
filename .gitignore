@@ -374,3 +374,5 @@ docs/
 # Local development notes — never commit
 skills.md
 .env
+# C# Dev Kit / Roslyn language server cache
+*.lscache

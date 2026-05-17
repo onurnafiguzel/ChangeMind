@@ -27,6 +27,8 @@ public class ChangeMindDbContext : DbContext
     public DbSet<WorkoutSession> WorkoutSessions { get; set; }
     public DbSet<Food> Foods { get; set; }
     public DbSet<NutritionPlan> NutritionPlans { get; set; }
+    public DbSet<BodyMeasurement> BodyMeasurements { get; set; }
+    public DbSet<PersonalRecord> PersonalRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,6 +49,8 @@ public class ChangeMindDbContext : DbContext
         modelBuilder.ApplyConfiguration(new WorkoutSessionConfiguration());
         modelBuilder.ApplyConfiguration(new FoodConfiguration());
         modelBuilder.ApplyConfiguration(new NutritionPlanConfiguration());
+        modelBuilder.ApplyConfiguration(new BodyMeasurementConfiguration());
+        modelBuilder.ApplyConfiguration(new PersonalRecordConfiguration());
 
         // Seed Exercise Library
         SeedExerciseLibrary(modelBuilder);

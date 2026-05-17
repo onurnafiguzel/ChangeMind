@@ -5,7 +5,7 @@ using ChangeMind.Domain.Enums;
 
 /// <summary>
 /// Complete user profile with personal, fitness, and health/lifestyle information.
-/// Called after initial registration (email/password).
+/// Optionally records initial body measurements and personal records.
 /// </summary>
 public record CompleteProfileCommand(
     Guid UserId,
@@ -23,4 +23,17 @@ public record CompleteProfileCommand(
     string? HealthConditions = null,
     string? FoodAllergies = null,
     string? SupplementInterest = null,
-    bool? WantsSupplementSupport = null) : IRequest;
+    bool? WantsSupplementSupport = null,
+    // Initial body measurements (optional, cm)
+    decimal? WaistCm = null,
+    decimal? ArmCm = null,
+    decimal? LegCm = null,
+    decimal? NeckCm = null,
+    decimal? HipCm = null,
+    // Initial personal records (optional, kg)
+    decimal? BenchPressPR = null,
+    decimal? SquatPR = null,
+    decimal? DeadliftPR = null,
+    decimal? OverheadPressPR = null,
+    decimal? BarbellRowPR = null,
+    decimal? PullUpPR = null) : IRequest;

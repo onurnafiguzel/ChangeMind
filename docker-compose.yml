@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:17
@@ -60,6 +58,8 @@ services:
       - "5601:5601"
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    volumes:
+      - kibana_data:/usr/share/kibana/data
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -97,12 +97,52 @@ services:
     depends_on:
       - prometheus
 
+  changemind-api:
+    build:
+      context: .
+      dockerfile: src/ChangeMind.Api/Dockerfile
+    container_name: changemind_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=changemind_db;Username=changemind;Password=changemind_pass
+      - Cache__ConnectionString=redis:6379,password=${REDIS_PASSWORD:-changemind_redis_pass},abortConnect=false
+      - Serilog__WriteTo__0__Args__nodeUris=http://elasticsearch:9200
+    ports:
+      - "5123:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+
+  changemind-gateway:
+    build:
+      context: .
+      dockerfile: src/ChangeMind.Gateway/Dockerfile
+    container_name: changemind_gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - Urls=http://+:8080
+      - ReverseProxy__Clusters__changemind-api__Destinations__destination1__Address=http://changemind-api:8080
+      - Serilog__WriteTo__0__Args__nodeUris=http://elasticsearch:9200
+    ports:
+      - "5000:8080"
+    depends_on:
+      - changemind-api
+      - elasticsearch
+
 volumes:
   postgres_data:
     driver: local
   redis_data:
     driver: local
   es_data:
+    driver: local
+  kibana_data:
     driver: local
   grafana_data:
     driver: local

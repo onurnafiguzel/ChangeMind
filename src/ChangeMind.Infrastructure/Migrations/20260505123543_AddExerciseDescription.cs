@@ -11,12 +11,8 @@ namespace ChangeMind.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Description",
-                table: "Exercises",
-                type: "character varying(1000)",
-                maxLength: 1000,
-                nullable: true);
+            // Description sütunu zaten 20260414133100_exercise-library-crud migration'ında eklendi.
+            // Burada yalnızca seed açıklamalarını günceller.
 
             migrationBuilder.UpdateData(
                 table: "Exercises",
@@ -400,10 +396,6 @@ namespace ChangeMind.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Description",
-                table: "Exercises");
-
             migrationBuilder.UpdateData(
                 table: "Exercises",
                 keyColumn: "Id",

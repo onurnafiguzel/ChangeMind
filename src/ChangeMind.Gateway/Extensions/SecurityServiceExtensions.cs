@@ -39,11 +39,14 @@ public static class SecurityServiceExtensions
                 };
             });
 
-        // Configure CORS
+        // Configure CORS — origins read from Cors:AllowedOrigins config (env var overridable).
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+            ?? ["http://localhost:3001"];
+
         services.AddCors(options =>
         {
             options.AddPolicy("frontend", policy =>
-                policy.WithOrigins("http://localhost:3001")
+                policy.WithOrigins(allowedOrigins)
                       .AllowAnyMethod()
                       .AllowAnyHeader()
                       .AllowCredentials());

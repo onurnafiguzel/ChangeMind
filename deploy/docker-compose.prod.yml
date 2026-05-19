@@ -85,6 +85,7 @@ services:
       Jwt__Secret: ${JWT_SECRET}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
+      Cors__AllowedOrigins__0: https://changehere.org
       ReverseProxy__Clusters__changemind-api__Destinations__destination1__Address: http://changemind-api:8080
     depends_on:
       - changemind-api

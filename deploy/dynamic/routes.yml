@@ -1,0 +1,15 @@
+http:
+  routers:
+    gateway:
+      rule: "Host(`api.changehere.org`)"
+      entryPoints:
+        - websecure
+      service: gateway
+      tls:
+        certResolver: le
+
+  services:
+    gateway:
+      loadBalancer:
+        servers:
+          - url: "http://changemind-gateway:8080"

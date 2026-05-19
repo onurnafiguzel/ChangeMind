@@ -110,3 +110,31 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+
+  deploy:
+    name: Deploy to production
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy API and Gateway to server
+        run: |
+          ssh -i ~/.ssh/deploy_key root@${{ secrets.DEPLOY_HOST }} bash <<'EOF'
+            set -e
+            cd /opt/changemind/compose
+            echo "Pulling latest images..."
+            docker compose pull changemind-api changemind-gateway
+            echo "Restarting services..."
+            docker compose up -d changemind-api changemind-gateway
+            echo "Cleaning up old images..."
+            docker image prune -f
+            echo "Deploy completed successfully."
+          EOF

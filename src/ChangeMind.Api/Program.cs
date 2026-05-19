@@ -4,6 +4,7 @@ using ChangeMind.Api.Middleware;
 using ChangeMind.Application.Extensions;
 using ChangeMind.Infrastructure.Data;
 using ChangeMind.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Prometheus;
 using Serilog;
@@ -39,11 +40,8 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ChangeMindDbContext>();
     await db.Database.MigrateAsync();
 
-    if (app.Environment.IsDevelopment())
-    {
-        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-        await seeder.SeedAsync();
-    }
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.SeedAsync();
 }
 
 app.UseMiddleware<CorrelationIdMiddleware>();

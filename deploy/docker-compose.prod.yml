@@ -88,3 +88,8 @@ services:
       ReverseProxy__Clusters__changemind-api__Destinations__destination1__Address: http://changemind-api:8080
     depends_on:
       - changemind-api
+
+  frontend:
+    image: ghcr.io/onurnafiguzel/changebody-fe:${FE_VERSION}
+    container_name: frontend
+    restart: unless-stopped

@@ -8,8 +8,21 @@ http:
       tls:
         certResolver: le
 
+    frontend:
+      rule: "Host(`changehere.org`)"
+      entryPoints:
+        - websecure
+      service: frontend
+      tls:
+        certResolver: le
+
   services:
     gateway:
       loadBalancer:
         servers:
           - url: "http://changemind-gateway:8080"
+
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:80"
